@@ -1,3 +1,5 @@
+[캡스톤프로젝트 스타트] 17. 출발드림팀 BellyWelly front-end 레포지토리 <br/><br/>
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
