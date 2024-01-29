@@ -4,7 +4,7 @@ import {
   PoopType2,
   PoopType3,
   PoopType4,
-} from "../../assets/PoopTypeIcons/Types";
+} from "../../assets/PoopTypeIcons";
 import { Text } from "../common";
 import { theme } from "../../styles";
 import React from "react";
