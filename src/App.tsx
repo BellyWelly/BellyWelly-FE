@@ -1,17 +1,23 @@
 // App.tsx
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider, styled } from "styled-components";
 import { theme } from "./styles";
-import { Text } from "./components/common";
+import { BigButtons, PoopTypeButtons } from "./components/Buttons";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <div>테스트</div>
-      <Text $Typo="Head2" $paletteColor="Main_orange">
-        안녕앙년ㅇ
-      </Text>
+      <Container>
+        <BigButtons enable={false}>분석하기</BigButtons>
+        <BigButtons enable={true}>저장하기</BigButtons>
+        <PoopTypeButtons id={3}></PoopTypeButtons>
+      </Container>
     </ThemeProvider>
   );
 }
 
 export default App;
+
+const Container = styled.div`
+  // padding: 3%;
+  // box-sizing: border-box;
+`;
