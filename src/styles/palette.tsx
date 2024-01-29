@@ -6,6 +6,11 @@ export const palette = {
   Sub3_orange: "#FFDBC5",
   Sub4_orange: "#FFF3EB",
 
+  Blue: "#4FB2FA",
+  Blue2: "#DFEEFF",
+  Red: "#FA4F4F",
+  Red2: "#FFDFDF",
+
   White: "#FFFFFF",
   Gray1: "#FBF7F8",
   Gray2: "#F5F4F2",
