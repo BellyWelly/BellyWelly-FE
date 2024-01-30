@@ -12,6 +12,7 @@ import {
   StatusChips,
   StatusType,
 } from "./components/Chips";
+import { InputType, TextFields } from "./components/TextFields";
 
 function App() {
   return (
@@ -30,6 +31,10 @@ function App() {
         <StatusChips statusType={StatusType.Good} />
         <StatusChips statusType={StatusType.Soso} />
         <StatusChips statusType={StatusType.Bad} />
+        {/* TextFields */}
+        <TextFields type={InputType.ChatInput} />
+        <TextFields type={InputType.MenuInput} />
+        <TextFields type={InputType.MenuInput} enable={true} />
       </Container>
     </ThemeProvider>
   );
