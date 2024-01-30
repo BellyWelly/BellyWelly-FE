@@ -5,7 +5,7 @@ interface IconContainerProps {
   height: number;
 }
 
-export const PlaneIcon = ({ width = 24, height = 24, enable = false }) => {
+export const PlaneIcon = ({ width = 24, height = 24 }) => {
   return (
     <IconContainer width={width} height={height}>
       <svg
@@ -20,6 +20,25 @@ export const PlaneIcon = ({ width = 24, height = 24, enable = false }) => {
           stroke="#434240"
           stroke-width="2"
           stroke-linecap="round"
+        />
+      </svg>
+    </IconContainer>
+  );
+};
+
+export const KakaoLoginIcon = ({ width = 22, height = 20 }) => {
+  return (
+    <IconContainer width={width} height={height}>
+      <svg
+        width="22"
+        height="20"
+        viewBox="0 0 22 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10.7789 -0.000478745C4.82654 -0.000478745 0 3.74484 0 8.36767C0 11.3371 1.99908 13.9442 5.00123 15.4323L3.98557 19.1583C3.9467 19.2726 3.97894 19.3937 4.0633 19.4762C4.12138 19.5337 4.1989 19.5654 4.28304 19.5654C4.34797 19.5654 4.41246 19.54 4.47076 19.4955L8.83794 16.5958C9.47221 16.6848 10.1193 16.7356 10.7789 16.7356C16.7313 16.7356 21.5583 12.9905 21.5583 8.36767C21.5583 3.74484 16.7313 -0.000478745 10.7789 -0.000478745Z"
+          fill="#3C1E1E"
         />
       </svg>
     </IconContainer>

@@ -5,6 +5,7 @@ import {
   BigButtons,
   PoopTypeButtons,
   CircleButtons,
+  KakaoLoginButton,
 } from "./components/Buttons";
 import {
   ColorType,
@@ -35,6 +36,8 @@ function App() {
         <TextFields type={InputType.ChatInput} />
         <TextFields type={InputType.MenuInput} />
         <TextFields type={InputType.MenuInput} enable={true} />
+        {/* KakaoLogin */}
+        <KakaoLoginButton />
       </Container>
     </ThemeProvider>
   );
