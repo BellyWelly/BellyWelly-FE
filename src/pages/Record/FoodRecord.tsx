@@ -17,7 +17,7 @@ const MealTypes: MealTypesInterface[] = [
   { id: 4, time: "기타" },
 ];
 
-export const Main = () => {
+export const FoodRecord = () => {
   const [typeNum, setTypeNum] = useState<number>();
   const [imageSrc, setImageSrc] = useState<string>();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
