@@ -20,9 +20,11 @@ export enum StatusType {
 export const HashtagChips = ({
   children,
   color,
+  onClick,
 }: {
   children: React.ReactNode;
   color: ColorType;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }) => {
   let backgroundColor = "#000";
   if (color === ColorType.MainOrange)
@@ -35,6 +37,7 @@ export const HashtagChips = ({
       background={backgroundColor}
       type={ChipType.Hashtag}
       color={color}
+      onClick={onClick}
     >
       <Text
         $paletteColor={
@@ -84,8 +87,8 @@ const Container = styled.div<{
   background: string;
   statusType?: StatusType;
 }>`
-  width: ${({ type }) => (type === ChipType.Hashtag ? 76 : 54)}px;
-  height: ${({ type }) => (type === ChipType.Hashtag ? 36 : 22)}px;
+  padding: ${({ type }) =>
+    type === ChipType.Hashtag ? "8px 16px" : "5px 12px"};
   background: ${({ background }) => (background ? background : "#000")};
   display: flex;
   align-items: center;

@@ -3,15 +3,14 @@ import { theme } from "../../styles";
 import { Text } from "../common";
 
 export const BigButtons = ({
-  enable,
+  active,
   children,
 }: {
-  enable: boolean;
+  active: boolean;
   children: React.ReactNode;
 }) => {
-  // 구조 분해 할당 사용
   return (
-    <Container enable={enable}>
+    <Container active={active}>
       <Text $Typo="SubTitle1" $paletteColor="White">
         {children}
       </Text>
@@ -19,12 +18,12 @@ export const BigButtons = ({
   );
 };
 
-const Container = styled.div<{ enable: boolean }>`
+const Container = styled.div<{ active: boolean }>`
   // Props 타입 수정
   width: 100%;
   height: 54px;
-  background: ${({ enable }) =>
-    enable ? theme.palette.Main_orange : theme.palette.Gray4};
+  background: ${({ active }) =>
+    active ? theme.palette.Main_orange : theme.palette.Gray4};
   display: flex;
   align-items: center;
   justify-content: center;

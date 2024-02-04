@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { Text } from "../../components/common";
 import { KakaoLoginButton } from "../../components/Buttons";
-import { MainIcon } from "../../components/MainIcon";
+import { MainIcon } from "../../components/MainCharacter";
 
 export const Onboarding = () => {
   return (
