@@ -1,3 +1,5 @@
+import { RecordButton } from '../../components/Buttons'
+
 export const Main = () => {
-  return <div>main</div>;
-};
+  return <RecordButton />
+}
