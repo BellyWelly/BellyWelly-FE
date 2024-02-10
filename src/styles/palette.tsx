@@ -5,6 +5,7 @@ export const palette = {
   Sub2_orange: "#FFB589",
   Sub3_orange: "#FFDBC5",
   Sub4_orange: "#FFF3EB",
+  BG_orange: "#FAF4F3",
 
   Blue: "#4FB2FA",
   Blue2: "#DFEEFF",

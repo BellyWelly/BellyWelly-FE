@@ -33,6 +33,7 @@ export const RecordStress = () => {
 
 const Container = styled.div`
   width: 100%;
+  background: ${theme.palette.White};
   border: 1px solid ${theme.palette.Gray3};
   border-radius: 8px;
   height: 112px;

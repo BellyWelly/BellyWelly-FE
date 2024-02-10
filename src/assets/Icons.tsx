@@ -1,6 +1,6 @@
 import { css, styled } from "styled-components";
 
-interface IconContainerProps {
+export interface IconContainerProps {
   width: number;
   height: number;
   display?: string;
