@@ -2,11 +2,16 @@ import styled from "styled-components";
 import { theme } from "../../../styles";
 import { Text } from "../../common";
 import { PlusIcon } from "../../../assets/Icons";
+import { CheckButton } from "../CheckButton";
+
+type displayType = {
+  display: boolean;
+};
 
 export const RecordButton = () => {
   return (
     <Container>
-      <PlusIcon />
+      <CheckButton type="plus" />
       <Text $paletteColor="Gray5" $Typo="Body1">
         기록하기
       </Text>
@@ -14,9 +19,9 @@ export const RecordButton = () => {
   );
 };
 
-export const RecordStress = () => {
+export const RecordStress = (display: { display: boolean }) => {
   return (
-    <StressContainer>
+    <StressContainer display={display}>
       <Text $Typo="Body4" $paletteColor="Gray7">
         오늘의 스트레스 정도는?
       </Text>
@@ -44,13 +49,14 @@ const Container = styled.div`
   gap: 5px;
 `;
 
-const StressContainer = styled.div`
+const StressContainer = styled.div<{ display: displayType }>`
   box-sizing: border-box;
   width: 100%;
   height: 90px;
   border: 1px solid ${theme.palette.Gray3};
   border-radius: 8px;
   padding: 10px 15px;
+  display: ${({ display }) => (display.display ? "block" : "none")};
 
   .icon-container {
     display: flex;

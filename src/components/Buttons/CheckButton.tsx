@@ -1,13 +1,13 @@
 import { styled } from "styled-components";
-import { CircleIcons } from "../../assets/CircleIcons";
+import { CheckIcons } from "../../assets/CheckIcons";
 
-export const CircleButtons = ({ type }: { type: string }) => {
+export const CheckButton = ({ type }: { type: string }) => {
   return (
     <Container>
       {type === "check" ? (
-        <CircleIcons type="check" />
+        <CheckIcons type="check" />
       ) : (
-        <CircleIcons type="plus" />
+        <CheckIcons type="plus" />
       )}
     </Container>
   );

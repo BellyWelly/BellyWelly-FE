@@ -6,7 +6,7 @@ interface IconContainerProps {
   type?: string;
 }
 
-export const CircleIcons = ({ width = 38, height = 38, type = "check" }) => {
+export const CheckIcons = ({ width = 38, height = 38, type = "check" }) => {
   return (
     <IconContainer width={width} height={height}>
       {type === "check" ? (

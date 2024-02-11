@@ -17,7 +17,9 @@ export const DayButton = ({ day, date, active }: WeekInterface) => {
       <Text $Typo="SubTitle1" $paletteColor={active ? "Black" : "Gray4"}>
         {date}
       </Text>
-      <Icon />
+      <IconContainer>
+        <Icon />
+      </IconContainer>
     </Container>
   );
 };
@@ -35,9 +37,13 @@ const Container = styled.div<{ active?: boolean }>`
   border-radius: 100px;
 `;
 
-const Icon = styled.div`
+const IconContainer = styled.div`
   width: 100%;
   height: 30px;
+`;
+const Icon = styled.div`
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   background: pink;
 `;
