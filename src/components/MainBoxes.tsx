@@ -5,18 +5,23 @@ import { Doughnut } from "react-chartjs-2";
 import { Text } from "./common";
 import { StatusChips, StatusType } from "./Chips";
 import React from "react";
+import { CheckButton } from "./Buttons/CheckButton";
 
 interface GraphLabelInterface {
   children: React.ReactNode;
   percentage: number;
   color: string;
 }
+interface DefecationInterface {
+  children: React.ReactNode;
+  score: number;
+}
 
 const data = {
   labels: ["저포드맵", "고포드맵"],
   datasets: [
     {
-      label: "test",
+      label: "퍼센트",
       data: [60, 40],
       backgroundColor: ["#FC843E", "#FFDBC5"],
       cutout: "70%",
@@ -90,7 +95,73 @@ export const MainGraphBox = () => {
   );
 };
 
-const Container = styled.div<{ padding?: string }>`
+export const MainDietRecordCheckBox = () => {
+  const day = [
+    {
+      time: "아침",
+      check: false,
+    },
+    {
+      time: "점심",
+      check: true,
+    },
+    {
+      time: "저녁",
+      check: true,
+    },
+    {
+      time: "기타",
+      check: false,
+    },
+  ];
+
+  return (
+    <Container padding="25px 31px 19px 31px" justifyContent="space-between">
+      {day.map((record, index) => (
+        <Column justifyContent="center" alignItems="center" gap={12}>
+          <Row alignItems="center">
+            <CheckButton type={record.check ? "check" : "plus"} />
+            {index !== day.length - 1 && <Line />}
+          </Row>
+          <Text
+            $Typo={record.check ? "Body2" : "Body1"}
+            $paletteColor={record.check ? "Main_orange" : "Gray5"}
+          >
+            {record.time}
+          </Text>
+        </Column>
+      ))}
+    </Container>
+  );
+};
+
+export const MainTodayDietBoxes = () => {
+  return (
+    <Column gap={10}>
+      <MainGraphBox />
+      <MainDietRecordCheckBox />
+    </Column>
+  );
+};
+
+export const DefecationBox = ({ children, score }: DefecationInterface) => {
+  return (
+    <Container gap="6px">
+      <Text $Typo="SubTitle1" $paletteColor="Gray8">
+        {children}
+      </Text>
+      <Text $Typo="SubTitle1" $paletteColor="Main_orange">
+        {score}
+      </Text>
+    </Container>
+  );
+};
+
+const Container = styled.div<{
+  padding?: string;
+  justifyContent?: string;
+  gap?: string;
+}>`
   box-sizing: border-box;
   width: 100%;
   padding: ${({ padding }) => (padding ? padding : "16px 22px")};
@@ -98,13 +169,15 @@ const Container = styled.div<{ padding?: string }>`
   border: 1px solid ${theme.palette.Gray3};
   border-radius: 8px;
   display: flex;
-  gap: 8%;
+  justify-content: ${({ justifyContent }) =>
+    justifyContent ? justifyContent : "initial"};
+  gap: ${({ gap }) => (gap ? gap : "8%")};
 `;
 
 const GraphContainer = styled.div`
   width: 112px;
   height: 112px;
-  overflow: hidden; /* 내용이 넘치는 경우 숨김 처리 */
+  overflow: hidden;
 `;
 
 const LabelContainer = styled.div`
@@ -118,4 +191,10 @@ const LabelBox = styled.div<{ color?: string }>`
   height: 15px;
   border-radius: 5px;
   background: ${({ color }) => (color ? color : theme.palette.Black)};
+`;
+const Line = styled.div`
+  width: 100px;
+  height: 2px;
+  background: ${theme.palette.Gray2};
+  position: absolute;
 `;

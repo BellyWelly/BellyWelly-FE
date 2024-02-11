@@ -1,3 +1,3 @@
 export * from "./FoodRecord";
-export * from "./StoolRecord";
+export * from "./DefecationRecord";
 export * from "./FoodRecordResult";

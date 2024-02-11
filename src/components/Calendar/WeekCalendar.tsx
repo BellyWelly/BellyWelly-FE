@@ -46,5 +46,4 @@ const WeekContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 5px;
 `;

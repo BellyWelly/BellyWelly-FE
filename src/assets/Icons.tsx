@@ -46,12 +46,16 @@ export const KakaoLoginIcon = ({ width = 22, height = 20 }) => {
   );
 };
 
-export const ArrowIcon = ({ width = 24, height = 24 }) => {
+export const ArrowIcon = ({ width = 24, height = 24, rotate = 0 }) => {
   return (
-    <IconContainer width={width} height={height}>
+    <IconContainer
+      width={width}
+      height={height}
+      style={{ transform: `rotate(${rotate}deg)` }}
+    >
       <svg
-        width="24"
-        height="24"
+        width="100%"
+        height="100%"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -72,8 +76,8 @@ export const CameraIcon = ({ width = 64, height = 64, display = "auto" }) => {
   return (
     <IconContainer width={width} height={height} display={display}>
       <svg
-        width="64"
-        height="64"
+        width="100%"
+        height="100%"
         viewBox="0 0 64 64"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

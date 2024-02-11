@@ -16,4 +16,5 @@ export const CheckButton = ({ type }: { type: string }) => {
 const Container = styled.div`
   width: 38px;
   height: 38px;
+  z-index: 1000;
 `;

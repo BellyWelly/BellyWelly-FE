@@ -4,13 +4,16 @@ import { RecordButton, RecordStress } from "../../components/Buttons";
 import { DropdownCalendar } from "../../components/Calendar/DropdownCalendar";
 import { WeekCalendar } from "../../components/Calendar/WeekCalendar";
 import { Text } from "../../components/common";
-import { theme } from "../../styles";
+import { Row, theme } from "../../styles";
 import { useState } from "react";
-import { MainGraphBox } from "../../components/MainBoxes";
+import { DefecationBox, MainTodayDietBoxes } from "../../components";
+import { ArrowIcon } from "../../assets/Icons";
+import { useNavigate } from "react-router-dom";
 
 export const Main = () => {
   const [stressIcon, setStressIcon] = useState<boolean>(false);
   let data = true;
+  const navigate = useNavigate();
 
   return (
     <Container>
@@ -26,16 +29,51 @@ export const Main = () => {
       {/* 식단, 배변 현황  */}
       <div className="bottom-container">
         <div className="inner-container">
-          <Text $Typo="Title2" $paletteColor="Gray7">
-            오늘의 식단 현황
-          </Text>
-          {data ? <MainGraphBox /> : <RecordButton />}
+          <Row justifyContent="space-between">
+            <Text $Typo="Title2" $paletteColor="Gray7">
+              오늘의 식단 현황
+            </Text>
+            {data && (
+              <Row
+                alignItems="center"
+                gap={5}
+                onClick={() => navigate("/foodRecord")}
+              >
+                <Text $Typo="Body1" $paletteColor="Gray8">
+                  기록하기
+                </Text>
+                <ArrowIcon width={18.5} height={18.5} rotate={180} />
+              </Row>
+            )}
+          </Row>
+          {data ? <MainTodayDietBoxes /> : <RecordButton />}
         </div>
         <div className="inner-container">
-          <Text $Typo="Title2" $paletteColor="Gray7">
-            오늘의 배변 현황
-          </Text>
-          <RecordButton />
+          <Row justifyContent="space-between">
+            <Text $Typo="Title2" $paletteColor="Gray7">
+              오늘의 배변 현황
+            </Text>
+            {data && (
+              <Row
+                alignItems="center"
+                gap={5}
+                onClick={() => navigate("/defecationRecord")}
+              >
+                <Text $Typo="Body1" $paletteColor="Gray8">
+                  기록하기
+                </Text>
+                <ArrowIcon width={18.5} height={18.5} rotate={180} />
+              </Row>
+            )}
+          </Row>
+          {data ? (
+            <Row gap={12}>
+              <DefecationBox score={3}>배변 횟수</DefecationBox>
+              <DefecationBox score={17}>배변 점수</DefecationBox>
+            </Row>
+          ) : (
+            <RecordButton />
+          )}
         </div>
       </div>
     </Container>
