@@ -5,6 +5,7 @@ import { Text } from "../../components/common";
 import { theme } from "../../styles";
 import React, { useRef, useState } from "react";
 import { BigButtons } from "../../components/Buttons";
+import { useNavigate } from "react-router-dom";
 
 interface MealTypesInterface {
   id: number;
@@ -21,6 +22,8 @@ export const FoodRecord = () => {
   const [typeNum, setTypeNum] = useState<number>();
   const [imageSrc, setImageSrc] = useState<string>();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
+
+  const navigate = useNavigate();
 
   const handleClick = () => {
     hiddenFileInput.current?.click();
@@ -46,7 +49,7 @@ export const FoodRecord = () => {
   return (
     <Container>
       <div>
-        <div className="icon-container">
+        <div className="icon-container" onClick={() => navigate(-1)}>
           <ArrowIcon />
         </div>
         <Text $Typo="Title1" $paletteColor="Gray6">
@@ -97,6 +100,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-sizing: border-box;
+  padding: 3%;
 
   .icon-container {
     padding: 20px 0 30px 0;

@@ -27,11 +27,13 @@ export const Onboarding = () => {
 
 const Container = styled.div`
   width: 100%;
+  box-sizing: border-box;
   height: calc(100vh - 30px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 20px;
+  padding: 3%;
 
   .sub-container {
     height: 75%;
