@@ -5,12 +5,14 @@ import { Text } from "../common";
 export const BigButtons = ({
   active,
   children,
+  onClick,
 }: {
   active: boolean;
   children: React.ReactNode;
+  onClick?: any;
 }) => {
   return (
-    <Container active={active}>
+    <Container active={active} onClick={onClick}>
       <Text $Typo="SubTitle1" $paletteColor="White">
         {children}
       </Text>

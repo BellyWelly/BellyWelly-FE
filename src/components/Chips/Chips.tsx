@@ -15,6 +15,8 @@ export enum StatusType {
   Good = "GOOD",
   Soso = "SOSO",
   Bad = "BAD",
+  Low_Fodmap = "저포드맵 음식",
+  High_Fodmap = "고포드맵 음식",
 }
 
 export const HashtagChips = ({
@@ -56,19 +58,25 @@ export const HashtagChips = ({
 };
 
 export const StatusChips = ({ statusType }: { statusType: StatusType }) => {
-  let backgroundColor = "#000";
+  let backgroundColor = theme.palette.Black;
 
-  if (statusType === StatusType.Good) backgroundColor = theme.palette.Blue2;
-  else if (statusType === StatusType.Soso)
+  if (statusType === StatusType.Good || statusType === StatusType.Low_Fodmap) {
+    backgroundColor = theme.palette.Blue2;
+  } else if (statusType === StatusType.Soso) {
     backgroundColor = theme.palette.Gray3;
-  else if (statusType === StatusType.Bad) backgroundColor = theme.palette.Red2;
+  } else if (
+    statusType === StatusType.Bad ||
+    statusType === StatusType.High_Fodmap
+  ) {
+    backgroundColor = theme.palette.Red2;
+  }
 
   return (
     <Container background={backgroundColor} statusType={statusType}>
       <Text
         $Typo="Body1"
         $paletteColor={
-          statusType === StatusType.Bad
+          statusType === StatusType.Bad || statusType === StatusType.High_Fodmap
             ? "Red"
             : statusType === StatusType.Soso
             ? "Gray6"
@@ -87,6 +95,7 @@ const Container = styled.div<{
   background: string;
   statusType?: StatusType;
 }>`
+  width: fit-content;
   padding: ${({ type }) =>
     type === ChipType.Hashtag ? "8px 16px" : "5px 12px"};
   background: ${({ background }) => (background ? background : "#000")};

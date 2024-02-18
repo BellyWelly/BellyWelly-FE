@@ -4,7 +4,7 @@ import { theme } from "./styles";
 import { Route, Routes } from "react-router-dom";
 import { Onboarding } from "./pages/Onboarding/Onboarding";
 import { Main } from "./pages/Main";
-import { FoodRecord, FoodRecordResult, DefecationRecord } from "./pages/Record";
+import { DefecationRecord, FoodRecord } from "./pages/Record";
 
 function App() {
   return (
@@ -14,7 +14,6 @@ function App() {
         <Route path="/onBoarding" element={<Onboarding />} />
         <Route path="/foodRecord" element={<FoodRecord />} />
         <Route path="/defecationRecord" element={<DefecationRecord />} />
-        <Route path="/foodRecordResult" element={<FoodRecordResult />} />
       </Routes>
     </ThemeProvider>
   );
