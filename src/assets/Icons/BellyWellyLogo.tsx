@@ -1,5 +1,5 @@
 import { css, styled } from "styled-components";
-import { IconContainerProps } from "./Icons";
+import { IconContainerProps } from ".";
 
 export const BellyWellyLogo = ({ width = 114, height = 25 }) => {
   return (

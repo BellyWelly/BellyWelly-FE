@@ -1,48 +1,26 @@
 import { styled } from "styled-components";
-import {
-  PoopType1,
-  PoopType2,
-  PoopType3,
-  PoopType4,
-} from "../../assets/PoopTypeIcons";
 import { Text } from "../common";
 import { theme } from "../../styles";
 import React from "react";
+import {
+  PoopTypes,
+  PoopTypesInterface,
+} from "../../assets/info/ScaleRecordInfo";
 
-interface PoopTypesInterface {
+export const PoopTypeButtons = ({
+  id,
+  setScaleId,
+}: {
   id: number;
-  description: string;
-  icon: React.ReactElement;
-}
-
-const PoopTypes: PoopTypesInterface[] = [
-  {
-    id: 1,
-    description: "촉촉한 변",
-    icon: <PoopType1 width={50} height={34} />,
-  },
-  {
-    id: 2,
-    description: "딱딱한 변",
-    icon: <PoopType2 width={50} height={34} />,
-  },
-  {
-    id: 3,
-    description: "갈라진 변",
-    icon: <PoopType3 width={50} height={34} />,
-  },
-  {
-    id: 4,
-    description: "물 같은 변",
-    icon: <PoopType4 width={50} height={34} />,
-  },
-];
-
-export const PoopTypeButtons = ({ id }: { id: number }) => {
+  setScaleId: any;
+}) => {
   return (
     <ButtonsContainer>
       {PoopTypes.map((type: PoopTypesInterface) => (
-        <Container enable={id === type.id ? true : false}>
+        <Container
+          enable={id === type.id ? true : false}
+          onClick={() => setScaleId(type.id)}
+        >
           {React.cloneElement(type.icon, { enable: id === type.id })}
           <Text
             $Typo="Body2"

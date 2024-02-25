@@ -1,3 +1,3 @@
-export * from "./defecation/DefecationRecord";
+export * from "./defecation";
 export * from "./food/FoodRecordResult";
-export * from "./food/index";
+export * from "./food";

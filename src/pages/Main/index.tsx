@@ -1,13 +1,11 @@
 import { styled } from "styled-components";
-import { BellyWellyLogo } from "../../assets/BellyWellyLogo";
 import { RecordButton, RecordStress } from "../../components/Buttons";
-import { DropdownCalendar } from "../../components/Calendar/DropdownCalendar";
-import { WeekCalendar } from "../../components/Calendar/WeekCalendar";
+import { DropdownCalendar, WeekCalendar } from "../../components/Calendar";
 import { Text } from "../../components/common";
+import { ArrowIcon, BellyWellyLogo } from "../../assets/Icons";
 import { Row, theme } from "../../styles";
 import { useState } from "react";
 import { DefecationBox, MainTodayDietBoxes } from "../../components";
-import { ArrowIcon } from "../../assets/Icons";
 import { useNavigate } from "react-router-dom";
 
 export const Main = () => {

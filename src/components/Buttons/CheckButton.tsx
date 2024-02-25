@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { CheckIcons } from "../../assets/CheckIcons";
+import { CheckIcons } from "../../assets/Icons";
 
 export const CheckButton = ({ type }: { type: string }) => {
   return (
