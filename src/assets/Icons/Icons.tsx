@@ -19,8 +19,8 @@ export const PlaneIcon = ({ width = 24, height = 24 }) => {
         <path
           d="M21.0703 2.92998L10.4063 13.5939M3.271 8.23566L19.8769 2.47443C20.8995 2.11964 21.8807 3.10076 21.5259 4.12339L15.7646 20.7293C15.37 21.8669 13.7725 21.8981 13.3337 20.7768L10.6968 14.038C10.5651 13.7015 10.2988 13.4352 9.96226 13.3035L3.22354 10.6666C2.10219 10.2278 2.13338 8.63034 3.271 8.23566Z"
           stroke="#434240"
-          stroke-width="2"
-          stroke-linecap="round"
+          strokeWidth="2"
+          strokeLinecap="round"
         />
       </svg>
     </IconContainer>
@@ -63,9 +63,9 @@ export const ArrowIcon = ({ width = 24, height = 24, rotate = 0 }) => {
         <path
           d="M14.4001 16.7998L9.6001 11.9998L14.4001 7.19981"
           stroke="#434240"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </IconContainer>
@@ -105,8 +105,8 @@ export const PlusIcon = ({ width = 38, height = 38 }) => {
         <path
           d="M18.9998 11.3574L18.9998 27.6431M27.1426 19.5003L10.8569 19.5003"
           stroke="#868281"
-          stroke-width="3"
-          stroke-linecap="round"
+          strokeWidth="3"
+          strokeLinecap="round"
         />
       </svg>
     </IconContainer>
@@ -126,8 +126,8 @@ export const DropdwonIcon = ({ width = 24, height = 24 }) => {
         <path
           d="M21.5999 19.1998H2.3999M14.9999 11.9998H2.3999M21.5999 4.7998H2.3999"
           stroke="#353432"
-          stroke-width="2"
-          stroke-linecap="round"
+          strokeWidth="2"
+          strokeLinecap="round"
         />
       </svg>
     </IconContainer>
@@ -147,9 +147,9 @@ export const DropdwonArrowIcon = ({ width = 24, height = 24 }) => {
         <path
           d="M16.7998 9.60039L11.9998 14.4004L7.19981 9.60039"
           stroke="#434240"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </IconContainer>

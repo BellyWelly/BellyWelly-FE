@@ -31,7 +31,11 @@ export const FoodRecordResult = () => {
       </Text>
       <Row gap={8}>
         {foodList.map((food) => (
-          <FoodListByFodmap statusType={food.status} foodList={food.foodList} />
+          <FoodListByFodmap
+            key={food.status}
+            statusType={food.status}
+            foodList={food.foodList}
+          />
         ))}
       </Row>
       <NutrientBox nutrientList={nutrientLsit} />

@@ -36,7 +36,12 @@ export const WeekCalendar = () => {
   return (
     <WeekContainer>
       {Week.map((day) => (
-        <DayButton day={day.day} date={day.date} active={day.date === "14"} />
+        <DayButton
+          key={day.date}
+          day={day.day}
+          date={day.date}
+          active={day.date === "14"}
+        />
       ))}
     </WeekContainer>
   );

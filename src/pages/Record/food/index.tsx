@@ -79,6 +79,7 @@ export const FoodRecord = () => {
           <ChipsContainer>
             {MealTypes.map((type: MealTypesInterface) => (
               <HashtagChips
+                key={type.id}
                 color={
                   type.id === typeNum ? ColorType.MainOrange : ColorType.Gray
                 }

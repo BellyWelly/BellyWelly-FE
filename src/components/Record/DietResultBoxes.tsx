@@ -26,7 +26,7 @@ export const FoodListByFodmap = ({
       <StatusChips statusType={statusType} />
       <Column gap={7} alignItems="center">
         {foodList.map((food) => (
-          <Text $Typo="Body3" $paletteColor="Gray6">
+          <Text key={food} $Typo="Body3" $paletteColor="Gray6">
             {food}
           </Text>
         ))}
@@ -46,7 +46,9 @@ export const NutrientBox = ({
         영양 성분 계산 ( % 일 섭취량)
       </Text>
       {nutrientList.map((item) => (
-        <NutrientRateBar rate={item.rate}>{item.nutrient}</NutrientRateBar>
+        <NutrientRateBar key={item.nutrient} rate={item.rate}>
+          {item.nutrient}
+        </NutrientRateBar>
       ))}
     </Container>
   );

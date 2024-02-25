@@ -49,7 +49,7 @@ export const HashtagChips = ({
             ? "Main_orange"
             : "Gray9"
         }
-        $Typo="Body4"
+        $Typo="Body3"
       >
         {children}
       </Text>

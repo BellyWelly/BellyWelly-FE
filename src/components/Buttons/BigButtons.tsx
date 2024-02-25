@@ -21,7 +21,6 @@ export const BigButtons = ({
 };
 
 const Container = styled.div<{ active: boolean }>`
-  // Props 타입 수정
   width: 100%;
   height: 54px;
   background: ${({ active }) =>

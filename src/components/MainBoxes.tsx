@@ -118,7 +118,12 @@ export const MainDietRecordCheckBox = () => {
   return (
     <Container padding="25px 31px 19px 31px" justifyContent="space-between">
       {day.map((record, index) => (
-        <Column justifyContent="center" alignItems="center" gap={12}>
+        <Column
+          justifyContent="center"
+          alignItems="center"
+          gap={12}
+          key={index}
+        >
           <Row alignItems="center">
             <CheckButton type={record.check ? "check" : "plus"} />
             {index !== day.length - 1 && <Line />}

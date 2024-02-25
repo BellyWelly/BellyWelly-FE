@@ -20,6 +20,7 @@ export const PoopTypeButtons = ({
         <Container
           enable={id === type.id ? true : false}
           onClick={() => setScaleId(type.id)}
+          key={id}
         >
           {React.cloneElement(type.icon, { enable: id === type.id })}
           <Text

@@ -35,7 +35,7 @@ export const DropdownBox = ({ display }: DropdownBoxProps) => {
   return (
     <DropdownBoxContainer display={display}>
       {week.map((week) => (
-        <DropdownText>
+        <DropdownText key={week}>
           <Text $Typo="Title2" $paletteColor="Gray9" key={week}>
             {week}
           </Text>

@@ -21,9 +21,9 @@ export const CheckIcons = ({ width = 38, height = 38, type = "check" }) => {
           <path
             d="M26.0459 13.8145L14.9462 24.977L11.1626 21.172"
             stroke="white"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       ) : (
@@ -38,8 +38,8 @@ export const CheckIcons = ({ width = 38, height = 38, type = "check" }) => {
           <path
             d="M18.9998 10.8574L18.9998 27.1431M27.1426 19.0003L10.8569 19.0003"
             stroke="#868281"
-            stroke-width="3"
-            stroke-linecap="round"
+            strokeWidth="3"
+            strokeLinecap="round"
           />
         </svg>
       )}

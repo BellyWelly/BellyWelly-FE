@@ -29,6 +29,14 @@ export const PoopTypes: PoopTypesInterface[] = [
   },
 ];
 
+export const FastOption = [
+  { level: 1, text: "급하지않음" },
+  { level: 2, text: "" },
+  { level: 3, text: "" },
+  { level: 4, text: "" },
+  { level: 5, text: "급함" },
+];
+
 export const PoopColors = [
   { colorName: "brown", color: "#8D6736" },
   { colorName: "yellow", color: "#D9B45C" },
@@ -36,3 +44,12 @@ export const PoopColors = [
   { colorName: "gray", color: "#4B4746" },
   { colorName: "green", color: "#256C25" },
 ];
+
+export const SatisfiedOption = [
+  { level: 1, text: "별로예요" },
+  { level: 2, text: "" },
+  { level: 3, text: "" },
+  { level: 4, text: "" },
+  { level: 5, text: "좋아요" },
+];
+export const PoopTiems = ["~5분", "5분~10분", "10분~15분", "15분~"];
