@@ -4,7 +4,7 @@ import { Text } from "../../../components/common";
 import { styled } from "styled-components";
 import { BigButtons, PoopTypeButtons } from "../../../components/Buttons";
 import { useState } from "react";
-import { DefactionStatusBar, DefactionColor } from "../../../components/Record";
+import { DefactionStatusBar, DefactionColor } from "../../../components/record";
 import {
   FastOption,
   PoopColors,
@@ -12,7 +12,7 @@ import {
   SatisfiedOption,
 } from "../../../assets/info/ScaleRecordInfo";
 import { Column, Row } from "../../../styles";
-import { ColorType, HashtagChips } from "../../../components/Chips";
+import { ColorType, HashtagChips } from "../../../components/chips";
 
 export const DefecationRecord = () => {
   const [scaleId, setScaleId] = useState(-1);

@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { Column, theme } from "../../styles";
 import { Text } from "../common";
-import { StatusChips, StatusType } from "../Chips";
+import { StatusChips, StatusType } from "../chips";
 import { NutrientRateBar } from "./NutrientRateBar";
 
 interface FoodListByFodmapInterface {

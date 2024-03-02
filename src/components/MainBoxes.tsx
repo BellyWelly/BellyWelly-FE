@@ -3,7 +3,7 @@ import { Column, Row, theme } from "../styles";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Text } from "./common";
-import { StatusChips, StatusType } from "./Chips";
+import { StatusChips, StatusType } from "./chips";
 import React from "react";
 import { CheckButton } from "./Buttons/CheckButton";
 
@@ -124,7 +124,7 @@ export const MainDietRecordCheckBox = () => {
           gap={12}
           key={index}
         >
-          <Row alignItems="center">
+          <Row alignItems="center" className="check-container">
             <CheckButton type={record.check ? "check" : "plus"} />
             {index !== day.length - 1 && <Line />}
           </Row>
@@ -177,6 +177,10 @@ const Container = styled.div<{
   justify-content: ${({ justifyContent }) =>
     justifyContent ? justifyContent : "initial"};
   gap: ${({ gap }) => (gap ? gap : "8%")};
+
+  .check-container {
+    position: relative;
+  }
 `;
 
 const GraphContainer = styled.div`
