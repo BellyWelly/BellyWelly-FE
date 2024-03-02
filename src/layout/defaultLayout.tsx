@@ -17,7 +17,9 @@ const Container = styled.div`
 
   .children {
     overflow: auto;
+    height: 100vh;
   }
+
   .bottom-nav {
     box-sizing: border-box;
     bottom: 0;
