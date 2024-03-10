@@ -1,18 +1,25 @@
 import { styled } from "styled-components";
-import { Column, theme } from "../../styles";
+import { theme } from "../../styles";
 import { Text } from "../common";
 import { BottomNavInfo } from "../../assets/info/BottomNav";
+import { Link, useLocation } from "react-router-dom";
+import React from "react";
 
 export const BottomNav = () => {
+  const { pathname } = useLocation();
+
   return (
     <Container>
       {BottomNavInfo.map((item, index) => (
-        <Column alignItems="center" gap={5}>
-          {item.icon}
-          <Text $paletteColor="Gray4" $Typo="Body1">
+        <MenuLink to={item.route} key={index}>
+          {React.cloneElement(item.icon, { type: pathname === item.route })}
+          <Text
+            $paletteColor={pathname === item.route ? "Main_orange" : "Gray4"}
+            $Typo="Body1"
+          >
             {item.menu}
           </Text>
-        </Column>
+        </MenuLink>
       ))}
     </Container>
   );
@@ -28,4 +35,11 @@ const Container = styled.div`
 
   display: flex;
   justify-content: space-between;
+`;
+const MenuLink = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
 `;
