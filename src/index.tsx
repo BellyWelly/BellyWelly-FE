@@ -5,16 +5,19 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
+  // <React.StrictMode>
+  <BrowserRouter>
+    <RecoilRoot>
       <App />
-    </BrowserRouter>
-  </React.StrictMode>
+    </RecoilRoot>
+  </BrowserRouter>
+  // </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

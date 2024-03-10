@@ -6,6 +6,8 @@ import { Text } from "./common";
 import { StatusChips, StatusType } from "./chips";
 import React from "react";
 import { CheckButton } from "./Buttons/CheckButton";
+import { useRecoilValue } from "recoil";
+import { userNameState } from "../store/recoil";
 
 interface GraphLabelInterface {
   children: React.ReactNode;
@@ -67,6 +69,8 @@ export const DoughnutGraphLabel = ({
 };
 
 export const MainGraphBox = () => {
+  const userName = useRecoilValue(userNameState);
+
   return (
     <Container>
       <GraphContainer>
@@ -75,7 +79,7 @@ export const MainGraphBox = () => {
 
       <Column gap={16}>
         <Column gap={3}>
-          <Text $Typo="SubTitle1">드림님의 오늘 식단은</Text>
+          <Text $Typo="SubTitle1">{userName.slice(1)}님의 오늘 식단은</Text>
           <Row>
             <StatusChips statusType={StatusType.Good} />
             <Text $Typo="SubTitle1"> &nbsp;입니다!</Text>
