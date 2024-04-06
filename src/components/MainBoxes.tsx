@@ -84,9 +84,9 @@ export const MainGraphBox = ({ dailyDietData }: { dailyDietData: Diet }) => {
           <Row>
             <StatusChips
               statusType={
-                dailyDietData && dailyDietData.comment === "good"
+                dailyDietData?.comment === "good"
                   ? StatusType.Good
-                  : dailyDietData.comment === "soso"
+                  : dailyDietData?.comment === "soso"
                   ? StatusType.Soso
                   : StatusType.Bad
               }
@@ -97,13 +97,13 @@ export const MainGraphBox = ({ dailyDietData }: { dailyDietData: Diet }) => {
 
         <Column>
           <DoughnutGraphLabel
-            percentage={dailyDietData.lowFodmapRatio}
+            percentage={dailyDietData?.lowFodmapRatio}
             color={theme.palette.Main_orange}
           >
             저포드맵
           </DoughnutGraphLabel>
           <DoughnutGraphLabel
-            percentage={dailyDietData.highFodmapRatio}
+            percentage={dailyDietData?.highFodmapRatio}
             color={theme.palette.Sub3_orange}
           >
             고포드맵
@@ -122,19 +122,19 @@ export const MainDietRecordCheckBox = ({
   const day = [
     {
       time: "아침",
-      check: dailyDietData.hasBreakfast,
+      check: dailyDietData?.hasBreakfast,
     },
     {
       time: "점심",
-      check: true,
+      check: dailyDietData?.hasLunch,
     },
     {
       time: "저녁",
-      check: true,
+      check: dailyDietData?.hasDinner,
     },
     {
       time: "기타",
-      check: false,
+      check: dailyDietData?.hasOther,
     },
   ];
 
