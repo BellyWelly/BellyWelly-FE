@@ -21,6 +21,7 @@ export const AuthRedirect = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data.accessToken);
         setUserName(data.name);
         navigate("/");
       })

@@ -24,7 +24,7 @@ export const PoopTypes: PoopTypesInterface[] = [
   },
   {
     id: 4,
-    description: "물 같은 변",
+    description: "묽은 변",
     icon: <PoopType4 width={50} height={34} />,
   },
 ];
@@ -41,7 +41,7 @@ export const PoopColors = [
   { colorName: "brown", color: "#8D6736" },
   { colorName: "yellow", color: "#D9B45C" },
   { colorName: "red", color: "#CA4223" },
-  { colorName: "gray", color: "#4B4746" },
+  { colorName: "black", color: "#4B4746" },
   { colorName: "green", color: "#256C25" },
 ];
 

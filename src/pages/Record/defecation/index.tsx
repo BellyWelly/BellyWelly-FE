@@ -13,15 +13,45 @@ import {
 } from "../../../assets/info/ScaleRecordInfo";
 import { Column, Row } from "../../../styles";
 import { ColorType, HashtagChips } from "../../../components/chips";
+import { SERVER } from "../../../network/config";
 
 export const DefecationRecord = () => {
-  const [scaleId, setScaleId] = useState(-1);
-  const [fastIndex, setFastIndex] = useState(0);
-  const [colorIndex, setColorIndex] = useState(-1);
+  const navigate = useNavigate();
+
+  const [scaleDescription, setScaleDescription] = useState("");
+  const [urgencyIndex, setUrgencyIndex] = useState(0);
+  const [colorName, setColorName] = useState("");
   const [satisfiedIndex, setSatisfiedIndex] = useState(0);
   const [timeIndex, setTimeIndex] = useState(0);
 
-  const navigate = useNavigate();
+  const token = process.env.REACT_APP_ACCESS_TOKEN;
+  console.log(token);
+
+  const postDefaction = () => {
+    if (scaleDescription !== "" && colorName !== "") {
+      fetch(`${SERVER}/records/defecation`, {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MzM4MjY3ODYzOSwibmFtZSI6IuyViOyxhOyXsCIsImlhdCI6MTcxMDA3NTUyMywiZXhwIjoxNzEwNjgwMzIzfQ.UTq6sAj_YMpSyqKgv81EPpoMEo3kIyH8M5Zii68Psb8`,
+        },
+        body: JSON.stringify({
+          form: scaleDescription,
+          urgency: urgencyIndex + 1,
+          color: colorName,
+          satisfaction: satisfiedIndex + 1,
+          duration: timeIndex + 1,
+        }),
+      })
+        .then((data) => {
+          alert("배변 기록이 완료되었습니다");
+          navigate("/");
+        })
+        .catch((error) => console.error("Error:", error));
+    } else {
+      alert("모든 항목을 입력해주세요");
+    }
+  };
 
   return (
     <Container>
@@ -39,7 +69,10 @@ export const DefecationRecord = () => {
           <Text $Typo="SubTitle1" $paletteColor="Gray6">
             배변 형태
           </Text>
-          <PoopTypeButtons setScaleId={setScaleId} id={scaleId} />
+          <PoopTypeButtons
+            setScaleDescription={setScaleDescription}
+            scaleDescription={scaleDescription}
+          />
         </Column>
 
         <Column gap={15}>
@@ -47,8 +80,8 @@ export const DefecationRecord = () => {
             배변 긴박감
           </Text>
           <DefactionStatusBar
-            currentIndex={fastIndex}
-            setCurrentIndex={setFastIndex}
+            currentIndex={urgencyIndex}
+            setCurrentIndex={setUrgencyIndex}
             options={FastOption}
           />
         </Column>
@@ -58,12 +91,12 @@ export const DefecationRecord = () => {
             배변 색상
           </Text>
           <Row justifyContent="space-between" alignItems="center">
-            {PoopColors.map((color, index) => (
+            {PoopColors.map((color) => (
               <DefactionColor
                 key={color.colorName}
                 color={color.color}
-                onClick={() => setColorIndex(index)}
-                active={index === colorIndex ? true : false}
+                onClick={() => setColorName(color.colorName)}
+                active={color.colorName === colorName ? true : false}
               />
             ))}
           </Row>
@@ -101,7 +134,10 @@ export const DefecationRecord = () => {
       </>
 
       <div style={{ marginTop: "30px" }}>
-        <BigButtons active={scaleId >= 0 && colorIndex >= 0 ? true : false}>
+        <BigButtons
+          active={scaleDescription !== "" && colorName !== "" ? true : false}
+          onClick={() => postDefaction()}
+        >
           저장하기
         </BigButtons>
       </div>

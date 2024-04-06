@@ -8,23 +8,27 @@ import {
 } from "../../assets/info/ScaleRecordInfo";
 
 export const PoopTypeButtons = ({
-  id,
-  setScaleId,
+  scaleDescription,
+  setScaleDescription,
 }: {
-  id: number;
-  setScaleId: any;
+  scaleDescription: string;
+  setScaleDescription: any;
 }) => {
   return (
     <ButtonsContainer>
       {PoopTypes.map((type: PoopTypesInterface) => (
         <Container
-          enable={id === type.id ? true : false}
-          onClick={() => setScaleId(type.id)}
+          enable={scaleDescription === type.description ? true : false}
+          onClick={() => setScaleDescription(type.description)}
         >
-          {React.cloneElement(type.icon, { enable: id === type.id })}
+          {React.cloneElement(type.icon, {
+            enable: scaleDescription === type.description,
+          })}
           <Text
             $Typo="Body2"
-            $paletteColor={id === type.id ? "Main_orange" : "Gray5"}
+            $paletteColor={
+              scaleDescription === type.description ? "Main_orange" : "Gray5"
+            }
           >
             {type.description}
           </Text>
