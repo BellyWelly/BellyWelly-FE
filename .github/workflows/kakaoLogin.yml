@@ -9,5 +9,5 @@ jobs:
        - name: Generate Environment Variables File for Production
          run: |
           echo "${{  secrets.REACT_APP_KAKAO_REST_API_KEY }}" > .env.production
-          echo "${{  secrets.REACT_APP_KAKAO_REDIRECT_URI }}" > .env.production
-          echo "${{  secrets.REACT_APP_ACCESS_TOKEN }}" > .env.production
+          echo "${{  secrets.REACT_APP_KAKAO_REDIRECT_URI }}" >> .env.production
+          echo "${{  secrets.REACT_APP_ACCESS_TOKEN }}" >> .env.production
