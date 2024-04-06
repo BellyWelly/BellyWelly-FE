@@ -4,6 +4,8 @@ import { useRecoilState } from "recoil";
 import { userNameState, userAccessToken } from "../../store/recoil";
 import { useNavigate } from "react-router-dom";
 
+// 배포 테스트
+
 export const AuthRedirect = () => {
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
