@@ -15,7 +15,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/onBoarding" element={<Onboarding />} />
+        <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/foodRecord" element={<FoodRecord />} />
         <Route path="/defecationRecord" element={<DefecationRecord />} />
         <Route path="/report" element={<Report />} />
