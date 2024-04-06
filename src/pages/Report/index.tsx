@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 import { Column, Row, theme } from "../../styles";
 import { Text } from "../../components/common";
-import { ColorType, HashtagChips } from "../../components/chips";
 import { useState } from "react";
 import { DefaultLayout } from "../../layout/defaultLayout";
 import { Line } from "react-chartjs-2";
@@ -16,6 +15,7 @@ import {
   Legend,
 } from "chart.js";
 import { DropdownCalendar } from "../../components/calendar/DropdownCalendar";
+import { ColorType, HashtagChips } from "../../components/chips/Chips";
 
 ChartJS.register(
   CategoryScale,
@@ -70,7 +70,6 @@ const options: any = {
         color: "#353432",
         font: {
           size: 10,
-          // weight: "bold",
         },
       },
       beginAtZero: true,
@@ -80,7 +79,6 @@ const options: any = {
         color: "#353432",
         font: {
           size: 10,
-          // weight: "bold",
         },
       },
       beginAtZero: true,
