@@ -1,5 +1,4 @@
 import { styled } from "styled-components";
-import { DropdownCalendar } from "../../components/calendar";
 import { Column, Row, theme } from "../../styles";
 import { Text } from "../../components/common";
 import { ColorType, HashtagChips } from "../../components/chips";
@@ -16,6 +15,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { DropdownCalendar } from "../../components/calendar/DropdownCalendar";
 
 ChartJS.register(
   CategoryScale,
