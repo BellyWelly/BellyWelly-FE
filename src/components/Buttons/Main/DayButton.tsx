@@ -6,11 +6,12 @@ export interface WeekInterface {
   day: string;
   date: string;
   active?: boolean;
+  onClick?: any;
 }
 
-export const DayButton = ({ day, date, active }: WeekInterface) => {
+export const DayButton = ({ day, date, active, onClick }: WeekInterface) => {
   return (
-    <Container active={active}>
+    <Container active={active} onClick={onClick}>
       <Text $Typo="Body1" $paletteColor={active ? "Black" : "Gray4"}>
         {day}
       </Text>
