@@ -68,7 +68,7 @@ export const FoodRecord = () => {
               onChange={handleChange}
               ref={hiddenFileInput}
             />
-            <CameraIcon display={imageSrc != null ? "none" : "auto"} />
+            <CameraIcon display={imageSrc !== null ? "none" : "auto"} />
             <Img src={imageSrc || ""} image={imageSrc} />
           </ImageContainer>
 
@@ -93,7 +93,7 @@ export const FoodRecord = () => {
 
         {!result && (
           <BigButtons
-            active={imageSrc != null && typeNum != null ? true : false}
+            active={imageSrc !== null && typeNum !== null ? true : false}
             onClick={() => setResult(true)}
           >
             분석하기
@@ -135,7 +135,7 @@ const ImageContainer = styled.div<{ image?: string }>`
   width: 100%;
   height: 330px;
   background: ${({ image }) =>
-    image != null ? theme.palette.White : theme.palette.Gray2};
+    image !== null ? theme.palette.White : theme.palette.Gray2};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,5 +155,5 @@ const Img = styled.img<{ image?: string }>`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: ${({ image }) => (image != null ? "auto" : "none")};
+  display: ${({ image }) => (image !== null ? "auto" : "none")};
 `;

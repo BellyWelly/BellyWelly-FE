@@ -112,7 +112,7 @@ export const Main = () => {
                 오늘의 배변 현황
               </Text>
 
-              {dailyData?.defecation?.count != 0 && (
+              {dailyData?.defecation?.count !== 0 && (
                 <Row
                   alignItems="center"
                   gap={5}
@@ -125,7 +125,7 @@ export const Main = () => {
                 </Row>
               )}
             </Row>
-            {dailyData?.defecation?.count != 0 ? (
+            {dailyData?.defecation?.count !== 0 ? (
               <Row gap={12}>
                 <DefecationBox score={dailyData?.defecation?.count || 0}>
                   배변 횟수
