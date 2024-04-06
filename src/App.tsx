@@ -19,7 +19,7 @@ function App() {
         <Route path="/foodRecord" element={<FoodRecord />} />
         <Route path="/defecationRecord" element={<DefecationRecord />} />
         <Route path="/report" element={<Report />} />
-        <Route path="/login/loading" element={<AuthRedirect />} />
+        <Route path="/onboarding/loading" element={<AuthRedirect />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/chat" element={<ChatPage />} />
       </Routes>
