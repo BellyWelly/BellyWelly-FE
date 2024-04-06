@@ -1,6 +1,5 @@
 import { styled } from "styled-components";
 import { RecordButton, RecordStress } from "../../components/Buttons";
-import { WeekCalendar } from "../../components/calendar";
 import { Text } from "../../components/common";
 import { ArrowIcon, BellyWellyLogo } from "../../assets/Icons";
 import { Row, theme } from "../../styles";
@@ -10,11 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { DefaultLayout } from "../../layout/defaultLayout";
 import { useRecoilValue } from "recoil";
 import { selectDate, stressLevel, userAccessToken } from "../../store/recoil";
+import { getDailyRecord } from "../../network/apis/dailyRecord";
 import {
   MonthlyCalendar,
+  WeekCalendar,
   formatDate,
-} from "../../components/calendar/monthlyCalendar";
-import { getDailyRecord } from "../../network/apis/dailyRecord";
+} from "../../components/calendar";
 
 export interface DailyInfoInterface {
   stress: StressInterface;

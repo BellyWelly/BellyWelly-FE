@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { formatDate } from "../components/calendar/monthlyCalendar";
+import { formatDate } from "../components/calendar/MonthlyCalendar";
 
 const { persistAtom } = recoilPersist({
   key: "localStorage", // 고유한 key 값

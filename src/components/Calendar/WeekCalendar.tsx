@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import { DayButton } from "../Buttons/Main/DayButton";
 import { useRecoilState } from "recoil";
 import { selectDate } from "../../store/recoil";
-import { formatDate } from "./monthlyCalendar";
+import { formatDate } from "./MonthlyCalendar";
 import { StressInterface } from "../../pages/Main";
 
 const getDayOfWeek = (dateString: string) => {
