@@ -15,7 +15,7 @@ import {
   Legend,
 } from "chart.js";
 import { DropdownCalendar } from "../../components/calendar/DropdownCalendar";
-import { ColorType, HashtagChips } from "../../components/chips/Chips";
+import { ColorType, HashtagChips } from "../../components/chips";
 
 ChartJS.register(
   CategoryScale,
