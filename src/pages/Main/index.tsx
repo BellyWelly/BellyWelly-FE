@@ -12,9 +12,9 @@ import { selectDate, stressLevel, userAccessToken } from "../../store/recoil";
 import { getDailyRecord } from "../../network/apis/dailyRecord";
 import {
   MonthlyCalendar,
-  WeekCalendar,
   formatDate,
-} from "../../components/calendar";
+} from "../../components/calendar/MonthlyCalendar";
+import { WeekCalendar } from "../../components/calendar/WeekCalendar";
 
 export interface DailyInfoInterface {
   stress: StressInterface;
