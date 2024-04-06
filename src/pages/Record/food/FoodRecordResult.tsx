@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import { Row, theme } from "../../../styles";
 import { Text } from "../../../components/common";
 import { FoodListByFodmap, NutrientBox } from "../../../components/record";
-import { StatusType } from "../../../components/chips";
+import { StatusType } from "../../../components/chips/Chips";
 import { BigButtons } from "../../../components/Buttons";
 
 export const FoodRecordResult = () => {

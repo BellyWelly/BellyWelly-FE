@@ -12,7 +12,7 @@ import {
   SatisfiedOption,
 } from "../../../assets/info/ScaleRecordInfo";
 import { Column, Row } from "../../../styles";
-import { ColorType, HashtagChips } from "../../../components/chips";
+import { ColorType, HashtagChips } from "../../../components/chips/Chips";
 import { SERVER } from "../../../network/config";
 import { useRecoilValue } from "recoil";
 import { userAccessToken } from "../../../store/recoil";

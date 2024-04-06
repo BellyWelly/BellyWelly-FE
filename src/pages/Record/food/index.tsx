@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { ArrowIcon, CameraIcon } from "../../../assets/Icons";
-import { ColorType, HashtagChips } from "../../../components/chips";
+import { ColorType, HashtagChips } from "../../../components/chips/Chips";
 import { Text } from "../../../components/common";
 import { theme } from "../../../styles";
 import React, { useRef, useState } from "react";
