@@ -23,3 +23,8 @@ export const selectDate = atom<string>({
   key: "selectDate",
   default: formatDate(new Date()),
 });
+
+export const stressLevel = atom<number>({
+  key: "stressLevel",
+  default: 0,
+});

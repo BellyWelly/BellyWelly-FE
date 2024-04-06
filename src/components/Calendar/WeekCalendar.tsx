@@ -1,8 +1,9 @@
 import { styled } from "styled-components";
 import { DayButton } from "../Buttons/Main/DayButton";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { selectDate } from "../../store/recoil";
 import { formatDate } from "./monthlyCalendar";
+import { StressInterface } from "../../pages/Main";
 
 const getDayOfWeek = (dateString: string) => {
   const daysOfWeek = [
@@ -39,24 +40,53 @@ const getDayOfWeek = (dateString: string) => {
   return weekDates;
 };
 
-export const WeekCalendar = () => {
+export const WeekCalendar = ({
+  toggleOpenStress,
+  dailyStressData,
+}: {
+  toggleOpenStress: () => void;
+  dailyStressData: StressInterface;
+}) => {
   const [selectedDate, setSelectedDate] = useRecoilState(selectDate);
 
   const weekDates = getDayOfWeek(selectedDate);
 
-  const onClick = (date: string) => {
+  const changeSelectedDate = (date: string) => {
     setSelectedDate(date);
+  };
+  const getDayAbbreviation = (dayOfWeek: string) => {
+    switch (dayOfWeek) {
+      case "월요일":
+        return "mon";
+      case "화요일":
+        return "tue";
+      case "수요일":
+        return "wed";
+      case "목요일":
+        return "thu";
+      case "금요일":
+        return "fri";
+      case "토요일":
+        return "sat";
+      case "일요일":
+        return "sun";
+      default:
+        return "sun";
+    }
   };
 
   return (
     <WeekContainer>
-      {weekDates.map((day) => (
+      {weekDates.map((weekDate) => (
         <DayButton
-          key={day.date}
-          day={day.dayOfWeek[0]}
-          date={day.date.slice(-2)}
-          active={day.date === selectedDate}
-          onClick={() => onClick(day.date)}
+          key={weekDate.date}
+          weekDates={weekDate}
+          active={weekDate.date === selectedDate}
+          stressLevel={
+            dailyStressData?.[getDayAbbreviation(weekDate.dayOfWeek)]
+          }
+          onClick={() => changeSelectedDate(weekDate.date)}
+          toggleOpenStress={toggleOpenStress}
         />
       ))}
     </WeekContainer>

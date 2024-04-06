@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { RecordButton, RecordStress } from "../../components/Buttons";
-import { DropdownCalendar, WeekCalendar } from "../../components/calendar";
+import { WeekCalendar } from "../../components/calendar";
 import { Text } from "../../components/common";
 import { ArrowIcon, BellyWellyLogo } from "../../assets/Icons";
 import { Row, theme } from "../../styles";
@@ -9,16 +9,16 @@ import { DefecationBox, MainTodayDietBoxes } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { DefaultLayout } from "../../layout/defaultLayout";
 import { useRecoilValue } from "recoil";
-import { selectDate, userAccessToken } from "../../store/recoil";
-import { SERVER } from "../../network/config";
+import { selectDate, stressLevel, userAccessToken } from "../../store/recoil";
 import { MonthlyCalendar } from "../../components/calendar/monthlyCalendar";
+import { getDailyRecord } from "../../network/apis/dailyRecord";
 
 export interface DailyInfoInterface {
-  stress: Stress;
-  diet: Diet;
-  defecation: Defecation;
+  stress: StressInterface;
+  diet: DietInterface;
+  defecation: DefecationInterface;
 }
-export interface Stress {
+export interface StressInterface {
   sun: number;
   mon: number;
   tue: number;
@@ -27,7 +27,7 @@ export interface Stress {
   fri: number;
   sat: number;
 }
-export interface Diet {
+export interface DietInterface {
   hasDiet: boolean;
   comment: string;
   lowFodmapRatio: number;
@@ -37,46 +37,43 @@ export interface Diet {
   hasDinner: boolean;
   hasOther: boolean;
 }
-export interface Defecation {
+export interface DefecationInterface {
   count: number;
   score: number;
 }
 
 export const Main = () => {
   const navigate = useNavigate();
+  const selectedDate = useRecoilValue<string>(selectDate);
   const accessToken = useRecoilValue(userAccessToken);
-  const selectedDate = useRecoilValue(selectDate);
+  const stress = useRecoilValue(stressLevel);
 
-  const [stressIcon, setStressIcon] = useState<boolean>(false);
+  const [openStress, setOpenStress] = useState<boolean>(false);
   const [dailyData, setDailyData] = useState<DailyInfoInterface>();
 
+  const toggleOpenStress = () => {
+    setOpenStress((prev) => !prev);
+  };
+
   useEffect(() => {
-    fetch(`${SERVER}/home?date=${selectedDate}`, {
-      method: "get",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        setDailyData(res);
-      })
-      .catch((error) => console.error("Error:", error));
-  }, [selectedDate]);
+    getDailyRecord(selectedDate, accessToken).then((res) => setDailyData(res));
+  }, [selectedDate, stress]);
 
   return (
     <DefaultLayout>
       <Container>
-        {/* 스트레스 기록 */}
+        {/* 주 */}
         <div className="top-container">
           <div className="inner-container">
             <BellyWellyLogo />
             <MonthlyCalendar />
           </div>
-          <WeekCalendar />
-          <RecordStress display={stressIcon} />
+          <WeekCalendar
+            toggleOpenStress={toggleOpenStress}
+            dailyStressData={dailyData?.stress as StressInterface}
+          />
+          {/* 스트레스 기록 */}
+          <RecordStress display={openStress} setOpenStress={setOpenStress} />
         </div>
         {/* 식단, 배변 현황  */}
         <div className="bottom-container">

@@ -3,23 +3,33 @@ import { Text } from "../../common";
 import { theme } from "../../../styles";
 
 export interface WeekInterface {
-  day: string;
-  date: string;
-  active?: boolean;
-  onClick?: any;
+  active: boolean;
+  weekDates: {
+    dayOfWeek: string;
+    date: string;
+  };
+  stressLevel: number;
+  onClick: () => void;
+  toggleOpenStress: () => void;
 }
 
-export const DayButton = ({ day, date, active, onClick }: WeekInterface) => {
+export const DayButton = ({
+  weekDates,
+  active,
+  stressLevel,
+  onClick,
+  toggleOpenStress,
+}: WeekInterface) => {
   return (
     <Container active={active} onClick={onClick}>
       <Text $Typo="Body1" $paletteColor={active ? "Black" : "Gray4"}>
-        {day}
+        {weekDates?.dayOfWeek[0]}
       </Text>
       <Text $Typo="SubTitle1" $paletteColor={active ? "Black" : "Gray4"}>
-        {date}
+        {weekDates.date.slice(-2)}
       </Text>
-      <IconContainer>
-        <Icon />
+      <IconContainer onClick={() => active && toggleOpenStress()}>
+        <Icon>{stressLevel ? stressLevel : 0}</Icon>
       </IconContainer>
     </Container>
   );

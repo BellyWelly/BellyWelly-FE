@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import { theme } from "../../../styles";
 import { Text } from "../../common";
-import { PlusIcon } from "../../../assets/Icons";
 import { CheckButton } from "../CheckButton";
 import { Link } from "react-router-dom";
-
-type displayType = {
-  display: boolean;
-};
+import { SERVER } from "../../../network/config";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userAccessToken, stressLevel } from "../../../store/recoil";
 
 export const RecordButton = ({ link }: { link: string }) => {
   return (
@@ -20,18 +18,48 @@ export const RecordButton = ({ link }: { link: string }) => {
   );
 };
 
-export const RecordStress = (display: { display: boolean }) => {
+export const RecordStress = ({
+  display,
+  setOpenStress,
+}: {
+  display: boolean;
+  setOpenStress: (value: boolean) => void;
+}) => {
+  const accessToken = useRecoilValue(userAccessToken);
+  const [stress, setStress] = useRecoilState(stressLevel);
+
+  const stressLevelArray = [1, 2, 3, 4, 5];
+
+  const postStressLevel = (level: number) => {
+    fetch(`${SERVER}/records/stress`, {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        stress: level,
+      }),
+    }).catch((error) => console.error("Error:", error));
+  };
+
   return (
     <StressContainer display={display}>
       <Text $Typo="Body4" $paletteColor="Gray7">
         오늘의 스트레스 정도는?
       </Text>
       <div className="icon-container">
-        <Icon />
-        <Icon />
-        <Icon />
-        <Icon />
-        <Icon />
+        {stressLevelArray.map((level) => (
+          <Icon
+            onClick={() => {
+              postStressLevel(level);
+              setStress(level);
+              setOpenStress(false);
+            }}
+          >
+            {level}
+          </Icon>
+        ))}
       </div>
     </StressContainer>
   );
@@ -51,14 +79,14 @@ const Container = styled(Link)`
   text-decoration: none;
 `;
 
-const StressContainer = styled.div<{ display: displayType }>`
+const StressContainer = styled.div<{ display: boolean }>`
   box-sizing: border-box;
   width: 100%;
   height: 90px;
   border: 1px solid ${theme.palette.Gray3};
   border-radius: 8px;
   padding: 10px 15px;
-  display: ${({ display }) => (display.display ? "block" : "none")};
+  display: ${({ display }) => (display ? "block" : "none")};
 
   .icon-container {
     display: flex;

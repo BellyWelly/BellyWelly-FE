@@ -8,7 +8,7 @@ import React from "react";
 import { CheckButton } from "./Buttons/CheckButton";
 import { useRecoilValue } from "recoil";
 import { userNameState } from "../store/recoil";
-import { Diet } from "../pages/Main";
+import { DietInterface } from "../pages/Main";
 
 interface GraphLabelInterface {
   children: React.ReactNode;
@@ -69,7 +69,11 @@ export const DoughnutGraphLabel = ({
   );
 };
 
-export const MainGraphBox = ({ dailyDietData }: { dailyDietData: Diet }) => {
+export const MainGraphBox = ({
+  dailyDietData,
+}: {
+  dailyDietData: DietInterface;
+}) => {
   const userName = useRecoilValue(userNameState);
 
   return (
@@ -117,7 +121,7 @@ export const MainGraphBox = ({ dailyDietData }: { dailyDietData: Diet }) => {
 export const MainDietRecordCheckBox = ({
   dailyDietData,
 }: {
-  dailyDietData: Diet;
+  dailyDietData: DietInterface;
 }) => {
   const day = [
     {
@@ -166,7 +170,7 @@ export const MainDietRecordCheckBox = ({
 export const MainTodayDietBoxes = ({
   dailyDietData,
 }: {
-  dailyDietData: Diet;
+  dailyDietData: DietInterface;
 }) => {
   return (
     <Column gap={10}>
