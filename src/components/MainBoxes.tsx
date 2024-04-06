@@ -8,6 +8,7 @@ import React from "react";
 import { CheckButton } from "./Buttons/CheckButton";
 import { useRecoilValue } from "recoil";
 import { userNameState } from "../store/recoil";
+import { Diet } from "../pages/Main";
 
 interface GraphLabelInterface {
   children: React.ReactNode;
@@ -68,7 +69,7 @@ export const DoughnutGraphLabel = ({
   );
 };
 
-export const MainGraphBox = () => {
+export const MainGraphBox = ({ dailyDietData }: { dailyDietData: Diet }) => {
   const userName = useRecoilValue(userNameState);
 
   return (
@@ -81,16 +82,30 @@ export const MainGraphBox = () => {
         <Column gap={3}>
           <Text $Typo="SubTitle1">{userName.slice(1)}님의 오늘 식단은</Text>
           <Row>
-            <StatusChips statusType={StatusType.Good} />
+            <StatusChips
+              statusType={
+                dailyDietData && dailyDietData.comment === "good"
+                  ? StatusType.Good
+                  : dailyDietData.comment === "soso"
+                  ? StatusType.Soso
+                  : StatusType.Bad
+              }
+            />
             <Text $Typo="SubTitle1"> &nbsp;입니다!</Text>
           </Row>
         </Column>
 
         <Column>
-          <DoughnutGraphLabel percentage={60} color={theme.palette.Main_orange}>
+          <DoughnutGraphLabel
+            percentage={dailyDietData.lowFodmapRatio}
+            color={theme.palette.Main_orange}
+          >
             저포드맵
           </DoughnutGraphLabel>
-          <DoughnutGraphLabel percentage={40} color={theme.palette.Sub3_orange}>
+          <DoughnutGraphLabel
+            percentage={dailyDietData.highFodmapRatio}
+            color={theme.palette.Sub3_orange}
+          >
             고포드맵
           </DoughnutGraphLabel>
         </Column>
@@ -99,11 +114,15 @@ export const MainGraphBox = () => {
   );
 };
 
-export const MainDietRecordCheckBox = () => {
+export const MainDietRecordCheckBox = ({
+  dailyDietData,
+}: {
+  dailyDietData: Diet;
+}) => {
   const day = [
     {
       time: "아침",
-      check: false,
+      check: dailyDietData.hasBreakfast,
     },
     {
       time: "점심",
@@ -144,11 +163,15 @@ export const MainDietRecordCheckBox = () => {
   );
 };
 
-export const MainTodayDietBoxes = () => {
+export const MainTodayDietBoxes = ({
+  dailyDietData,
+}: {
+  dailyDietData: Diet;
+}) => {
   return (
     <Column gap={10}>
-      <MainGraphBox />
-      <MainDietRecordCheckBox />
+      <MainGraphBox dailyDietData={dailyDietData} />
+      <MainDietRecordCheckBox dailyDietData={dailyDietData} />
     </Column>
   );
 };

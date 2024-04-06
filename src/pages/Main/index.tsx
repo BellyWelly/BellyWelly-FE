@@ -4,15 +4,64 @@ import { DropdownCalendar, WeekCalendar } from "../../components/calendar";
 import { Text } from "../../components/common";
 import { ArrowIcon, BellyWellyLogo } from "../../assets/Icons";
 import { Row, theme } from "../../styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DefecationBox, MainTodayDietBoxes } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { DefaultLayout } from "../../layout/defaultLayout";
+import { useRecoilValue } from "recoil";
+import { userAccessToken } from "../../store/recoil";
+import { SERVER } from "../../network/config";
+
+export interface DailyInfoInterface {
+  stress: Stress;
+  diet: Diet;
+  defecation: Defecation;
+}
+export interface Stress {
+  sun: number;
+  mon: number;
+  tue: number;
+  wed: number;
+  thu: number;
+  fri: number;
+  sat: number;
+}
+export interface Diet {
+  comment: string;
+  lowFodmapRatio: number;
+  highFodmapRatio: number;
+  hasBreakfast: boolean;
+  hasLunch: boolean;
+  hasDinner: boolean;
+  hasOther: boolean;
+}
+export interface Defecation {
+  count: number;
+  score: number;
+}
 
 export const Main = () => {
-  const [stressIcon, setStressIcon] = useState<boolean>(false);
-  let data = true;
   const navigate = useNavigate();
+  const accessToken = useRecoilValue(userAccessToken);
+
+  const [stressIcon, setStressIcon] = useState<boolean>(false);
+  const [dailyData, setDailyData] = useState<DailyInfoInterface>();
+
+  useEffect(() => {
+    fetch(`${SERVER}/home`, {
+      method: "get",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setDailyData(res);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
 
   return (
     <DefaultLayout>
@@ -33,27 +82,38 @@ export const Main = () => {
               <Text $Typo="Title2" $paletteColor="Gray7">
                 오늘의 식단 현황
               </Text>
-              {data && (
-                <Row
-                  alignItems="center"
-                  gap={5}
-                  onClick={() => navigate("/foodRecord")}
-                >
-                  <Text $Typo="Body1" $paletteColor="Gray8">
-                    기록하기
-                  </Text>
-                  <ArrowIcon width={18.5} height={18.5} rotate={180} />
-                </Row>
-              )}
+              {!dailyData?.diet.hasBreakfast &&
+                !dailyData?.diet.hasLunch &&
+                !dailyData?.diet.hasDinner &&
+                !dailyData?.diet.hasOther && (
+                  <Row
+                    alignItems="center"
+                    gap={5}
+                    onClick={() => navigate("/foodRecord")}
+                  >
+                    <Text $Typo="Body1" $paletteColor="Gray8">
+                      기록하기
+                    </Text>
+                    <ArrowIcon width={18.5} height={18.5} rotate={180} />
+                  </Row>
+                )}
             </Row>
-            {data ? <MainTodayDietBoxes /> : <RecordButton />}
+            {!dailyData?.diet.hasBreakfast &&
+            !dailyData?.diet.hasLunch &&
+            !dailyData?.diet.hasDinner &&
+            !dailyData?.diet.hasOther ? (
+              <RecordButton link="/foodRecord" />
+            ) : (
+              <MainTodayDietBoxes dailyDietData={dailyData?.diet!} />
+            )}
           </div>
           <div className="inner-container">
             <Row justifyContent="space-between">
               <Text $Typo="Title2" $paletteColor="Gray7">
                 오늘의 배변 현황
               </Text>
-              {data && (
+
+              {dailyData?.defecation.count != 0 && (
                 <Row
                   alignItems="center"
                   gap={5}
@@ -66,13 +126,17 @@ export const Main = () => {
                 </Row>
               )}
             </Row>
-            {data ? (
+            {dailyData?.defecation.count != 0 ? (
               <Row gap={12}>
-                <DefecationBox score={3}>배변 횟수</DefecationBox>
-                <DefecationBox score={17}>배변 점수</DefecationBox>
+                <DefecationBox score={dailyData?.defecation.count || 0}>
+                  배변 횟수
+                </DefecationBox>
+                <DefecationBox score={dailyData?.defecation.score || 0}>
+                  배변 점수
+                </DefecationBox>
               </Row>
             ) : (
-              <RecordButton />
+              <RecordButton link="/defecationRecord" />
             )}
           </div>
         </div>

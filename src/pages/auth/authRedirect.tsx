@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { SERVER } from "../../network/config";
 import { useRecoilState } from "recoil";
-import { userNameState } from "../../store/recoil";
+import { userNameState, userAccessToken } from "../../store/recoil";
 import { useNavigate } from "react-router-dom";
 
 export const AuthRedirect = () => {
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
   const [userName, setUserName] = useRecoilState(userNameState);
+  const [accesstoken, setAccessToken] = useRecoilState(userAccessToken);
 
   useEffect(() => {
     fetch(`${SERVER}/auth/login`, {
@@ -21,7 +22,7 @@ export const AuthRedirect = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.accessToken);
+        setAccessToken(data.accessToken);
         setUserName(data.name);
         navigate("/");
       })

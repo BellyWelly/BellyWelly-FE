@@ -7,6 +7,8 @@ import { Main } from "./pages/Main";
 import { DefecationRecord, FoodRecord } from "./pages/Record";
 import { Report } from "./pages/Report";
 import { AuthRedirect } from "./pages/auth/authRedirect";
+import { Mypage } from "./pages/mypage";
+import { ChatPage } from "./pages/chat";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/defecationRecord" element={<DefecationRecord />} />
         <Route path="/report" element={<Report />} />
         <Route path="/login/loading" element={<AuthRedirect />} />
+        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/chat" element={<ChatPage />} />
       </Routes>
     </ThemeProvider>
   );

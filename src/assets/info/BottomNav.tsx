@@ -20,11 +20,11 @@ export const BottomNavInfo: bottomNavInfoInterface[] = [
   {
     icon: <ChatIcon type={false} />,
     menu: "AI 추천",
-    route: "/",
+    route: "/chat",
   },
   {
     icon: <MypageIcon type={false} />,
     menu: "마이페이지",
-    route: "/",
+    route: "/mypage",
   },
 ];

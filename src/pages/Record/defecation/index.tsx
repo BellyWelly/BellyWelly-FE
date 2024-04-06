@@ -14,9 +14,12 @@ import {
 import { Column, Row } from "../../../styles";
 import { ColorType, HashtagChips } from "../../../components/chips";
 import { SERVER } from "../../../network/config";
+import { useRecoilValue } from "recoil";
+import { userAccessToken } from "../../../store/recoil";
 
 export const DefecationRecord = () => {
   const navigate = useNavigate();
+  const accessToken = useRecoilValue(userAccessToken);
 
   const [scaleDescription, setScaleDescription] = useState("");
   const [urgencyIndex, setUrgencyIndex] = useState(0);
@@ -24,16 +27,13 @@ export const DefecationRecord = () => {
   const [satisfiedIndex, setSatisfiedIndex] = useState(0);
   const [timeIndex, setTimeIndex] = useState(0);
 
-  const token = process.env.REACT_APP_ACCESS_TOKEN;
-  console.log(token);
-
   const postDefaction = () => {
     if (scaleDescription !== "" && colorName !== "") {
       fetch(`${SERVER}/records/defecation`, {
         method: "post",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MzM4MjY3ODYzOSwibmFtZSI6IuyViOyxhOyXsCIsImlhdCI6MTcxMDA3NTUyMywiZXhwIjoxNzEwNjgwMzIzfQ.UTq6sAj_YMpSyqKgv81EPpoMEo3kIyH8M5Zii68Psb8`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           form: scaleDescription,
@@ -43,7 +43,7 @@ export const DefecationRecord = () => {
           duration: timeIndex + 1,
         }),
       })
-        .then((data) => {
+        .then(() => {
           alert("배변 기록이 완료되었습니다");
           navigate("/");
         })
