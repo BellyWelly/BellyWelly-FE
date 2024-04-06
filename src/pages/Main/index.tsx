@@ -10,7 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { DefaultLayout } from "../../layout/defaultLayout";
 import { useRecoilValue } from "recoil";
 import { selectDate, stressLevel, userAccessToken } from "../../store/recoil";
-import { MonthlyCalendar } from "../../components/calendar/monthlyCalendar";
+import {
+  MonthlyCalendar,
+  formatDate,
+} from "../../components/calendar/monthlyCalendar";
 import { getDailyRecord } from "../../network/apis/dailyRecord";
 
 export interface DailyInfoInterface {
@@ -73,7 +76,9 @@ export const Main = () => {
             dailyStressData={dailyData?.stress as StressInterface}
           />
           {/* 스트레스 기록 */}
-          <RecordStress display={openStress} setOpenStress={setOpenStress} />
+          {formatDate(new Date()) === selectedDate && (
+            <RecordStress display={openStress} setOpenStress={setOpenStress} />
+          )}
         </div>
         {/* 식단, 배변 현황  */}
         <div className="bottom-container">
