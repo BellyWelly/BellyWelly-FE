@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Text } from "./common";
 import { StatusChips, StatusType } from "./chips";
-import React from "react";
+import React, { useEffect } from "react";
 import { CheckButton } from "./Buttons/CheckButton";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -26,35 +26,6 @@ interface DefecationInterface {
   children: React.ReactNode;
   score: number;
 }
-
-const data = {
-  labels: ["저포드맵", "고포드맵"],
-  datasets: [
-    {
-      label: "퍼센트",
-      data: [60, 40],
-      backgroundColor: ["#FC843E", "#FFDBC5"],
-      cutout: "70%",
-    },
-  ],
-};
-const options: any = {
-  responsive: false,
-  scales: {
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    ],
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-};
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -83,6 +54,34 @@ export const MainGraphBox = ({
 }) => {
   const userName = useRecoilValue(userNameState);
 
+  const data = {
+    labels: ["저포드맵", "고포드맵"],
+    datasets: [
+      {
+        label: "퍼센트",
+        data: [dailyDietData.lowFodmapRatio, dailyDietData.highFodmapRatio],
+        backgroundColor: ["#FC843E", "#FFDBC5"],
+        cutout: "70%",
+      },
+    ],
+  };
+  const options: any = {
+    responsive: false,
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
   return (
     <Container>
       <GraphContainer>

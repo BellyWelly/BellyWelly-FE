@@ -40,16 +40,17 @@ export const FoodRecordResult = () => {
         ))}
       </Row>
       <NutrientBox nutrientList={foodResults.nutrient} />
-
-      <div
-        className="button"
-        onClick={() => {
-          alert("저장되었습니다");
-          navigate("/");
-        }}
-      >
-        <BigButtons active={true}>저장하기</BigButtons>
-      </div>
+      {!foodResults.image && (
+        <div
+          className="button"
+          onClick={() => {
+            alert("저장되었습니다");
+            navigate("/");
+          }}
+        >
+          <BigButtons active={true}>저장하기</BigButtons>
+        </div>
+      )}
     </Container>
   );
 };
