@@ -23,7 +23,7 @@ export const NutrientRateBar = ({
         <RateBar rate={value?.graph} />
       </RateBarContainer>
       <NutrientPercentage $Typo="Body2" $paletteColor="Main_orange">
-        {value.value}g
+        {value.value.toFixed(0)}g
       </NutrientPercentage>
     </Row>
   );
