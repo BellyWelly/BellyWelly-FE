@@ -3,11 +3,11 @@ import { ArrowIcon, CameraIcon } from "../../../assets/Icons";
 import { ColorType, HashtagChips } from "../../../components/chips";
 import { Text } from "../../../components/common";
 import { theme } from "../../../styles";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { BigButtons } from "../../../components/Buttons";
 import { useNavigate } from "react-router-dom";
 import { FoodRecordResult } from "./FoodRecordResult";
-import { SERVER } from "../../../network/config";
+import { SERVER, SERVER_AI } from "../../../network/config";
 import { useRecoilValue } from "recoil";
 import { userAccessToken } from "../../../store/recoil";
 import { v4 as uuidv4 } from "uuid";
@@ -27,6 +27,7 @@ const MealTypes: MealTypesInterface[] = [
 export const FoodRecord = () => {
   const [typeNum, setTypeNum] = useState<number>();
   const [imageSrc, setImageSrc] = useState<string>();
+  const [s3imageUrl, setS3imageUrl] = useState<string>();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [result, setResult] = useState<boolean>(false);
   const [uploadFile, setUploadFile] = useState<File>();
@@ -61,19 +62,36 @@ export const FoodRecord = () => {
 
   // 이미지 s3에 업로드
   const postImage = async () => {
-    const res = await fetch(`${SERVER}/images`, {
+    const formData = new FormData();
+    formData.append("image", uploadFile!);
+
+    const imgRes = await fetch(`${SERVER}/images`, {
       method: "post",
       headers: {
-        "content-type": "application/json",
+        //  "content-type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({
-        fileName: uuidv4(),
-      }),
-    });
-    const presignedUrl = await res.text();
+      body: formData,
+    })
+      .then((res) => res.text())
+      .then((imgUrl) =>
+        fetch(`${SERVER_AI}/detection`, {
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+            // Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            imageUrl: imgUrl,
+          }),
+        })
+          .then((res) => res.json())
+          .then((res) => console.log(res))
+      );
 
-    const uploadRes = await fetch(presignedUrl, {
+    // const presignedUrl = await res.text();
+
+    /* const uploadRes = await fetch(presignedUrl, {
       method: "put",
       headers: {
         //  "content-type": "application/xml",
@@ -81,7 +99,7 @@ export const FoodRecord = () => {
       },
       body: uploadFile,
     });
-    console.log(uploadRes);
+    console.log(uploadRes);*/
   };
 
   return (

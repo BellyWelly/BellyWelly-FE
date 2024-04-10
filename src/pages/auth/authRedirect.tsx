@@ -21,6 +21,7 @@ export const AuthRedirect = () => {
       },
       body: JSON.stringify({
         code: code,
+        redirectUri: process.env.REACT_APP_KAKAO_REDIRECT_URI,
       }),
     })
       .then((response) => response.json())
