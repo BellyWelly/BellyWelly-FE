@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Row, theme } from "../../styles";
+import { Row } from "../../styles";
 import { Text } from "../common";
 
 export const NutrientRateBar = ({
@@ -15,9 +15,9 @@ export const NutrientRateBar = ({
         {children}
       </NutrientText>
       <RateBar rate={rate} />
-      <Text $Typo="Body2" $paletteColor="Main_orange">
-        {rate}%
-      </Text>
+      <NutrientPercentage $Typo="Body2" $paletteColor="Main_orange">
+        {rate.toFixed(0)}%
+      </NutrientPercentage>
     </Row>
   );
 };
@@ -37,4 +37,9 @@ const RateBar = styled.div<{ rate: number }>`
       ? `linear-gradient(to right, ${theme.palette.Main_orange} ${rate}%, ${theme.palette.Gray2} ${rate}%)`
       : theme.palette.Gray2};
   border-radius: 10px;
+`;
+const NutrientPercentage = styled(Text)`
+  flex-shrink: 0;
+  white-space: nowrap;
+  width: 25px;
 `;

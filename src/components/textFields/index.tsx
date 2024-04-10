@@ -8,9 +8,11 @@ export enum InputType {
 }
 
 export const TextFields = ({
+  value,
   type,
   enable,
 }: {
+  value?: string;
   type: InputType;
   enable?: boolean;
 }) => {
@@ -19,7 +21,7 @@ export const TextFields = ({
   else if (type === InputType.MenuInput) placeholder = "음식 입력";
   return (
     <Container type={type} enable={enable}>
-      <input type="text" placeholder={placeholder} />
+      <input type="text" placeholder={placeholder} value={value} />
       {type === InputType.ChatInput ? <PlaneIcon /> : null}
     </Container>
   );

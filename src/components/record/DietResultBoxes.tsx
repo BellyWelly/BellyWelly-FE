@@ -12,9 +12,8 @@ interface ContainerInterface {
   padding?: string;
   alignItems?: string;
 }
-interface NutrientListInterface {
-  nutrient: string;
-  rate: number;
+interface NutrientBoxProps {
+  nutrientList: { [key: string]: number };
 }
 
 export const FoodListByFodmap = ({
@@ -35,19 +34,26 @@ export const FoodListByFodmap = ({
   );
 };
 
-export const NutrientBox = ({
-  nutrientList,
-}: {
-  nutrientList: NutrientListInterface[];
-}) => {
+const getNutrientName = (nutrient: string): string => {
+  const nutrientNames: { [key: string]: string } = {
+    fructose: "과당",
+    sucrose: "자당",
+    lactose: "유당",
+    maltose: "맥아당",
+    fiber: "식이섬유",
+  };
+  return nutrientNames[nutrient] || "식이섬유"; // 매핑되지 않은 경우 기본값
+};
+
+export const NutrientBox = ({ nutrientList }: NutrientBoxProps) => {
   return (
     <Container padding="16px 17px 26px 17px">
       <Text $Typo="Body4" $paletteColor="Gray6">
-        영양 성분 계산 ( % 일 섭취량)
+        영양 성분 계산 (% 일 섭취량)
       </Text>
-      {nutrientList.map((item) => (
-        <NutrientRateBar key={item.nutrient} rate={item.rate}>
-          {item.nutrient}
+      {Object.entries(nutrientList).map(([nutrient, value]) => (
+        <NutrientRateBar key={nutrient} rate={value}>
+          {getNutrientName(nutrient)}
         </NutrientRateBar>
       ))}
     </Container>

@@ -1,17 +1,59 @@
 import ReactModal from "react-modal";
 import { theme } from "../../styles";
-import { useState } from "react";
 import styled from "styled-components";
 import { Text } from "../common";
-import { useRecoilValue } from "recoil";
-import { userNameState } from "../../store/recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  foodLabelsAnalysisResult,
+  userAccessToken,
+  userNameState,
+} from "../../store/recoil";
 import { InputType, TextFields } from "../textFields";
 import { ColorType, HashtagChips } from "../chips";
+import { FoodResultLabelsInterface } from "../../pages/Record";
+import { v4 as uuidv4 } from "uuid";
+import { SERVER } from "../../network/config";
 
-export const Modal = () => {
-  const [modalOpen, setModalOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+export const Modal = ({
+  imgUrl,
+  mealTime,
+  foodResultLabels,
+  isLoading,
+  modalOpen,
+  setShowResult,
+  setModalOpen,
+}: {
+  imgUrl: string;
+  mealTime: string;
+  foodResultLabels: FoodResultLabelsInterface;
+  isLoading: boolean;
+  modalOpen: boolean;
+  setShowResult: any;
+  setModalOpen: any;
+}) => {
   const userName = useRecoilValue(userNameState);
+  const accessToken = useRecoilValue(userAccessToken);
+  const [dietResult, setDietResult] = useRecoilState(foodLabelsAnalysisResult);
+
+  const postFoodResultLables = () => {
+    fetch(`${SERVER}/records/diet`, {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        image: imgUrl,
+        mealtime: mealTime,
+        meal: foodResultLabels.labels,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setDietResult(res);
+        setShowResult(true);
+      });
+  };
 
   return (
     <ReactModal
@@ -55,11 +97,33 @@ export const Modal = () => {
             <Text $Typo="Title1" $paletteColor="Main_orange">
               이 음식이 맞나요?
             </Text>
-            <TextFields type={InputType.MenuInput} enable={true} />
+            <FoodResultContainer>
+              {foodResultLabels?.labels.map((label: string) => (
+                <TextFields
+                  key={uuidv4()}
+                  value={label}
+                  type={InputType.MenuInput}
+                  enable={true}
+                />
+              ))}
+              <TextFields
+                key={uuidv4()}
+                type={InputType.MenuInput}
+                enable={false}
+              />
+            </FoodResultContainer>
             <Text $Typo="Body3" $paletteColor="Gray5">
               클릭해서 수정할 수 있어요
             </Text>
-            <HashtagChips color={ColorType.MainOrange}>완료</HashtagChips>
+            <HashtagChips
+              color={ColorType.MainOrange}
+              onClick={() => {
+                setModalOpen(false);
+                postFoodResultLables();
+              }}
+            >
+              완료
+            </HashtagChips>
           </>
         )}
       </ModalContent>
@@ -81,4 +145,11 @@ const Icon = styled.div`
   background: ${theme.palette.Main_orange};
   width: 70%;
   height: 50%;
+`;
+const FoodResultContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `;

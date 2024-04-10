@@ -23,15 +23,37 @@ const MealTypes: MealTypesInterface[] = [
   { id: 3, time: "저녁" },
   { id: 4, time: "기타" },
 ];
+export interface FoodResultLabelsInterface {
+  labels: string[];
+}
+export interface FoodLabelsAnalysisResultInterface {
+  image: string;
+  mealtime: string;
+  meal: string[];
+  fodmapList: {
+    lowFodmap: string[];
+    highFodmap: string[];
+  };
+  nutrient: {
+    fructose: number;
+    sucrose: number;
+    lactose: number;
+    maltose: number;
+    fiber: number;
+  };
+}
 
 export const FoodRecord = () => {
-  const [typeNum, setTypeNum] = useState<number>();
+  const [mealTime, setMealTime] = useState<number>();
   const [imageSrc, setImageSrc] = useState<string>();
-  const [s3imageUrl, setS3imageUrl] = useState<string>();
+  const [s3ImageUrl, setS3ImageUrl] = useState<string>();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
-  const [result, setResult] = useState<boolean>(false);
+  const [showResult, setShowResult] = useState<boolean>(false);
+  const [foodResultLabels, setFoodResultLabels] =
+    useState<FoodResultLabelsInterface>({ labels: [] });
   const [uploadFile, setUploadFile] = useState<File>();
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const accessToken = useRecoilValue(userAccessToken);
   const navigate = useNavigate();
@@ -62,36 +84,44 @@ export const FoodRecord = () => {
 
   // 이미지 s3에 업로드
   const postImage = async () => {
-    const formData = new FormData();
-    formData.append("image", uploadFile!);
+    if (uploadFile !== undefined && mealTime !== undefined) {
+      setIsLoading(true);
+      setModalOpen(true);
 
-    const imgRes = await fetch(`${SERVER}/images`, {
-      method: "post",
-      headers: {
-        //  "content-type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: formData,
-    })
-      .then((res) => res.text())
-      .then((imgUrl) =>
-        fetch(`${SERVER_AI}/detection`, {
-          method: "post",
-          headers: {
-            "content-type": "application/json",
-            // Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({
-            imageUrl: imgUrl,
-          }),
-        })
-          .then((res) => res.json())
-          .then((res) => console.log(res))
-      );
+      const formData = new FormData();
+      formData.append("image", uploadFile!);
 
-    // const presignedUrl = await res.text();
+      const imgRes = await fetch(`${SERVER}/images`, {
+        method: "post",
+        headers: {
+          //  "content-type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      })
+        .then((res) => res.text())
+        .then((imgUrl) => {
+          setS3ImageUrl(imgUrl);
+          fetch(`${SERVER_AI}/detection`, {
+            method: "post",
+            headers: {
+              "content-type": "application/json",
+              // Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              imageUrl: imgUrl,
+            }),
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              setIsLoading(false);
+              setFoodResultLabels(res!);
+            });
+        });
 
-    /* const uploadRes = await fetch(presignedUrl, {
+      // const presignedUrl = await res.text();
+
+      /* const uploadRes = await fetch(presignedUrl, {
       method: "put",
       headers: {
         //  "content-type": "application/xml",
@@ -100,11 +130,18 @@ export const FoodRecord = () => {
       body: uploadFile,
     });
     console.log(uploadRes);*/
+    } else {
+      if (imageSrc === undefined && mealTime !== undefined)
+        alert("사진을 첨부해주세요");
+      else if (imageSrc !== undefined && mealTime === undefined)
+        alert("식사 종류를 입력해주세요");
+      else alert("사진과 식사 종류를 입력해주세요");
+    }
   };
 
   return (
     <Container>
-      <FoodRecordSection result={result}>
+      <FoodRecordSection result={showResult}>
         <div>
           <div className="icon-container" onClick={() => navigate(-1)}>
             <ArrowIcon />
@@ -134,9 +171,9 @@ export const FoodRecord = () => {
               <HashtagChips
                 key={type.id}
                 color={
-                  type.id === typeNum ? ColorType.MainOrange : ColorType.Gray
+                  type.id === mealTime ? ColorType.MainOrange : ColorType.Gray
                 }
-                onClick={() => setTypeNum(type.id)}
+                onClick={() => setMealTime(type.id)}
               >
                 {type.time}
               </HashtagChips>
@@ -144,16 +181,29 @@ export const FoodRecord = () => {
           </ChipsContainer>
         </div>
 
-        {!result && (
+        {!showResult && (
           <BigButtons
-            active={imageSrc !== null && typeNum !== null ? true : false}
+            active={imageSrc !== undefined && mealTime !== undefined}
             onClick={() => postImage()}
           >
             분석하기
           </BigButtons>
         )}
       </FoodRecordSection>
-      {result && <FoodRecordResult />}
+      {modalOpen && (
+        <Modal
+          imgUrl={s3ImageUrl!}
+          mealTime={
+            MealTypes.find((type) => type.id === mealTime)?.time || "기타"
+          }
+          foodResultLabels={isLoading ? { labels: [] } : foodResultLabels}
+          isLoading={isLoading}
+          modalOpen={modalOpen}
+          setShowResult={setShowResult}
+          setModalOpen={setModalOpen}
+        />
+      )}
+      {showResult && <FoodRecordResult />}
     </Container>
   );
 };

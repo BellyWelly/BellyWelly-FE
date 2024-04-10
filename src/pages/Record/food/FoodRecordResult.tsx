@@ -4,24 +4,23 @@ import { Text } from "../../../components/common";
 import { FoodListByFodmap, NutrientBox } from "../../../components/record";
 import { StatusType } from "../../../components/chips";
 import { BigButtons } from "../../../components/Buttons";
+import { foodLabelsAnalysisResult } from "../../../store/recoil";
+import { useRecoilValue } from "recoil";
 
 export const FoodRecordResult = () => {
+  const foodResults = useRecoilValue(foodLabelsAnalysisResult);
+
   const foodList = [
     {
       fodmap: "저포드맵",
-      foodList: ["시금치", "시금치", "고사리", "순두부찌개"],
+      foodList: foodResults.fodmapList.lowFodmap,
       status: StatusType.Low_Fodmap,
     },
     {
       fodmap: "고포드맵",
-      foodList: ["시금치", "시금치", "고사리", "순두부찌개"],
+      foodList: foodResults.fodmapList.highFodmap,
       status: StatusType.High_Fodmap,
     },
-  ];
-  const nutrientLsit = [
-    { nutrient: "탄수화물", rate: 80 },
-    { nutrient: "단백질", rate: 40 },
-    { nutrient: "지방", rate: 65 },
   ];
 
   return (
@@ -38,7 +37,7 @@ export const FoodRecordResult = () => {
           />
         ))}
       </Row>
-      <NutrientBox nutrientList={nutrientLsit} />
+      <NutrientBox nutrientList={foodResults.nutrient} />
 
       <div className="button">
         <BigButtons active={true}>저장하기</BigButtons>
