@@ -72,9 +72,9 @@ export const ArrowIcon = ({ width = 24, height = 24, rotate = 0 }) => {
   );
 };
 
-export const CameraIcon = ({ width = 64, height = 64, display = "auto" }) => {
+export const CameraIcon = ({ width = 64, height = 64 }) => {
   return (
-    <IconContainer width={width} height={height} display={display}>
+    <IconContainer width={width} height={height}>
       <svg
         width="100%"
         height="100%"
@@ -157,9 +157,8 @@ export const DropdwonArrowIcon = ({ width = 24, height = 24 }) => {
 };
 
 const IconContainer = styled.div<IconContainerProps>`
-  ${({ width, height, display }) => css`
+  ${({ width, height }) => css`
     width: ${width}px;
     height: ${height}px;
-    display: ${display};
   `}
 `;

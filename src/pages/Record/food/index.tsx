@@ -3,10 +3,15 @@ import { ArrowIcon, CameraIcon } from "../../../assets/Icons";
 import { ColorType, HashtagChips } from "../../../components/chips";
 import { Text } from "../../../components/common";
 import { theme } from "../../../styles";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BigButtons } from "../../../components/Buttons";
 import { useNavigate } from "react-router-dom";
 import { FoodRecordResult } from "./FoodRecordResult";
+import { SERVER } from "../../../network/config";
+import { useRecoilValue } from "recoil";
+import { userAccessToken } from "../../../store/recoil";
+import { v4 as uuidv4 } from "uuid";
+import { Modal } from "../../../components/modal";
 
 interface MealTypesInterface {
   id: number;
@@ -24,7 +29,10 @@ export const FoodRecord = () => {
   const [imageSrc, setImageSrc] = useState<string>();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [result, setResult] = useState<boolean>(false);
+  const [uploadFile, setUploadFile] = useState<File>();
+  const [modalOpen, setModalOpen] = useState(true);
 
+  const accessToken = useRecoilValue(userAccessToken);
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -33,7 +41,10 @@ export const FoodRecord = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileUploaded = event.target.files?.[0];
+
     if (fileUploaded) {
+      setUploadFile(fileUploaded);
+
       const reader = new FileReader();
       reader.readAsDataURL(fileUploaded);
 
@@ -46,6 +57,31 @@ export const FoodRecord = () => {
         };
       });
     }
+  };
+
+  // 이미지 s3에 업로드
+  const postImage = async () => {
+    const res = await fetch(`${SERVER}/images`, {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        fileName: uuidv4(),
+      }),
+    });
+    const presignedUrl = await res.text();
+
+    const uploadRes = await fetch(presignedUrl, {
+      method: "put",
+      headers: {
+        //  "content-type": "application/xml",
+        "content-type": uploadFile?.type!,
+      },
+      body: uploadFile,
+    });
+    console.log(uploadRes);
   };
 
   return (
@@ -68,8 +104,7 @@ export const FoodRecord = () => {
               onChange={handleChange}
               ref={hiddenFileInput}
             />
-            <CameraIcon display={imageSrc !== null ? "none" : "auto"} />
-            <Img src={imageSrc || ""} image={imageSrc} />
+            {!imageSrc ? <CameraIcon /> : <Img src={imageSrc} />}
           </ImageContainer>
 
           <Text $Typo="Title2" $paletteColor="Gray6">
@@ -94,7 +129,7 @@ export const FoodRecord = () => {
         {!result && (
           <BigButtons
             active={imageSrc !== null && typeNum !== null ? true : false}
-            onClick={() => setResult(true)}
+            onClick={() => postImage()}
           >
             분석하기
           </BigButtons>
@@ -135,7 +170,7 @@ const ImageContainer = styled.div<{ image?: string }>`
   width: 100%;
   height: 330px;
   background: ${({ image }) =>
-    image !== null ? theme.palette.White : theme.palette.Gray2};
+    image !== undefined ? theme.palette.White : theme.palette.Gray2};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -151,9 +186,8 @@ const ChipsContainer = styled.div`
   gap: 7px;
   padding: 15px 0;
 `;
-const Img = styled.img<{ image?: string }>`
+const Img = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: ${({ image }) => (image !== null ? "auto" : "none")};
 `;
