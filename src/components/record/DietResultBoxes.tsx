@@ -13,7 +13,7 @@ interface ContainerInterface {
   alignItems?: string;
 }
 interface NutrientBoxProps {
-  nutrientList: { [key: string]: any };
+  nutrientList: { [key: string]: { value: number; graph: number } };
 }
 
 export const FoodListByFodmap = ({
@@ -51,18 +51,11 @@ export const NutrientBox = ({ nutrientList }: NutrientBoxProps) => {
       <Text $Typo="Body4" $paletteColor="Gray6">
         영양 성분 계산 (1회 제공량 기준)
       </Text>
-      {Object.entries(nutrientList).map(
-        ([nutrient, value]) =>
-          nutrient !== "graph" && (
-            <NutrientRateBar
-              key={nutrient}
-              rate={value}
-              graph={nutrientList.graph}
-            >
-              {getNutrientName(nutrient)}
-            </NutrientRateBar>
-          )
-      )}
+      {Object.entries(nutrientList).map(([nutrient, value]) => (
+        <NutrientRateBar key={nutrient} rate={value.graph}>
+          {getNutrientName(nutrient)}
+        </NutrientRateBar>
+      ))}
     </Container>
   );
 };

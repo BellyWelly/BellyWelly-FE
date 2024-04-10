@@ -79,11 +79,26 @@ export const Main = () => {
         highFodmap: [],
       },
       nutrient: {
-        fructose: 0,
-        sucrose: 0,
-        lactose: 0,
-        maltose: 0,
-        fiber: 0,
+        fructose: {
+          value: 0,
+          graph: 0,
+        },
+        sucrose: {
+          value: 0,
+          graph: 0,
+        },
+        lactose: {
+          value: 0,
+          graph: 0,
+        },
+        maltose: {
+          value: 0,
+          graph: 0,
+        },
+        fiber: {
+          value: 0,
+          graph: 0,
+        },
       },
     });
   }, []);

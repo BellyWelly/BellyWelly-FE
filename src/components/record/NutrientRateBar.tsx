@@ -5,11 +5,9 @@ import { Text } from "../common";
 export const NutrientRateBar = ({
   children,
   rate,
-  graph,
 }: {
   children: string;
   rate: number;
-  graph: number[];
 }) => {
   return (
     <Row gap={10} justifyContent="space-between" alignItems="center">

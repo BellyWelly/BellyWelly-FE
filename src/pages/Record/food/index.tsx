@@ -38,11 +38,26 @@ export interface FoodLabelsAnalysisResultInterface {
     highFodmap: string[];
   };
   nutrient: {
-    fructose: number;
-    sucrose: number;
-    lactose: number;
-    maltose: number;
-    fiber: number;
+    fructose: {
+      value: number;
+      graph: number;
+    };
+    sucrose: {
+      value: number;
+      graph: number;
+    };
+    lactose: {
+      value: number;
+      graph: number;
+    };
+    maltose: {
+      value: number;
+      graph: number;
+    };
+    fiber: {
+      value: number;
+      graph: number;
+    };
   };
 }
 
