@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 export const AuthRedirect = () => {
   const navigate = useNavigate();
+
   const code = new URL(window.location.href).searchParams.get("code");
   const [userName, setUserName] = useRecoilState(userNameState);
   const [accesstoken, setAccessToken] = useRecoilState(userAccessToken);

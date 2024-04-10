@@ -15,6 +15,7 @@ import {
   formatDate,
 } from "../../components/calendar/MonthlyCalendar";
 import { WeekCalendar } from "../../components/calendar/WeekCalendar";
+import { Onboarding } from "../Onboarding";
 
 export interface DailyInfoInterface {
   stress: StressInterface;
@@ -62,7 +63,7 @@ export const Main = () => {
     getDailyRecord(selectedDate, accessToken).then((res) => setDailyData(res));
   }, [selectedDate, stress]);
 
-  return (
+  return accessToken ? (
     <DefaultLayout>
       <Container>
         {/* 주 */}
@@ -141,6 +142,8 @@ export const Main = () => {
         </div>
       </Container>
     </DefaultLayout>
+  ) : (
+    <Onboarding />
   );
 };
 
