@@ -40,7 +40,9 @@ export const RecordStress = ({
       body: JSON.stringify({
         stress: level,
       }),
-    }).catch((error) => console.error("Error:", error));
+    })
+      .then(() => setStress(level))
+      .catch((error) => console.error("Error:", error));
   };
 
   return (
@@ -53,7 +55,6 @@ export const RecordStress = ({
           <img
             onClick={() => {
               postStressLevel(level);
-              setStress(level);
               setOpenStress(false);
             }}
             src={level ? `/stress/level${level}.png` : "stress/level3.png"}
