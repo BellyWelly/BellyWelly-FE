@@ -52,7 +52,7 @@ export const NutrientBox = ({ nutrientList }: NutrientBoxProps) => {
         영양 성분 계산 (1회 제공량 기준)
       </Text>
       {Object.entries(nutrientList).map(([nutrient, value]) => (
-        <NutrientRateBar key={nutrient} rate={value.graph}>
+        <NutrientRateBar key={nutrient} value={value}>
           {getNutrientName(nutrient)}
         </NutrientRateBar>
       ))}

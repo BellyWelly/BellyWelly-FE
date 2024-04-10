@@ -66,10 +66,8 @@ export const Main = () => {
   };
 
   useEffect(() => {
-    console.log(stress);
     getDailyRecord(selectedDate, accessToken).then((res) => {
       setDailyData(res);
-      console.log(res);
     });
   }, [selectedDate, stress]);
 

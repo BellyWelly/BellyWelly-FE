@@ -2,12 +2,17 @@ import { styled } from "styled-components";
 import { Row, theme } from "../../styles";
 import { Text } from "../common";
 
+interface ValueInterface {
+  value: number;
+  graph: number;
+}
+
 export const NutrientRateBar = ({
   children,
-  rate,
+  value,
 }: {
   children: string;
-  rate: number;
+  value: ValueInterface;
 }) => {
   return (
     <Row gap={10} justifyContent="space-between" alignItems="center">
@@ -15,10 +20,10 @@ export const NutrientRateBar = ({
         {children}
       </NutrientText>
       <RateBarContainer>
-        <RateBar rate={rate} />
+        <RateBar rate={value?.graph} />
       </RateBarContainer>
       <NutrientPercentage $Typo="Body2" $paletteColor="Main_orange">
-        {rate}g
+        {value.value}g
       </NutrientPercentage>
     </Row>
   );
