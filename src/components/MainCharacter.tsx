@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { theme } from "../styles";
 
 export const MainIcon = ({
   width,
@@ -17,5 +18,5 @@ export const MainIcon = ({
 const Container = styled.div<{ width?: number; height?: number }>`
   width: ${({ width }) => (width ? `${width}px` : "100%")};
   height: ${({ height }) => (height ? `${height}px` : "100%")};
-  background: blue;
+  background: ${theme.palette.Main_orange};
 `;

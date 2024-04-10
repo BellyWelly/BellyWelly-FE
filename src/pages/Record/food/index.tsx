@@ -3,13 +3,16 @@ import { ArrowIcon, CameraIcon } from "../../../assets/Icons";
 import { ColorType, HashtagChips } from "../../../components/chips";
 import { Text } from "../../../components/common";
 import { theme } from "../../../styles";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BigButtons } from "../../../components/Buttons";
 import { useNavigate } from "react-router-dom";
 import { FoodRecordResult } from "./FoodRecordResult";
 import { SERVER, SERVER_AI } from "../../../network/config";
 import { useRecoilValue } from "recoil";
-import { userAccessToken } from "../../../store/recoil";
+import {
+  foodLabelsAnalysisResult,
+  userAccessToken,
+} from "../../../store/recoil";
 import { v4 as uuidv4 } from "uuid";
 import { Modal } from "../../../components/modal";
 
@@ -55,6 +58,7 @@ export const FoodRecord = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const foodResult = useRecoilValue(foodLabelsAnalysisResult);
   const accessToken = useRecoilValue(userAccessToken);
   const navigate = useNavigate();
 
@@ -81,6 +85,15 @@ export const FoodRecord = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (foodResult.image) setShowResult(true);
+    else setShowResult(false);
+    const mealTime = MealTypes.find(
+      (type) => type.time === foodResult.mealtime
+    )?.id;
+    setMealTime(mealTime);
+  }, [foodResult.image]);
 
   // 이미지 s3에 업로드
   const postImage = async () => {
@@ -150,16 +163,23 @@ export const FoodRecord = () => {
             어떤 식사를 하셨나요?
           </Text>
 
-          <ImageContainer onClick={handleClick} image={imageSrc}>
+          <ImageContainer
+            onClick={handleClick}
+            image={foodResult.image ? foodResult.image : imageSrc}
+          >
             <input
               accept="image/*"
               multiple
               type="file"
               style={{ display: "none" }}
-              onChange={handleChange}
+              onChange={(e) => !foodResult.image && handleChange(e)}
               ref={hiddenFileInput}
             />
-            {!imageSrc ? <CameraIcon /> : <Img src={imageSrc} />}
+            {imageSrc === undefined && !foodResult.image ? (
+              <CameraIcon />
+            ) : (
+              <Img src={foodResult.image ? foodResult.image : imageSrc} />
+            )}
           </ImageContainer>
 
           <Text $Typo="Title2" $paletteColor="Gray6">
@@ -173,7 +193,7 @@ export const FoodRecord = () => {
                 color={
                   type.id === mealTime ? ColorType.MainOrange : ColorType.Gray
                 }
-                onClick={() => setMealTime(type.id)}
+                onClick={() => !foodResult.image && setMealTime(type.id)}
               >
                 {type.time}
               </HashtagChips>

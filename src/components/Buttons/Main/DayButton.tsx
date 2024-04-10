@@ -29,7 +29,15 @@ export const DayButton = ({
         {weekDates.date.slice(-2)}
       </Text>
       <IconContainer onClick={() => active && toggleOpenStress()}>
-        <Icon>{stressLevel ? stressLevel : 0}</Icon>
+        <img
+          src={
+            stressLevel
+              ? `/stress/level${stressLevel}.png`
+              : "stress/level3.png"
+          }
+          style={{ width: "100%" }}
+        />
+        {/*<Icon>{stressLevel ? stressLevel : 0}</Icon>*/}
       </IconContainer>
     </Container>
   );

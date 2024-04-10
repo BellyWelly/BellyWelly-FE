@@ -50,7 +50,17 @@ export const RecordStress = ({
       </Text>
       <div className="icon-container">
         {stressLevelArray.map((level) => (
-          <Icon
+          <img
+            onClick={() => {
+              postStressLevel(level);
+              setStress(level);
+              setOpenStress(false);
+            }}
+            src={level ? `/stress/level${level}.png` : "stress/level3.png"}
+            style={{ width: "44px" }}
+          />
+
+          /* <Icon
             onClick={() => {
               postStressLevel(level);
               setStress(level);
@@ -58,7 +68,7 @@ export const RecordStress = ({
             }}
           >
             {level}
-          </Icon>
+          </Icon>*/
         ))}
       </div>
     </StressContainer>

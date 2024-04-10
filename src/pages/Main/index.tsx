@@ -7,8 +7,13 @@ import { useEffect, useState } from "react";
 import { DefecationBox, MainTodayDietBoxes } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { DefaultLayout } from "../../layout/defaultLayout";
-import { useRecoilValue } from "recoil";
-import { selectDate, stressLevel, userAccessToken } from "../../store/recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  foodLabelsAnalysisResult,
+  selectDate,
+  stressLevel,
+  userAccessToken,
+} from "../../store/recoil";
 import { getDailyRecord } from "../../network/apis/dailyRecord";
 import {
   MonthlyCalendar,
@@ -48,6 +53,7 @@ export interface DefecationInterface {
 
 export const Main = () => {
   const navigate = useNavigate();
+  const [foodResult, setFoodResult] = useRecoilState(foodLabelsAnalysisResult);
   const selectedDate = useRecoilValue<string>(selectDate);
   const accessToken = useRecoilValue(userAccessToken);
   const stress = useRecoilValue(stressLevel);
@@ -62,6 +68,25 @@ export const Main = () => {
   useEffect(() => {
     getDailyRecord(selectedDate, accessToken).then((res) => setDailyData(res));
   }, [selectedDate, stress]);
+
+  useEffect(() => {
+    setFoodResult({
+      image: "",
+      mealtime: "",
+      meal: [],
+      fodmapList: {
+        lowFodmap: [],
+        highFodmap: [],
+      },
+      nutrient: {
+        fructose: 0,
+        sucrose: 0,
+        lactose: 0,
+        maltose: 0,
+        fiber: 0,
+      },
+    });
+  }, []);
 
   return accessToken ? (
     <DefaultLayout>

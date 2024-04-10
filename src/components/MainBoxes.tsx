@@ -6,9 +6,16 @@ import { Text } from "./common";
 import { StatusChips, StatusType } from "./chips";
 import React from "react";
 import { CheckButton } from "./Buttons/CheckButton";
-import { useRecoilValue } from "recoil";
-import { userNameState } from "../store/recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  foodLabelsAnalysisResult,
+  selectDate,
+  userAccessToken,
+  userNameState,
+} from "../store/recoil";
 import { DietInterface } from "../pages/Main";
+import { useNavigate } from "react-router-dom";
+import { SERVER } from "../network/config";
 
 interface GraphLabelInterface {
   children: React.ReactNode;
@@ -123,33 +130,47 @@ export const MainDietRecordCheckBox = ({
 }: {
   dailyDietData: DietInterface;
 }) => {
+  const selectedDate = useRecoilValue(selectDate);
+  const accessToken = useRecoilValue(userAccessToken);
+  const [foodResult, setFoodResult] = useRecoilState(foodLabelsAnalysisResult);
+
+  const navigate = useNavigate();
+
+  const getMealTimeDiet = (mealtimeId: number) => {
+    navigate("/foodRecord");
+
+    fetch(
+      `${SERVER}/records/diet?date=${selectedDate}&mealtime=${mealtimeId}`,
+      {
+        method: "get",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        setFoodResult(res);
+      });
+  };
+
   const day = [
-    {
-      time: "아침",
-      check: dailyDietData?.hasBreakfast,
-    },
-    {
-      time: "점심",
-      check: dailyDietData?.hasLunch,
-    },
-    {
-      time: "저녁",
-      check: dailyDietData?.hasDinner,
-    },
-    {
-      time: "기타",
-      check: dailyDietData?.hasOther,
-    },
+    { id: 1, time: "아침", check: dailyDietData?.hasBreakfast },
+    { id: 2, time: "점심", check: dailyDietData?.hasLunch },
+    { id: 3, time: "저녁", check: dailyDietData?.hasDinner },
+    { id: 4, time: "기타", check: dailyDietData?.hasOther },
   ];
 
   return (
     <Container padding="25px 31px 19px 31px" justifyContent="space-between">
       {day.map((record, index) => (
         <Column
+          key={record.id}
           justifyContent="center"
           alignItems="center"
           gap={12}
-          key={index}
+          onClick={() => getMealTimeDiet(record.id)}
         >
           <Row alignItems="center" className="check-container">
             <CheckButton type={record.check ? "check" : "plus"} />

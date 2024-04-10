@@ -6,9 +6,11 @@ import { StatusType } from "../../../components/chips";
 import { BigButtons } from "../../../components/Buttons";
 import { foodLabelsAnalysisResult } from "../../../store/recoil";
 import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
 
 export const FoodRecordResult = () => {
   const foodResults = useRecoilValue(foodLabelsAnalysisResult);
+  const navigate = useNavigate();
 
   const foodList = [
     {
@@ -39,7 +41,13 @@ export const FoodRecordResult = () => {
       </Row>
       <NutrientBox nutrientList={foodResults.nutrient} />
 
-      <div className="button">
+      <div
+        className="button"
+        onClick={() => {
+          alert("저장되었습니다");
+          navigate("/");
+        }}
+      >
         <BigButtons active={true}>저장하기</BigButtons>
       </div>
     </Container>

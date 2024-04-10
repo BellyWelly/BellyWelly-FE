@@ -13,7 +13,7 @@ interface ContainerInterface {
   alignItems?: string;
 }
 interface NutrientBoxProps {
-  nutrientList: { [key: string]: number };
+  nutrientList: { [key: string]: any };
 }
 
 export const FoodListByFodmap = ({
@@ -49,13 +49,20 @@ export const NutrientBox = ({ nutrientList }: NutrientBoxProps) => {
   return (
     <Container padding="16px 17px 26px 17px">
       <Text $Typo="Body4" $paletteColor="Gray6">
-        영양 성분 계산 (% 일 섭취량)
+        영양 성분 계산 (1회 제공량 기준)
       </Text>
-      {Object.entries(nutrientList).map(([nutrient, value]) => (
-        <NutrientRateBar key={nutrient} rate={value}>
-          {getNutrientName(nutrient)}
-        </NutrientRateBar>
-      ))}
+      {Object.entries(nutrientList).map(
+        ([nutrient, value]) =>
+          nutrient !== "graph" && (
+            <NutrientRateBar
+              key={nutrient}
+              rate={value}
+              graph={nutrientList.graph}
+            >
+              {getNutrientName(nutrient)}
+            </NutrientRateBar>
+          )
+      )}
     </Container>
   );
 };
@@ -65,7 +72,6 @@ const Container = styled.div<ContainerInterface>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: ${({ alignItems }) => (alignItems ? alignItems : "initial")};
   background: ${theme.palette.White};
   border-radius: 6px;
