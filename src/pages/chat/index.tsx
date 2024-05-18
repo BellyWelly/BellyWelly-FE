@@ -7,7 +7,7 @@ import { InputType, TextFields } from "../../components/textFields";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { isChatPageActive } from "../../store/recoil";
-import { Welly } from "../../assets/Icons/Welly";
+import { Welly } from "../../assets/Icons/characters/Welly";
 
 export const ChatPage = () => {
   const setIsActive = useSetRecoilState(isChatPageActive);

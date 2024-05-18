@@ -4,7 +4,7 @@ import { theme } from "../../../styles";
 import {
   BellyFaceComponents,
   BellyFaceLevel3,
-} from "../../../assets/Icons/Belly";
+} from "../../../assets/Icons/characters/BellyFaces";
 
 export interface WeekInterface {
   active: boolean;

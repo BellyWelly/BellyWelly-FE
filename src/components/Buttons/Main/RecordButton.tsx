@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { SERVER } from "../../../network/config";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userAccessToken, stressLevel } from "../../../store/recoil";
-import { BellyFaceComponents } from "../../../assets/Icons/Belly";
+import { BellyFaceComponents } from "../../../assets/Icons/characters/BellyFaces";
 
 export const RecordButton = ({ link }: { link: string }) => {
   return (

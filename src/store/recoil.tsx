@@ -31,6 +31,11 @@ export const stressLevel = atom<number>({
   default: 0,
 });
 
+export const foodAIDetectionLabels = atom<string[]>({
+  key: "foodAIDetectionLabels",
+  default: [],
+});
+
 export const foodLabelsAnalysisResult = atom<FoodLabelsAnalysisResultInterface>(
   {
     key: "foodLabelsAnalysisResult",

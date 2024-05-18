@@ -5,6 +5,7 @@ import useInput from "../../hooks/useInput";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import {
   chatList,
+  foodAIDetectionLabels,
   isChooseFoodActive,
   userAccessToken,
 } from "../../store/recoil";
@@ -28,10 +29,18 @@ export const TextFields = ({
   const setChatting = useSetRecoilState(chatList);
   const setChooseFoodActive = useSetRecoilState(isChooseFoodActive);
   const accessToken = useRecoilValue(userAccessToken);
+  const setDietResult = useSetRecoilState(foodAIDetectionLabels);
 
   let placeholder = "placeholder";
 
-  function onFoodListSend(e: any) {
+  const changeFoodLabels = (e: any) => {
+    e.preventDefault();
+    setDietResult((prev) => [...prev, text]);
+
+    resetText();
+  };
+
+  const onFoodListSend = (e: any) => {
     setChooseFoodActive(true);
     e.preventDefault();
     setChatting((prevChatting) => [
@@ -57,7 +66,7 @@ export const TextFields = ({
     })
       // .then((res) => res.json())
       .then((res) => console.log(res));
-  }
+  };
 
   if (type === InputType.ChatInput) placeholder = "AI에게 무엇이든 요청하세요.";
   else if (type === InputType.MenuInput) placeholder = "음식 입력";
@@ -65,7 +74,9 @@ export const TextFields = ({
     <Container
       type={type}
       enable={enable}
-      onSubmit={type === InputType.ChatInput ? onFoodListSend : undefined}
+      onSubmit={
+        type === InputType.ChatInput ? onFoodListSend : changeFoodLabels
+      }
     >
       <input
         type="text"
@@ -77,7 +88,11 @@ export const TextFields = ({
         <CustomBtn type="submit">
           <PlaneIcon />
         </CustomBtn>
-      ) : null}
+      ) : (
+        <button style={{ display: "none" }} type="submit">
+          {null}
+        </button>
+      )}
     </Container>
   );
 };
@@ -89,6 +104,7 @@ const Container = styled.form<{ type: InputType; enable?: boolean }>`
   box-sizing: border-box;
   width: 100%;
   height: ${({ type }) => (type === InputType.ChatInput ? 44 : 39)}px;
+  min-height: ${({ type }) => (type === InputType.ChatInput ? 44 : 39)}px;
   border: ${({ type, enable }) =>
     type === InputType.MenuInput
       ? enable

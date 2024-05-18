@@ -13,6 +13,7 @@ import { ColorType, HashtagChips } from "../chips";
 import { FoodResultLabelsInterface } from "../../pages/Record";
 import { v4 as uuidv4 } from "uuid";
 import { SERVER } from "../../network/config";
+import { MagnifierBelly } from "../../assets/Icons/characters/Belly";
 
 export const Modal = ({
   imgUrl,
@@ -25,7 +26,7 @@ export const Modal = ({
 }: {
   imgUrl: string;
   mealTime: string;
-  foodResultLabels: FoodResultLabelsInterface;
+  foodResultLabels: string[];
   isLoading: boolean;
   modalOpen: boolean;
   setShowResult: any;
@@ -45,7 +46,7 @@ export const Modal = ({
       body: JSON.stringify({
         image: imgUrl,
         mealtime: mealTime,
-        meal: foodResultLabels.labels,
+        meal: foodResultLabels,
       }),
     })
       .then((res) => res.json())
@@ -71,7 +72,7 @@ export const Modal = ({
           transform: "translate(-50%, -50%)",
           margin: "auto",
           width: "70%",
-          height: "40%",
+          height: "45%",
           background: theme.palette.White,
           display: "flex",
           justifyContent: "center",
@@ -86,7 +87,7 @@ export const Modal = ({
             <Text $Typo="Title1" $paletteColor="Main_orange">
               식단 분석 중...
             </Text>
-            <Icon />
+            <MagnifierBelly width={146} height={142} />
             <Text $Typo="Body4" $paletteColor="Gray6">
               {userName.substring(1)}님의 식단이 입력되었습니다.
               <br /> 분석중이니 잠시만 기다려주세요!
@@ -98,7 +99,7 @@ export const Modal = ({
               이 음식이 맞나요?
             </Text>
             <FoodResultContainer>
-              {foodResultLabels?.labels.map((label: string) => (
+              {foodResultLabels?.map((label: string) => (
                 <TextFields
                   key={uuidv4()}
                   value={label}
@@ -141,15 +142,12 @@ const ModalContent = styled.div`
   gap: 30px;
   text-align: center;
 `;
-const Icon = styled.div`
-  background: ${theme.palette.Main_orange};
-  width: 70%;
-  height: 50%;
-`;
 const FoodResultContainer = styled.div`
   width: 100%;
-  height: 100%;
+  min-height: 50%; /* 최소 높이 설정 */
+  max-height: 50%;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow-y: auto;
 `;
