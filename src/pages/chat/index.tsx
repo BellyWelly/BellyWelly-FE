@@ -7,7 +7,7 @@ import { InputType, TextFields } from "../../components/textFields";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { isChatPageActive } from "../../store/recoil";
-import { BellyFaceLevel1 } from "../../assets/Icons/Belly";
+import { Welly } from "../../assets/Icons/Welly";
 
 export const ChatPage = () => {
   const setIsActive = useSetRecoilState(isChatPageActive);
@@ -25,7 +25,7 @@ export const ChatPage = () => {
       <Container>
         <TitleContainer>
           {/* 아이콘 들어갈 자리 */}
-          <BellyFaceLevel1 />
+          <Welly width={41} height={41} />
           <div className="text_container">
             <Text $Typo="Title1" $paletteColor="Gray8">
               무엇을 도와드릴까요?

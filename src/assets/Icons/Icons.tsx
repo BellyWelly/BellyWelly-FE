@@ -1,8 +1,8 @@
 import { css, styled } from "styled-components";
 
 export interface IconContainerProps {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   display?: string;
 }
 
