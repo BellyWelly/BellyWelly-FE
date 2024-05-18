@@ -99,12 +99,13 @@ export const Modal = ({
               이 음식이 맞나요?
             </Text>
             <FoodResultContainer>
-              {foodResultLabels?.map((label: string) => (
+              {foodResultLabels?.map((label: string, index: number) => (
                 <TextFields
                   key={uuidv4()}
                   value={label}
                   type={InputType.MenuInput}
                   enable={true}
+                  index={index}
                 />
               ))}
               <TextFields

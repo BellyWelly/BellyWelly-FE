@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { theme } from "../../styles";
 import { PlaneIcon } from "../../assets/Icons";
 import useInput from "../../hooks/useInput";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import {
   chatList,
   foodAIDetectionLabels,
@@ -10,6 +10,7 @@ import {
   userAccessToken,
 } from "../../store/recoil";
 import { SERVER_AI } from "../../network/config";
+import { useEffect } from "react";
 
 export enum InputType {
   MenuInput = "MenuInput",
@@ -20,22 +21,33 @@ export const TextFields = ({
   value,
   type,
   enable,
+  index,
 }: {
   value?: string;
   type: InputType;
   enable?: boolean;
+  index?: number;
 }) => {
-  const { text, handleChange, resetText } = useInput("");
+  const { text, setText, handleChange, resetText } = useInput("");
   const setChatting = useSetRecoilState(chatList);
   const setChooseFoodActive = useSetRecoilState(isChooseFoodActive);
   const accessToken = useRecoilValue(userAccessToken);
-  const setDietResult = useSetRecoilState(foodAIDetectionLabels);
+  const [dietResult, setDietResult] = useRecoilState(foodAIDetectionLabels);
 
   let placeholder = "placeholder";
 
+  useEffect(() => {
+    if (value) setText(value);
+  }, []);
+
   const changeFoodLabels = (e: any) => {
     e.preventDefault();
-    setDietResult((prev) => [...prev, text]);
+
+    if (index !== undefined && index <= dietResult.length - 1) {
+      const newLabels = [...dietResult];
+      newLabels[index] = text;
+      setDietResult(newLabels);
+    } else setDietResult((prev) => [...prev, text]);
 
     resetText();
   };
@@ -81,7 +93,7 @@ export const TextFields = ({
       <input
         type="text"
         placeholder={placeholder}
-        value={type === InputType.ChatInput ? text : value}
+        value={text}
         onChange={handleChange}
       />
       {type === InputType.ChatInput ? (
