@@ -17,7 +17,7 @@ export const Onboarding = () => {
           </Text>
         </div>
         <IconContainer>
-          <MainIcon />
+          <MainIcon width={252} />
         </IconContainer>
         <KakaoLoginButton />
       </div>
@@ -51,5 +51,7 @@ const Container = styled.div`
 `;
 const IconContainer = styled.div`
   width: 100%;
-  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
