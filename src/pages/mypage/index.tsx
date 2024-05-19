@@ -12,6 +12,7 @@ import { Text } from "../../components/common";
 import { userNameState } from "../../store/recoil";
 import { useRecoilValue } from "recoil";
 import { Column, Img, ImgContainer, Row, palette } from "../../styles";
+import { getDateInfo } from "../../utils/DateUtils";
 
 const GoodFoodList = [
   {
@@ -60,6 +61,8 @@ export const Mypage = () => {
   const navigate = useNavigate();
   const userName = useRecoilValue(userNameState);
 
+  const { year, month, week } = getDateInfo(null);
+
   return (
     <DefaultLayout>
       <Container>
@@ -91,7 +94,7 @@ export const Mypage = () => {
           <FeedBackBox gap={15}>
             <div>
               <Text $Typo="Body2" $paletteColor="Gray4">
-                2024년 5월 5주차 피드백
+                {year}년 {month}월 {week}주차 피드백
               </Text>
               <Text $Typo="SubTitle2" $paletteColor="Main_orange">
                 스트레스 지수가 너무 높아요
@@ -217,7 +220,7 @@ const FoodBoxContainer = styled.div`
 `;
 
 const SupportSection = styled(Column)`
-  margin-top: 10px;
-  padding: 25px 17px 10px 17px;
+  margin: 10px 17px 0 17px;
+  padding: 25px 0 10px 0;
   border-top: 1px solid ${palette.Sub2_orange};
 `;
