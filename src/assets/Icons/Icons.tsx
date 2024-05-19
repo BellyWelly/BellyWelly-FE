@@ -156,6 +156,72 @@ export const DropdwonArrowIcon = ({ width = 24, height = 24 }) => {
   );
 };
 
+export const SupportIcon1 = ({ width = 24, height = 24 }) => {
+  return (
+    <IconContainer width={width} height={height}>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M11.9993 16.8004V16.8426M9.60039 9.04572C9.60039 7.6952 10.6749 6.60039 12.0004 6.60039C13.3259 6.60039 14.4004 7.6952 14.4004 9.04572C14.4004 10.3962 13.3259 11.491 12.0004 11.491C12.0004 11.491 11.9993 12.2209 11.9993 13.1213M21.6004 12.0004C21.6004 17.3023 17.3023 21.6004 12.0004 21.6004C6.69846 21.6004 2.40039 17.3023 2.40039 12.0004C2.40039 6.69846 6.69846 2.40039 12.0004 2.40039C17.3023 2.40039 21.6004 6.69846 21.6004 12.0004Z"
+          stroke="#868281"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </IconContainer>
+  );
+};
+
+export const SupportIcon2 = ({ width = 24, height = 24 }) => {
+  return (
+    <IconContainer width={width} height={height}>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M7.19844 12.0906V12.0004M11.9984 12.0906V12.0004M16.7984 12.0906V12.0004M21.5984 12.0004C21.5984 13.3804 21.3072 14.6924 20.7829 15.8783L21.6003 21.5995L16.6973 20.3737C15.3084 21.1549 13.7054 21.6004 11.9984 21.6004C6.6965 21.6004 2.39844 17.3023 2.39844 12.0004C2.39844 6.69846 6.6965 2.40039 11.9984 2.40039C17.3004 2.40039 21.5984 6.69846 21.5984 12.0004Z"
+          stroke="#868281"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </IconContainer>
+  );
+};
+
+export const SupportIcon3 = ({ width = 24, height = 24 }) => {
+  return (
+    <IconContainer width={width} height={height}>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M14.9996 2.40039V6.00039C14.9996 6.66313 15.5369 7.20039 16.1996 7.20039H19.7996M8.39959 7.20039H10.7996M8.39959 10.8004H15.5996M8.39959 14.4004H15.5996M17.9996 4.20039C17.4655 3.72253 16.9113 3.15577 16.5614 2.78767C16.3286 2.54273 16.007 2.40039 15.669 2.40039H6.59931C5.27383 2.40039 4.19932 3.4749 4.19931 4.80038L4.19922 19.2003C4.19921 20.5258 5.27372 21.6003 6.59921 21.6003L17.3993 21.6004C18.7247 21.6004 19.7992 20.5259 19.7993 19.2004L19.7996 6.47822C19.7996 6.17138 19.6825 5.87643 19.4696 5.65552C19.0758 5.24704 18.4182 4.57491 17.9996 4.20039Z"
+          stroke="#868281"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </IconContainer>
+  );
+};
+
 const IconContainer = styled.div<IconContainerProps>`
   ${({ width, height }) => css`
     width: ${width}px;
