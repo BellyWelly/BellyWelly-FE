@@ -73,11 +73,21 @@ export const TextFields = ({
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
-        content: text,
+        content: text.split(",").map((food) => food.trim()),
       }),
     })
-      // .then((res) => res.json())
-      .then((res) => console.log(res));
+      .then((res) => res.json())
+      .then((res) =>
+        setChatting((prevChatting) => [
+          ...prevChatting,
+          {
+            chatId: 12654,
+            senderId: 0,
+            receiverId: 1,
+            text: res.data,
+          },
+        ])
+      );
   };
 
   if (type === InputType.ChatInput) placeholder = "AI에게 무엇이든 요청하세요.";

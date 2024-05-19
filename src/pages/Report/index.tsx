@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { Column, Row, theme } from "../../styles";
 import { Text } from "../../components/common";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DefaultLayout } from "../../layout/defaultLayout";
 import { Line } from "react-chartjs-2";
 import {
@@ -14,8 +14,11 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { DropdownCalendar } from "../../components/calendar/DropdownCalendar";
+import { MonthlyCalendar } from "../../components/calendar/MonthlyCalendar";
 import { ColorType, HashtagChips } from "../../components/chips";
+import { selectDate, userAccessToken } from "../../store/recoil";
+import { useRecoilValue } from "recoil";
+import { SERVER } from "../../network/config";
 
 ChartJS.register(
   CategoryScale,
@@ -127,14 +130,68 @@ export const BestFood = [
   },
 ];
 
+export const getDateInfo = (dateString: string) => {
+  // 날짜 형식을 Date 객체로 변환
+  const date = new Date(dateString);
+  const year = date.getFullYear(); // 년도
+  const month = date.getMonth() + 1; // 월 (0부터 시작하기 때문에 +1)
+  const dayOfMonth = date.getDate(); // 월의 몇 번째 날인지
+
+  // 해당 월의 첫 번째 날짜와 주어진 날짜가 같은 주에 있는지 확인하기 위해 비교
+  const firstDayOfMonth = new Date(year, month - 1, 1);
+  const firstWeekdayOfMonth = firstDayOfMonth.getDay() || 7; // 일요일은 0을 반환하므로, 7로 처리
+
+  // 첫 번째 날의 요일에 따라 첫 번째 주의 시작일 계산 (월요일 시작 기준)
+  const startDayOfFirstWeek =
+    firstDayOfMonth.getDate() - firstWeekdayOfMonth + 1;
+
+  // 주어진 날짜의 주 계산
+  const weekNumber = Math.ceil((dayOfMonth - startDayOfFirstWeek) / 7) + 1;
+
+  return {
+    year,
+    month,
+    week: weekNumber,
+  };
+};
+
 export const Report = () => {
   const [menuIndex, setMenuIndex] = useState(1);
+  const [foodReport, setFoodReport] = useState();
+  const [otherReport, setOtherReport] = useState();
+  const accessToken = useRecoilValue(userAccessToken);
+  const selectedDate = useRecoilValue(selectDate);
+
+  const { year, month, week } = getDateInfo(selectedDate);
+
+  useEffect(() => {
+    let section: string = "diet";
+    if (menuIndex == 1) section = "diet";
+    else section = "defecation";
+
+    fetch(
+      `${SERVER}/reports/${section}?year=${year}&month=${month}&week=${week}`,
+      {
+        method: "get",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (menuIndex == 1) setFoodReport(res);
+        else setOtherReport(res);
+        console.log(res);
+      });
+  }, [menuIndex, selectedDate]);
 
   return (
     <DefaultLayout>
       <Container>
         <TopContainer gap={30}>
-          <DropdownCalendar />
+          <MonthlyCalendar />
           <Column gap={15}>
             <Text $Typo="Title2" $paletteColor="Gray9">
               이번주 총평 및 피드백
