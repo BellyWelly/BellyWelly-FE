@@ -145,7 +145,7 @@ export const Report = () => {
 
   useEffect(() => {
     let section: string = "diet";
-    if (menuIndex == 1) section = "diet";
+    if (menuIndex === 1) section = "diet";
     else section = "defecation";
 
     fetch(
@@ -160,8 +160,36 @@ export const Report = () => {
     )
       .then((res) => res.json())
       .then((res) => {
-        if (menuIndex == 1) setFoodReport(res);
+        if (menuIndex === 1) setFoodReport(res);
         else setOtherReport(res);
+      })
+      .catch(() => {
+        if (menuIndex === 1)
+          setFoodReport({
+            week: {
+              year: year,
+              month: month,
+              week: week,
+            },
+            feedback: "데이터가 없습니다",
+            best: [],
+            worst: [],
+          });
+        else
+          setOtherReport({
+            week: {
+              year: year,
+              month: month,
+              week: week,
+            },
+            feedback: "데이터가 없습니다",
+            graphDto: {
+              defecation: [],
+              stress: [],
+            },
+            defecationAnalysis: "",
+            stressAnalysis: "",
+          });
       });
   }, [menuIndex, selectedDate]);
 
@@ -203,7 +231,7 @@ export const Report = () => {
                   이번주 Best 5 음식
                 </Text>
                 <FoodBoxContainer gap={10}>
-                  {foodReport?.best.map((food) => (
+                  {foodReport?.best?.map((food) => (
                     <FoodBox gap={7}>
                       <Text $Typo="SubTitle1" $paletteColor="Gray9">
                         {food.mealName}
@@ -212,7 +240,7 @@ export const Report = () => {
                         {food.description}
                       </Text>
                     </FoodBox>
-                  ))}
+                  )) ?? <span>데이터가 없습니다</span>}
                 </FoodBoxContainer>
               </Column>
 
@@ -221,7 +249,7 @@ export const Report = () => {
                   이번주 Worst 5 음식
                 </Text>
                 <FoodBoxContainer gap={10}>
-                  {foodReport?.worst.map((food) => (
+                  {foodReport?.worst?.map((food) => (
                     <FoodBox gap={7}>
                       <Text $Typo="SubTitle1" $paletteColor="Gray9">
                         {food.mealName}
@@ -230,7 +258,7 @@ export const Report = () => {
                         {food.description}
                       </Text>
                     </FoodBox>
-                  ))}
+                  )) ?? <span>데이터가 없습니다</span>}
                 </FoodBoxContainer>
               </Column>
             </>
@@ -260,10 +288,10 @@ export const Report = () => {
                       }}
                     >
                       {otherReport?.defecationAnalysis
-                        .split("\n")
-                        .map((content: string) => (
-                          <span>{content}</span>
-                        ))}
+                        ?.split("\n")
+                        .map((content: string) => <span>{content}</span>) ?? (
+                        <span>데이터가 없습니다</span>
+                      )}
                     </Text>
                   </Row>
                 </AnalysisBox>
@@ -285,10 +313,10 @@ export const Report = () => {
                       }}
                     >
                       {otherReport?.stressAnalysis
-                        .split("\n")
-                        .map((content: string) => (
-                          <span>{content}</span>
-                        ))}
+                        ?.split("\n")
+                        .map((content: string) => <span>{content}</span>) ?? (
+                        <span>데이터가 없습니다</span>
+                      )}
                     </Text>
                   </Row>
                 </AnalysisBox>
