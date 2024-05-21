@@ -117,6 +117,7 @@ export const Report = () => {
   const [menuIndex, setMenuIndex] = useState(1);
   const [foodReport, setFoodReport] = useState<FoodReportInterface>();
   const [otherReport, setOtherReport] = useState<OtherReportInterface>();
+  const [isReport, setIsReport] = useState<boolean>(false);
   const accessToken = useRecoilValue(userAccessToken);
   const selectedDate = useRecoilValue(selectDate);
 
@@ -159,38 +160,16 @@ export const Report = () => {
         },
       }
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status !== 200) setIsReport(false);
+        else {
+          setIsReport(true);
+          return res.json();
+        }
+      })
       .then((res) => {
         if (menuIndex === 1) setFoodReport(res);
         else setOtherReport(res);
-      })
-      .catch(() => {
-        if (menuIndex === 1)
-          setFoodReport({
-            week: {
-              year: year,
-              month: month,
-              week: week,
-            },
-            feedback: "데이터가 없습니다",
-            best: [],
-            worst: [],
-          });
-        else
-          setOtherReport({
-            week: {
-              year: year,
-              month: month,
-              week: week,
-            },
-            feedback: "데이터가 없습니다",
-            graphDto: {
-              defecation: [],
-              stress: [],
-            },
-            defecationAnalysis: "",
-            stressAnalysis: "",
-          });
       });
   }, [menuIndex, selectedDate]);
 
@@ -205,149 +184,153 @@ export const Report = () => {
             </Text>
             <FeedbackBox>
               <Text $Typo="Body3" $paletteColor="Gray9">
-                {foodReport?.feedback
-                  ?.split(/(?:\r\n|\r|\n)/g)
-                  .map((line, index) => (
-                    <React.Fragment key={index}>
-                      {line}
-                      <br />
-                    </React.Fragment>
-                  ))}
+                {isReport
+                  ? foodReport?.feedback
+                      ?.split(/(?:\r\n|\r|\n)/g)
+                      .map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))
+                  : "레포트가 존재하지 않습니다."}
               </Text>
             </FeedbackBox>
           </Column>
         </TopContainer>
-        <BottomContainer gap={20} menuIndex={menuIndex}>
-          <Row gap={7}>
-            <HashtagChips
-              color={menuIndex === 1 ? ColorType.MainOrange : ColorType.Gray}
-              onClick={() => setMenuIndex(1)}
-            >
-              식단
-            </HashtagChips>
-            <HashtagChips
-              color={menuIndex === 2 ? ColorType.MainOrange : ColorType.Gray}
-              onClick={() => setMenuIndex(2)}
-            >
-              배변/스트레스
-            </HashtagChips>
-          </Row>
-          {menuIndex === 1 ? (
-            <>
-              <Column gap={13}>
-                <Row gap={7}>
-                  <ImgContainer width={30} height={30}>
-                    <Img src="/bellyFaces/level1.png" />
-                  </ImgContainer>
-                  <Text $Typo="Title2" $paletteColor="Gray9">
-                    Best 5 음식
-                  </Text>
-                </Row>
-                <FoodBoxContainer gap={10}>
-                  {foodReport?.best?.map((food) => (
-                    <FoodBox gap={7}>
-                      <Text $Typo="SubTitle1" $paletteColor="Gray9">
-                        {food.mealName}
-                      </Text>
-                      <Text $Typo="Body1" $paletteColor="Gray7">
-                        {food.description}
-                      </Text>
-                    </FoodBox>
-                  )) ?? <span>데이터가 없습니다</span>}
-                </FoodBoxContainer>
-              </Column>
-
-              <Column gap={13}>
-                <Row gap={7}>
-                  <ImgContainer width={30} height={30}>
-                    <Img src="/bellyFaces/level5.png" />
-                  </ImgContainer>
-                  <Text $Typo="Title2" $paletteColor="Gray9">
-                    Worst 5 음식
-                  </Text>
-                </Row>
-                <FoodBoxContainer gap={10}>
-                  {foodReport?.worst?.map((food) => (
-                    <FoodBox gap={7}>
-                      <Text $Typo="SubTitle1" $paletteColor="Gray9">
-                        {food.mealName}
-                      </Text>
-                      <Text $Typo="Body1" $paletteColor="Gray7">
-                        {food.description}
-                      </Text>
-                    </FoodBox>
-                  )) ?? <span>데이터가 없습니다</span>}
-                </FoodBoxContainer>
-              </Column>
-            </>
-          ) : (
-            <Column gap={23}>
-              <Column gap={10}>
-                <Text $Typo="Title2" $paletteColor="Gray9">
-                  배변 & 스트레스 분석 그래프
-                </Text>
-                <Line data={data} options={options} />
-              </Column>
-
-              <Column gap={14}>
-                <Text $Typo="Title2" $paletteColor="Gray9">
-                  배변 분석
-                </Text>
-
-                <AnalysisBox>
-                  <Row>
-                    <Text
-                      $Typo="Body3"
-                      $paletteColor="Gray9"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      {otherReport?.defecationAnalysis
-                        ?.split(/(?:\r\n|\r|\n)/g)
-                        .map((line: any, index: number) => (
-                          <React.Fragment key={index}>
-                            {line}
-                            <br />
-                          </React.Fragment>
-                        )) ?? <span>데이터가 없습니다</span>}
+        {isReport && (
+          <BottomContainer gap={20} menuIndex={menuIndex}>
+            <Row gap={7}>
+              <HashtagChips
+                color={menuIndex === 1 ? ColorType.MainOrange : ColorType.Gray}
+                onClick={() => setMenuIndex(1)}
+              >
+                식단
+              </HashtagChips>
+              <HashtagChips
+                color={menuIndex === 2 ? ColorType.MainOrange : ColorType.Gray}
+                onClick={() => setMenuIndex(2)}
+              >
+                배변/스트레스
+              </HashtagChips>
+            </Row>
+            {menuIndex === 1 ? (
+              <>
+                <Column gap={13}>
+                  <Row gap={7}>
+                    <ImgContainer width={30} height={30}>
+                      <Img src="/bellyFaces/level1.png" />
+                    </ImgContainer>
+                    <Text $Typo="Title2" $paletteColor="Gray9">
+                      Best 5 음식
                     </Text>
                   </Row>
-                </AnalysisBox>
-              </Column>
+                  <FoodBoxContainer gap={10}>
+                    {foodReport?.best?.map((food, index) => (
+                      <FoodBox gap={7} key={index}>
+                        <Text $Typo="SubTitle1" $paletteColor="Gray9">
+                          {food.mealName}
+                        </Text>
+                        <Text $Typo="Body1" $paletteColor="Gray7">
+                          {food.description}
+                        </Text>
+                      </FoodBox>
+                    ))}
+                  </FoodBoxContainer>
+                </Column>
 
-              <Column gap={14}>
-                <Text $Typo="Title2" $paletteColor="Gray9">
-                  스트레스 분석
-                </Text>
-                <AnalysisBox>
-                  <Row>
-                    <Text
-                      $Typo="Body3"
-                      $paletteColor="Gray9"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      {otherReport?.stressAnalysis
-                        ?.split(/(?:\r\n|\r|\n)/g)
-                        .map((line: any, index: number) => (
-                          <React.Fragment key={index}>
-                            {line}
-                            <br />
-                          </React.Fragment>
-                        )) ?? <span>데이터가 없습니다</span>}
+                <Column gap={13}>
+                  <Row gap={7}>
+                    <ImgContainer width={30} height={30}>
+                      <Img src="/bellyFaces/level5.png" />
+                    </ImgContainer>
+                    <Text $Typo="Title2" $paletteColor="Gray9">
+                      Worst 5 음식
                     </Text>
                   </Row>
-                </AnalysisBox>
+                  <FoodBoxContainer gap={10}>
+                    {foodReport?.worst?.map((food) => (
+                      <FoodBox gap={7}>
+                        <Text $Typo="SubTitle1" $paletteColor="Gray9">
+                          {food.mealName}
+                        </Text>
+                        <Text $Typo="Body1" $paletteColor="Gray7">
+                          {food.description}
+                        </Text>
+                      </FoodBox>
+                    ))}
+                  </FoodBoxContainer>
+                </Column>
+              </>
+            ) : (
+              <Column gap={23}>
+                <Column gap={10}>
+                  <Text $Typo="Title2" $paletteColor="Gray9">
+                    배변 & 스트레스 분석 그래프
+                  </Text>
+                  <Line data={data} options={options} />
+                </Column>
+
+                <Column gap={14}>
+                  <Text $Typo="Title2" $paletteColor="Gray9">
+                    배변 분석
+                  </Text>
+
+                  <AnalysisBox>
+                    <Row>
+                      <Text
+                        $Typo="Body3"
+                        $paletteColor="Gray9"
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        {otherReport?.defecationAnalysis
+                          ?.split(/(?:\r\n|\r|\n)/g)
+                          .map((line: any, index: number) => (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          ))}
+                      </Text>
+                    </Row>
+                  </AnalysisBox>
+                </Column>
+
+                <Column gap={14}>
+                  <Text $Typo="Title2" $paletteColor="Gray9">
+                    스트레스 분석
+                  </Text>
+                  <AnalysisBox>
+                    <Row>
+                      <Text
+                        $Typo="Body3"
+                        $paletteColor="Gray9"
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        {otherReport?.stressAnalysis
+                          ?.split(/(?:\r\n|\r|\n)/g)
+                          .map((line: any, index: number) => (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          ))}
+                      </Text>
+                    </Row>
+                  </AnalysisBox>
+                </Column>
               </Column>
-            </Column>
-          )}
-        </BottomContainer>
+            )}
+          </BottomContainer>
+        )}
       </Container>
     </DefaultLayout>
   );
