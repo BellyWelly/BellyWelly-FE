@@ -62,7 +62,13 @@ export const RecordStress = ({
           //   {React.createElement(BellyFaceComponents[level])}
           // </Icon>
           <ImgContainer width={44} height={44}>
-            <Img src={`/bellyFaces/level${level}.png`} />
+            <Img
+              src={`/bellyFaces/level${level}.png`}
+              onClick={() => {
+                postStressLevel(level);
+                setOpenStress(false);
+              }}
+            />
           </ImgContainer>
         ))}
       </div>

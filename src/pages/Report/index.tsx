@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Column, Row, theme } from "../../styles";
+import { Column, ImgContainer, Row, theme, Img } from "../../styles";
 import { Text } from "../../components/common";
 import { useEffect, useState } from "react";
 import { DefaultLayout } from "../../layout/defaultLayout";
@@ -201,7 +201,7 @@ export const Report = () => {
           <MonthlyCalendar />
           <Column gap={15}>
             <Text $Typo="Title2" $paletteColor="Gray9">
-              {year}년 {month}월 {week}주차 총평 및 피드백
+              {month}월 {week}주차 총평 및 피드백
             </Text>
             <FeedbackBox>
               <Text $Typo="Body3" $paletteColor="Gray9">
@@ -235,9 +235,14 @@ export const Report = () => {
           {menuIndex === 1 ? (
             <>
               <Column gap={13}>
-                <Text $Typo="Title2" $paletteColor="Gray9">
-                  Best 5 음식
-                </Text>
+                <Row gap={7}>
+                  <ImgContainer width={30} height={30}>
+                    <Img src="/bellyFaces/level1.png" />
+                  </ImgContainer>
+                  <Text $Typo="Title2" $paletteColor="Gray9">
+                    Best 5 음식
+                  </Text>
+                </Row>
                 <FoodBoxContainer gap={10}>
                   {foodReport?.best?.map((food) => (
                     <FoodBox gap={7}>
@@ -253,9 +258,14 @@ export const Report = () => {
               </Column>
 
               <Column gap={13}>
-                <Text $Typo="Title2" $paletteColor="Gray9">
-                  Worst 5 음식
-                </Text>
+                <Row gap={7}>
+                  <ImgContainer width={30} height={30}>
+                    <Img src="/bellyFaces/level5.png" />
+                  </ImgContainer>
+                  <Text $Typo="Title2" $paletteColor="Gray9">
+                    Worst 5 음식
+                  </Text>
+                </Row>
                 <FoodBoxContainer gap={10}>
                   {foodReport?.worst?.map((food) => (
                     <FoodBox gap={7}>

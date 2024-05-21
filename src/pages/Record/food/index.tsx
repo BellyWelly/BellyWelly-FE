@@ -14,8 +14,10 @@ import {
   foodLabelsAnalysisResult,
   userAccessToken,
 } from "../../../store/recoil";
-import { v4 as uuidv4 } from "uuid";
 import { Modal } from "../../../components/modal";
+import { IconContainer } from "../../../assets/Icons/characters/Belly";
+import { Row } from "../../../styles";
+import { Welly } from "../../../assets/Icons/characters/Welly";
 
 interface MealTypesInterface {
   id: number;
@@ -176,9 +178,14 @@ export const FoodRecord = () => {
           <div className="icon-container" onClick={() => navigate(-1)}>
             <ArrowIcon />
           </div>
-          <Text $Typo="Title1" $paletteColor="Gray6">
-            어떤 식사를 하셨나요?
-          </Text>
+          <Row gap={10} alignItems="flex-end" style={{ height: "30px" }}>
+            <IconContainer width={50} height={50}>
+              <Welly />
+            </IconContainer>
+            <Text $Typo="Title1" $paletteColor="Gray6">
+              어떤 식사를 하셨나요?
+            </Text>
+          </Row>
 
           <ImageContainer
             onClick={handleClick}

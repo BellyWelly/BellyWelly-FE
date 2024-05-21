@@ -16,6 +16,10 @@ import { ColorType, HashtagChips } from "../../../components/chips";
 import { SERVER } from "../../../network/config";
 import { useRecoilValue } from "recoil";
 import { userAccessToken } from "../../../store/recoil";
+import {
+  IconContainer,
+  MagnifierBelly,
+} from "../../../assets/Icons/characters/Belly";
 
 export const DefecationRecord = () => {
   const navigate = useNavigate();
@@ -60,9 +64,14 @@ export const DefecationRecord = () => {
           <div className="icon-container" onClick={() => navigate(-1)}>
             <ArrowIcon />
           </div>
-          <Text $Typo="Title1" $paletteColor="Gray6">
-            배변은 어떠셨나요?
-          </Text>
+          <Row gap={10} alignItems="center" style={{ height: "30px" }}>
+            <Text $Typo="Title1" $paletteColor="Gray6">
+              배변은 어떠셨나요?
+            </Text>
+            <IconContainer width={60} height={60}>
+              <MagnifierBelly />
+            </IconContainer>
+          </Row>
         </div>
 
         <Column gap={10}>
