@@ -7,14 +7,13 @@ export const getDateInfo = (dateString: string | null) => {
 
   // 해당 월의 첫 번째 날짜와 주어진 날짜가 같은 주에 있는지 확인하기 위해 비교
   const firstDayOfMonth = new Date(year, month - 1, 1);
-  const firstWeekdayOfMonth = firstDayOfMonth.getDay() || 7; // 일요일은 0을 반환하므로, 7로 처리
+  const firstWeekdayOfMonth = firstDayOfMonth.getDay(); // 일요일은 0을 반환
 
-  // 첫 번째 날의 요일에 따라 첫 번째 주의 시작일 계산 (월요일 시작 기준)
-  const startDayOfFirstWeek =
-    firstDayOfMonth.getDate() - firstWeekdayOfMonth + 1;
+  // 첫 번째 날의 요일에 따라 첫 번째 주의 시작일 계산 (일요일 시작 기준)
+  const startDayOfFirstWeek = firstDayOfMonth.getDate() - firstWeekdayOfMonth;
 
   // 주어진 날짜의 주 계산
-  const weekNumber = Math.ceil((dayOfMonth - startDayOfFirstWeek) / 7) + 1;
+  const weekNumber = Math.ceil((dayOfMonth - startDayOfFirstWeek) / 7);
 
   return {
     year,

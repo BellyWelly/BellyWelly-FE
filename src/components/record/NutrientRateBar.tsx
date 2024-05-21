@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Row, theme } from "../../styles";
+import { Row, palette, theme } from "../../styles";
 import { Text } from "../common";
 
 interface ValueInterface {
@@ -16,7 +16,11 @@ export const NutrientRateBar = ({
 }) => {
   return (
     <Row gap={10} justifyContent="space-between" alignItems="center">
-      <NutrientText $Typo="Body3" $paletteColor="Gray9">
+      <NutrientText
+        $Typo="Body3"
+        // $paletteColor="Gray9"
+        $paletteColor={children === "식이섬유" ? "Blue" : "Red"}
+      >
         {children}
       </NutrientText>
       <RateBarContainer>

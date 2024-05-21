@@ -90,7 +90,7 @@ export const TextFields = ({
       );
   };
 
-  if (type === InputType.ChatInput) placeholder = "AI에게 무엇이든 요청하세요.";
+  if (type === InputType.ChatInput) placeholder = "";
   else if (type === InputType.MenuInput) placeholder = "음식 입력";
   return (
     <Container

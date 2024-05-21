@@ -28,10 +28,10 @@ export const ChatPage = () => {
           <Welly width={41} height={41} />
           <div className="text_container">
             <Text $Typo="Title1" $paletteColor="Gray8">
-              무엇을 도와드릴까요?
+              웰리’s Pick!
             </Text>
             <Text $Typo="SubTitle2" $paletteColor="Gray8">
-              궁금한 점을 물어보면 웰리가 도와드려요.
+              웰리가 식단과 음식을 추천해드릴게요
             </Text>
           </div>
         </TitleContainer>
@@ -47,6 +47,8 @@ export const ChatPage = () => {
 const Container = styled.div`
   width: 100%;
   background: url("/bg/chat_bg.png");
+  background-size: cover; /* 배경 이미지를 꽉 차게 */
+  background-position: center; /* 이미지 중앙에 위치 */
   padding: 0 20px;
   box-sizing: border-box;
 `;

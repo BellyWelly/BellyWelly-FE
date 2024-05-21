@@ -1,10 +1,6 @@
 import styled from "styled-components"; // 임포트 구문 수정
 import { Text } from "../../common";
-import { theme } from "../../../styles";
-import {
-  BellyFaceComponents,
-  BellyFaceLevel3,
-} from "../../../assets/Icons/characters/BellyFaces";
+import { Img, ImgContainer, theme } from "../../../styles";
 
 export interface WeekInterface {
   active: boolean;
@@ -24,8 +20,6 @@ export const DayButton = ({
   onClick,
   toggleOpenStress,
 }: WeekInterface) => {
-  const SpecificBellyFace = BellyFaceComponents[stressLevel] || BellyFaceLevel3;
-
   return (
     <Container active={active} onClick={onClick}>
       <Text $Typo="Body1" $paletteColor={active ? "Black" : "Gray4"}>
@@ -34,9 +28,15 @@ export const DayButton = ({
       <Text $Typo="SubTitle1" $paletteColor={active ? "Black" : "Gray4"}>
         {weekDates.date.slice(-2)}
       </Text>
-      <IconContainer onClick={() => active && toggleOpenStress()}>
-        <SpecificBellyFace />
-      </IconContainer>
+      {/* <IconContainer onClick={() => active && toggleOpenStress()}> */}
+      <ImgContainer
+        width={30}
+        height={30}
+        onClick={() => active && toggleOpenStress()}
+      >
+        <Img src={`/bellyFaces/level${stressLevel ? stressLevel : "0"}.png`} />
+      </ImgContainer>
+      {/* </IconContainer> */}
     </Container>
   );
 };

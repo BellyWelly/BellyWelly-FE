@@ -12,6 +12,7 @@ import {
 } from "../../store/recoil";
 import { useEffect, useRef } from "react";
 import { SERVER } from "../../network/config";
+import React from "react";
 
 export const Chatting = () => {
   const [chatting, setChatting] = useRecoilState(chatList);
@@ -54,8 +55,13 @@ export const Chatting = () => {
             senderId: 0,
             receiverId: 1,
             text: res.data[0]
-              .split("\n")
-              .map((content: string) => <span>{content}</span>),
+              ?.split(/(?:\r\n|\r|\n)/g)
+              .map((line: any, index: number) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              )),
           },
         ])
       );

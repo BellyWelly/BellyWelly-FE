@@ -135,13 +135,13 @@ export const Mypage = () => {
             <Row gap={10}>
               <SupportIcon1 />
               <Text $Typo="Body2" $paletteColor="Gray5">
-                밸리웰리 가이드
+                벨리웰리 가이드
               </Text>
             </Row>
             <Row gap={10}>
               <SupportIcon2 />
               <Text $Typo="Body2" $paletteColor="Gray5">
-                밸리웰리에 문의하기
+                벨리웰리에 문의하기
               </Text>
             </Row>
             <Row gap={10}>

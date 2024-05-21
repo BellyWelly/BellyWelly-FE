@@ -20,6 +20,7 @@ import { selectDate, userAccessToken } from "../../store/recoil";
 import { useRecoilValue } from "recoil";
 import { SERVER } from "../../network/config";
 import { getDateInfo } from "../../utils/DateUtils";
+import React from "react";
 
 interface Week {
   year: number;
@@ -200,11 +201,18 @@ export const Report = () => {
           <MonthlyCalendar />
           <Column gap={15}>
             <Text $Typo="Title2" $paletteColor="Gray9">
-              이번주 총평 및 피드백
+              {year}년 {month}월 {week}주차 총평 및 피드백
             </Text>
             <FeedbackBox>
               <Text $Typo="Body3" $paletteColor="Gray9">
-                {foodReport?.feedback}
+                {foodReport?.feedback
+                  ?.split(/(?:\r\n|\r|\n)/g)
+                  .map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                  ))}
               </Text>
             </FeedbackBox>
           </Column>
@@ -228,7 +236,7 @@ export const Report = () => {
             <>
               <Column gap={13}>
                 <Text $Typo="Title2" $paletteColor="Gray9">
-                  이번주 Best 5 음식
+                  {year}년 {month}월 {week}주차 Best 5 음식
                 </Text>
                 <FoodBoxContainer gap={10}>
                   {foodReport?.best?.map((food) => (
@@ -246,7 +254,7 @@ export const Report = () => {
 
               <Column gap={13}>
                 <Text $Typo="Title2" $paletteColor="Gray9">
-                  이번주 Worst 5 음식
+                  {year}년 {month}월 {week}주차 Worst 5 음식
                 </Text>
                 <FoodBoxContainer gap={10}>
                   {foodReport?.worst?.map((food) => (
@@ -288,10 +296,13 @@ export const Report = () => {
                       }}
                     >
                       {otherReport?.defecationAnalysis
-                        ?.split("\n")
-                        .map((content: string) => <span>{content}</span>) ?? (
-                        <span>데이터가 없습니다</span>
-                      )}
+                        ?.split(/(?:\r\n|\r|\n)/g)
+                        .map((line: any, index: number) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )) ?? <span>데이터가 없습니다</span>}
                     </Text>
                   </Row>
                 </AnalysisBox>
@@ -313,10 +324,13 @@ export const Report = () => {
                       }}
                     >
                       {otherReport?.stressAnalysis
-                        ?.split("\n")
-                        .map((content: string) => <span>{content}</span>) ?? (
-                        <span>데이터가 없습니다</span>
-                      )}
+                        ?.split(/(?:\r\n|\r|\n)/g)
+                        .map((line: any, index: number) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )) ?? <span>데이터가 없습니다</span>}
                     </Text>
                   </Row>
                 </AnalysisBox>
