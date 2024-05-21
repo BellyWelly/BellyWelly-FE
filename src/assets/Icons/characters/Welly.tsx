@@ -1,4 +1,4 @@
-import { IconContainer } from "./BellyFaces";
+import { IconContainer } from "./Belly";
 import { IconContainerProps } from "../Icons";
 
 export const Welly = ({ width, height }: IconContainerProps) => {

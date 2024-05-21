@@ -1,5 +1,5 @@
-import { IconContainer } from "./BellyFaces";
 import { IconContainerProps } from "../Icons";
+import { styled } from "styled-components";
 
 export const MagnifierBelly = ({ width, height }: IconContainerProps) => {
   return (
@@ -82,3 +82,9 @@ export const Belly = ({ width, height }: IconContainerProps) => {
     </IconContainer>
   );
 };
+
+export const IconContainer = styled.div<IconContainerProps>`
+  width: ${({ width }) => (width ? `${width}px` : "100%")};
+  height: ${({ height }) => (height ? `${height}px` : "100%")};
+  display: ${({ display }) => display || "block"};
+`;

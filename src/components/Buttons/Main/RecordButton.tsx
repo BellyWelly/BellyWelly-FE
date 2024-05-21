@@ -1,13 +1,11 @@
 import styled from "styled-components";
-import React from "react";
-import { theme } from "../../../styles";
+import { ImgContainer, theme, Img } from "../../../styles";
 import { Text } from "../../common";
 import { CheckButton } from "../CheckButton";
 import { Link } from "react-router-dom";
 import { SERVER } from "../../../network/config";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userAccessToken, stressLevel } from "../../../store/recoil";
-import { BellyFaceComponents } from "../../../assets/Icons/characters/BellyFaces";
 
 export const RecordButton = ({ link }: { link: string }) => {
   return (
@@ -54,15 +52,18 @@ export const RecordStress = ({
       </Text>
       <div className="icon-container">
         {stressLevelArray.map((level) => (
-          <Icon
-            key={level}
-            onClick={() => {
-              postStressLevel(level);
-              setOpenStress(false);
-            }}
-          >
-            {React.createElement(BellyFaceComponents[level])}
-          </Icon>
+          // <Icon
+          //   key={level}
+          //   onClick={() => {
+          //     postStressLevel(level);
+          //     setOpenStress(false);
+          //   }}
+          // >
+          //   {React.createElement(BellyFaceComponents[level])}
+          // </Icon>
+          <ImgContainer width={44} height={44}>
+            <Img src={`/bellyFaces/level${level}.png`} />
+          </ImgContainer>
         ))}
       </div>
     </StressContainer>

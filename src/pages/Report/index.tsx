@@ -236,7 +236,7 @@ export const Report = () => {
             <>
               <Column gap={13}>
                 <Text $Typo="Title2" $paletteColor="Gray9">
-                  {year}년 {month}월 {week}주차 Best 5 음식
+                  Best 5 음식
                 </Text>
                 <FoodBoxContainer gap={10}>
                   {foodReport?.best?.map((food) => (
@@ -254,7 +254,7 @@ export const Report = () => {
 
               <Column gap={13}>
                 <Text $Typo="Title2" $paletteColor="Gray9">
-                  {year}년 {month}월 {week}주차 Worst 5 음식
+                  Worst 5 음식
                 </Text>
                 <FoodBoxContainer gap={10}>
                   {foodReport?.worst?.map((food) => (
