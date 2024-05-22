@@ -9,11 +9,6 @@ import { useSetRecoilState } from "recoil";
 import { isChatPageActive } from "../../store/recoil";
 import { Welly } from "../../assets/Icons/characters/Welly";
 
-document.documentElement.style.setProperty(
-  "--vh",
-  `${window.innerHeight * 0.01}px`
-);
-
 export const ChatPage = () => {
   const setIsActive = useSetRecoilState(isChatPageActive);
 
@@ -23,20 +18,6 @@ export const ChatPage = () => {
 
     // 페이지를 나갈 때
     return () => setIsActive(false);
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      // 화면 크기가 변경될 때마다 --vh 업데이트
-      document.documentElement.style.setProperty(
-        "--vh",
-        `${window.innerHeight * 0.01}px`
-      );
-    };
-
-    window.addEventListener("resize", handleResize);
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -90,5 +71,4 @@ const TextFieldsContainer = styled.div`
   width: 100%;
   box-sizing: border-box;
   padding: 15px 20px;
-  min-height: calc(var(--vh, 1vh) * 100); /* 화면의 100% 높이 */
 `;
