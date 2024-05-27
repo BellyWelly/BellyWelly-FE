@@ -6,8 +6,14 @@ import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { foodLabelsAnalysisResult, userAccessToken, userNameState } from '../../store/recoil'
 import { InputType, TextFields } from '../textFields'
 import { ColorType, HashtagChips } from '../chips'
-import { SERVER } from '../../network/config'
 import { MagnifierBelly } from '../../assets/Icons/characters/Belly'
+import { postDailyDiets } from '../../network/apis/dailyRecord'
+
+export interface postDailyDietsInterface {
+  image: string
+  mealtime: string
+  meal: string[]
+}
 
 export const Modal = ({ imgUrl, mealTime, foodResultLabels, isLoading, modalOpen, setShowResult, setModalOpen }: { imgUrl: string; mealTime: string; foodResultLabels: string[]; isLoading: boolean; modalOpen: boolean; setShowResult: any; setModalOpen: any }) => {
   const userName = useRecoilValue(userNameState)
@@ -15,23 +21,15 @@ export const Modal = ({ imgUrl, mealTime, foodResultLabels, isLoading, modalOpen
   const setDietResult = useSetRecoilState(foodLabelsAnalysisResult)
 
   const postFoodResultLables = () => {
-    fetch(`${SERVER}/records/diet`, {
-      method: 'post',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      },
-      body: JSON.stringify({
-        image: imgUrl,
-        mealtime: mealTime,
-        meal: foodResultLabels
-      })
+    const data = {
+      image: imgUrl,
+      mealtime: mealTime,
+      meal: foodResultLabels
+    }
+    postDailyDiets(accessToken, data).then(res => {
+      setDietResult(res)
+      setShowResult(true)
     })
-      .then(res => res.json())
-      .then(res => {
-        setDietResult(res)
-        setShowResult(true)
-      })
   }
 
   return (

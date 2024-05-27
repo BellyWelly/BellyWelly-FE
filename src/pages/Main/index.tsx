@@ -1,109 +1,101 @@
-import { styled } from "styled-components";
-import { RecordButton, RecordStress } from "../../components/Buttons";
-import { Text } from "../../components/common";
-import { ArrowIcon, BellyWellyLogo } from "../../assets/Icons";
-import { Row, theme } from "../../styles";
-import { useEffect, useState } from "react";
-import { DefecationBox, MainTodayDietBoxes } from "../../components";
-import { useNavigate } from "react-router-dom";
-import { DefaultLayout } from "../../layout/defaultLayout";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  foodLabelsAnalysisResult,
-  selectDate,
-  stressLevel,
-  userAccessToken,
-} from "../../store/recoil";
-import { getDailyRecord } from "../../network/apis/dailyRecord";
-import {
-  MonthlyCalendar,
-  formatDate,
-} from "../../components/calendar/MonthlyCalendar";
-import { WeekCalendar } from "../../components/calendar/WeekCalendar";
-import { Onboarding } from "../Onboarding";
+import { styled } from 'styled-components'
+import { RecordButton, RecordStress } from '../../components/Buttons'
+import { Text } from '../../components/common'
+import { ArrowIcon, BellyWellyLogo } from '../../assets/Icons'
+import { Row, theme } from '../../styles'
+import { useEffect, useState } from 'react'
+import { DefecationBox, MainTodayDietBoxes } from '../../components'
+import { useNavigate } from 'react-router-dom'
+import { DefaultLayout } from '../../layout/defaultLayout'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { foodLabelsAnalysisResult, selectDate, stressLevel, userAccessToken } from '../../store/recoil'
+import { getDailyRecord } from '../../network/apis/dailyRecord'
+import { MonthlyCalendar, formatDate } from '../../components/calendar/MonthlyCalendar'
+import { WeekCalendar } from '../../components/calendar/WeekCalendar'
+import { Onboarding } from '../Onboarding'
 
 export interface DailyInfoInterface {
-  stress: StressInterface;
-  diet: DietInterface;
-  defecation: DefecationInterface;
+  stress: StressInterface
+  diet: DietInterface
+  defecation: DefecationInterface
 }
 export interface StressInterface {
-  sun: number;
-  mon: number;
-  tue: number;
-  wed: number;
-  thu: number;
-  fri: number;
-  sat: number;
+  sun: number
+  mon: number
+  tue: number
+  wed: number
+  thu: number
+  fri: number
+  sat: number
 }
 export interface DietInterface {
-  hasDiet: boolean;
-  comment: string;
-  lowFodmapRatio: number;
-  highFodmapRatio: number;
-  hasBreakfast: boolean;
-  hasLunch: boolean;
-  hasDinner: boolean;
-  hasOther: boolean;
+  hasDiet: boolean
+  comment: string
+  lowFodmapRatio: number
+  highFodmapRatio: number
+  hasBreakfast: boolean
+  hasLunch: boolean
+  hasDinner: boolean
+  hasOther: boolean
 }
 export interface DefecationInterface {
-  count: number;
-  score: number;
+  count: number
+  score: number
 }
 
 export const Main = () => {
-  const navigate = useNavigate();
-  const [foodResult, setFoodResult] = useRecoilState(foodLabelsAnalysisResult);
-  const selectedDate = useRecoilValue<string>(selectDate);
-  const accessToken = useRecoilValue(userAccessToken);
-  const stress = useRecoilValue(stressLevel);
+  const navigate = useNavigate()
+  const setFoodResult = useSetRecoilState(foodLabelsAnalysisResult)
+  const selectedDate = useRecoilValue<string>(selectDate)
+  const accessToken = useRecoilValue(userAccessToken)
+  const stress = useRecoilValue(stressLevel)
 
-  const [openStress, setOpenStress] = useState<boolean>(false);
-  const [dailyData, setDailyData] = useState<DailyInfoInterface>();
+  const [openStress, setOpenStress] = useState<boolean>(false)
+  const [dailyData, setDailyData] = useState<DailyInfoInterface>()
 
   const toggleOpenStress = () => {
-    setOpenStress((prev) => !prev);
-  };
+    setOpenStress(prev => !prev)
+  }
 
   useEffect(() => {
-    getDailyRecord(selectedDate, accessToken).then((res) => {
-      setDailyData(res);
-    });
-  }, [selectedDate, stress]);
+    getDailyRecord(selectedDate, accessToken).then(res => {
+      setDailyData(res)
+    })
+  }, [selectedDate, stress])
 
   useEffect(() => {
     setFoodResult({
-      image: "",
-      mealtime: "",
+      image: '',
+      mealtime: '',
       meal: [],
       fodmapList: {
         lowFodmap: [],
-        highFodmap: [],
+        highFodmap: []
       },
       nutrient: {
         fructose: {
           value: 0,
-          graph: 0,
+          graph: 0
         },
         sucrose: {
           value: 0,
-          graph: 0,
+          graph: 0
         },
         lactose: {
           value: 0,
-          graph: 0,
+          graph: 0
         },
         maltose: {
           value: 0,
-          graph: 0,
+          graph: 0
         },
         fiber: {
           value: 0,
-          graph: 0,
-        },
-      },
-    });
-  }, []);
+          graph: 0
+        }
+      }
+    })
+  }, [])
 
   return accessToken ? (
     <DefaultLayout>
@@ -114,14 +106,9 @@ export const Main = () => {
             <BellyWellyLogo />
             <MonthlyCalendar />
           </div>
-          <WeekCalendar
-            toggleOpenStress={toggleOpenStress}
-            dailyStressData={dailyData?.stress as StressInterface}
-          />
+          <WeekCalendar toggleOpenStress={toggleOpenStress} dailyStressData={dailyData?.stress as StressInterface} />
           {/* 스트레스 기록 */}
-          {formatDate(new Date()) === selectedDate && (
-            <RecordStress display={openStress} setOpenStress={setOpenStress} />
-          )}
+          {formatDate(new Date()) === selectedDate && <RecordStress display={openStress} setOpenStress={setOpenStress} />}
         </div>
         {/* 식단, 배변 현황  */}
         <div className="bottom-container">
@@ -131,11 +118,7 @@ export const Main = () => {
                 오늘의 식단 현황
               </Text>
               {dailyData?.diet?.hasDiet && (
-                <Row
-                  alignItems="center"
-                  gap={5}
-                  onClick={() => navigate("/foodRecord")}
-                >
+                <Row alignItems="center" gap={5} onClick={() => navigate('/foodRecord')}>
                   <Text $Typo="Body1" $paletteColor="Gray8">
                     기록하기
                   </Text>
@@ -143,11 +126,7 @@ export const Main = () => {
                 </Row>
               )}
             </Row>
-            {!dailyData?.diet?.hasDiet ? (
-              <RecordButton link="/foodRecord" />
-            ) : (
-              <MainTodayDietBoxes dailyDietData={dailyData?.diet!} />
-            )}
+            {!dailyData?.diet?.hasDiet ? <RecordButton link="/foodRecord" /> : <MainTodayDietBoxes dailyDietData={dailyData?.diet!} />}
           </div>
           <div className="inner-container">
             <Row justifyContent="space-between">
@@ -156,11 +135,7 @@ export const Main = () => {
               </Text>
 
               {dailyData?.defecation?.count !== 0 && (
-                <Row
-                  alignItems="center"
-                  gap={5}
-                  onClick={() => navigate("/defecationRecord")}
-                >
+                <Row alignItems="center" gap={5} onClick={() => navigate('/defecationRecord')}>
                   <Text $Typo="Body1" $paletteColor="Gray8">
                     기록하기
                   </Text>
@@ -170,12 +145,8 @@ export const Main = () => {
             </Row>
             {dailyData?.defecation?.count !== 0 ? (
               <Row gap={12}>
-                <DefecationBox score={dailyData?.defecation?.count || 0}>
-                  배변 횟수
-                </DefecationBox>
-                <DefecationBox score={dailyData?.defecation?.score || 0}>
-                  배변 점수
-                </DefecationBox>
+                <DefecationBox score={dailyData?.defecation?.count || 0}>배변 횟수</DefecationBox>
+                <DefecationBox score={dailyData?.defecation?.score || 0}>배변 점수</DefecationBox>
               </Row>
             ) : (
               <RecordButton link="/defecationRecord" />
@@ -186,8 +157,8 @@ export const Main = () => {
     </DefaultLayout>
   ) : (
     <Onboarding />
-  );
-};
+  )
+}
 
 const Container = styled.div`
   height: 100vh;
@@ -224,4 +195,4 @@ const Container = styled.div`
       padding: 15px 5% 110px 5%;
     }
   }
-`;
+`

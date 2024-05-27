@@ -6,8 +6,8 @@ import { chooseFood, fisrtMessage, recommendDiet } from '../../store/messages'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { chatList, isChatPageActive, isChooseFoodActive, userAccessToken } from '../../store/recoil'
 import { useEffect, useRef } from 'react'
-import { SERVER } from '../../network/config'
 import React from 'react'
+import { postDietRecommendation } from '../../network/apis/chat'
 
 export const Chatting = () => {
   const [chatting, setChatting] = useRecoilState(chatList)
@@ -32,30 +32,22 @@ export const Chatting = () => {
   }, [chatting])
 
   const getRecommendationsResult = async () => {
-    await fetch(`${SERVER}/recommendations`, {
-      method: 'post',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
-      .then(res => res.json())
-      .then(res =>
-        setChatting(prevChatting => [
-          ...prevChatting,
-          {
-            chatId: 12654,
-            senderId: 0,
-            receiverId: 1,
-            text: res.data[0]?.split(/(?:\r\n|\r|\n)/g).map((line: any, index: number) => (
-              <React.Fragment key={index}>
-                {line}
-                <br />
-              </React.Fragment>
-            ))
-          }
-        ])
-      )
+    postDietRecommendation(accessToken).then(res =>
+      setChatting(prevChatting => [
+        ...prevChatting,
+        {
+          chatId: 12654,
+          senderId: 0,
+          receiverId: 1,
+          text: res.data[0]?.split(/(?:\r\n|\r|\n)/g).map((line: any, index: number) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))
+        }
+      ])
+    )
   }
 
   const addChooseFoodChat = () => {

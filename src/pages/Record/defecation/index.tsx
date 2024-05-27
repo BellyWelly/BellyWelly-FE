@@ -1,61 +1,45 @@
-import { useNavigate } from "react-router-dom";
-import { ArrowIcon } from "../../../assets/Icons";
-import { Text } from "../../../components/common";
-import { styled } from "styled-components";
-import { BigButtons, PoopTypeButtons } from "../../../components/Buttons";
-import { useState } from "react";
-import { DefactionStatusBar, DefactionColor } from "../../../components/record";
-import {
-  FastOption,
-  PoopColors,
-  PoopTiems,
-  SatisfiedOption,
-} from "../../../assets/info/ScaleRecordInfo";
-import { Column, Row } from "../../../styles";
-import { ColorType, HashtagChips } from "../../../components/chips";
-import { SERVER } from "../../../network/config";
-import { useRecoilValue } from "recoil";
-import { userAccessToken } from "../../../store/recoil";
-import {
-  IconContainer,
-  MagnifierBelly,
-} from "../../../assets/Icons/characters/Belly";
+import { useNavigate } from 'react-router-dom'
+import { ArrowIcon } from '../../../assets/Icons'
+import { Text } from '../../../components/common'
+import { styled } from 'styled-components'
+import { BigButtons, PoopTypeButtons } from '../../../components/Buttons'
+import { useState } from 'react'
+import { DefactionStatusBar, DefactionColor } from '../../../components/record'
+import { FastOption, PoopColors, PoopTiems, SatisfiedOption } from '../../../assets/info/ScaleRecordInfo'
+import { Column, Row } from '../../../styles'
+import { ColorType, HashtagChips } from '../../../components/chips'
+import { useRecoilValue } from 'recoil'
+import { userAccessToken } from '../../../store/recoil'
+import { IconContainer, MagnifierBelly } from '../../../assets/Icons/characters/Belly'
+import { postDailyDefaction } from '../../../network/apis/dailyRecord'
 
 export const DefecationRecord = () => {
-  const navigate = useNavigate();
-  const accessToken = useRecoilValue(userAccessToken);
+  const navigate = useNavigate()
+  const accessToken = useRecoilValue(userAccessToken)
 
-  const [scaleDescription, setScaleDescription] = useState("");
-  const [urgencyIndex, setUrgencyIndex] = useState(0);
-  const [colorName, setColorName] = useState("");
-  const [satisfiedIndex, setSatisfiedIndex] = useState(0);
-  const [timeIndex, setTimeIndex] = useState(0);
+  const [scaleDescription, setScaleDescription] = useState('')
+  const [urgencyIndex, setUrgencyIndex] = useState(0)
+  const [colorName, setColorName] = useState('')
+  const [satisfiedIndex, setSatisfiedIndex] = useState(0)
+  const [timeIndex, setTimeIndex] = useState(0)
 
   const postDefaction = () => {
-    if (scaleDescription !== "" && colorName !== "") {
-      fetch(`${SERVER}/records/defecation`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          form: scaleDescription,
-          urgency: urgencyIndex + 1,
-          color: colorName,
-          satisfaction: satisfiedIndex + 1,
-          duration: timeIndex + 1,
-        }),
+    if (scaleDescription !== '' && colorName !== '') {
+      const data = {
+        form: scaleDescription,
+        urgency: urgencyIndex + 1,
+        color: colorName,
+        satisfaction: satisfiedIndex + 1,
+        duration: timeIndex + 1
+      }
+      postDailyDefaction(accessToken, data).then(() => {
+        alert('배변 기록이 완료되었습니다')
+        navigate('/')
       })
-        .then(() => {
-          alert("배변 기록이 완료되었습니다");
-          navigate("/");
-        })
-        .catch((error) => console.error("Error:", error));
     } else {
-      alert("모든 항목을 입력해주세요");
+      alert('모든 항목을 입력해주세요')
     }
-  };
+  }
 
   return (
     <Container>
@@ -64,7 +48,7 @@ export const DefecationRecord = () => {
           <div className="icon-container" onClick={() => navigate(-1)}>
             <ArrowIcon />
           </div>
-          <Row gap={10} alignItems="center" style={{ height: "30px" }}>
+          <Row gap={10} alignItems="center" style={{ height: '30px' }}>
             <Text $Typo="Title1" $paletteColor="Gray6">
               배변은 어떠셨나요?
             </Text>
@@ -78,21 +62,14 @@ export const DefecationRecord = () => {
           <Text $Typo="SubTitle1" $paletteColor="Gray6">
             배변 형태
           </Text>
-          <PoopTypeButtons
-            setScaleDescription={setScaleDescription}
-            scaleDescription={scaleDescription}
-          />
+          <PoopTypeButtons setScaleDescription={setScaleDescription} scaleDescription={scaleDescription} />
         </Column>
 
         <Column gap={15}>
           <Text $Typo="SubTitle1" $paletteColor="Gray6">
             배변 긴박감
           </Text>
-          <DefactionStatusBar
-            currentIndex={urgencyIndex}
-            setCurrentIndex={setUrgencyIndex}
-            options={FastOption}
-          />
+          <DefactionStatusBar currentIndex={urgencyIndex} setCurrentIndex={setUrgencyIndex} options={FastOption} />
         </Column>
 
         <Column gap={10}>
@@ -100,13 +77,8 @@ export const DefecationRecord = () => {
             배변 색상
           </Text>
           <Row justifyContent="space-between" alignItems="center">
-            {PoopColors.map((color) => (
-              <DefactionColor
-                key={color.colorName}
-                color={color.color}
-                onClick={() => setColorName(color.colorName)}
-                active={color.colorName === colorName ? true : false}
-              />
+            {PoopColors.map(color => (
+              <DefactionColor key={color.colorName} color={color.color} onClick={() => setColorName(color.colorName)} active={color.colorName === colorName ? true : false} />
             ))}
           </Row>
         </Column>
@@ -115,11 +87,7 @@ export const DefecationRecord = () => {
           <Text $Typo="SubTitle1" $paletteColor="Gray6">
             배변 만족도
           </Text>
-          <DefactionStatusBar
-            currentIndex={satisfiedIndex}
-            setCurrentIndex={setSatisfiedIndex}
-            options={SatisfiedOption}
-          />
+          <DefactionStatusBar currentIndex={satisfiedIndex} setCurrentIndex={setSatisfiedIndex} options={SatisfiedOption} />
         </Column>
 
         <Column gap={10}>
@@ -128,13 +96,7 @@ export const DefecationRecord = () => {
           </Text>
           <Row gap={10}>
             {PoopTiems.map((time: string, index: number) => (
-              <HashtagChips
-                key={time}
-                color={
-                  index === timeIndex ? ColorType.MainOrange : ColorType.Gray
-                }
-                onClick={() => setTimeIndex(index)}
-              >
+              <HashtagChips key={time} color={index === timeIndex ? ColorType.MainOrange : ColorType.Gray} onClick={() => setTimeIndex(index)}>
                 {time}
               </HashtagChips>
             ))}
@@ -142,17 +104,14 @@ export const DefecationRecord = () => {
         </Column>
       </>
 
-      <div style={{ marginTop: "30px" }}>
-        <BigButtons
-          active={scaleDescription !== "" && colorName !== "" ? true : false}
-          onClick={() => postDefaction()}
-        >
+      <div style={{ marginTop: '30px' }}>
+        <BigButtons active={scaleDescription !== '' && colorName !== '' ? true : false} onClick={() => postDefaction()}>
           저장하기
         </BigButtons>
       </div>
     </Container>
-  );
-};
+  )
+}
 
 const Container = styled.div`
   width: 100%;
@@ -172,4 +131,4 @@ const Container = styled.div`
   @media screen and (max-height: 700px) {
     height: 100%;
   }
-`;
+`

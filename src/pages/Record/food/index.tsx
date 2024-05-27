@@ -1,155 +1,126 @@
-import { styled } from "styled-components";
-import { ArrowIcon, CameraIcon } from "../../../assets/Icons";
-import { ColorType, HashtagChips } from "../../../components/chips";
-import { Text } from "../../../components/common";
-import { theme } from "../../../styles";
-import React, { useEffect, useRef, useState } from "react";
-import { BigButtons } from "../../../components/Buttons";
-import { useNavigate } from "react-router-dom";
-import { FoodRecordResult } from "./FoodRecordResult";
-import { SERVER, SERVER_AI } from "../../../network/config";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  foodAIDetectionLabels,
-  foodLabelsAnalysisResult,
-  userAccessToken,
-} from "../../../store/recoil";
-import { Modal } from "../../../components/modal";
-import { IconContainer } from "../../../assets/Icons/characters/Belly";
-import { Row } from "../../../styles";
-import { Welly } from "../../../assets/Icons/characters/Welly";
+import { styled } from 'styled-components'
+import { ArrowIcon, CameraIcon } from '../../../assets/Icons'
+import { ColorType, HashtagChips } from '../../../components/chips'
+import { Text } from '../../../components/common'
+import { theme } from '../../../styles'
+import React, { useEffect, useRef, useState } from 'react'
+import { BigButtons } from '../../../components/Buttons'
+import { useNavigate } from 'react-router-dom'
+import { FoodRecordResult } from './FoodRecordResult'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { foodAIDetectionLabels, foodLabelsAnalysisResult, userAccessToken } from '../../../store/recoil'
+import { Modal } from '../../../components/modal'
+import { IconContainer } from '../../../assets/Icons/characters/Belly'
+import { Row } from '../../../styles'
+import { Welly } from '../../../assets/Icons/characters/Welly'
+import { postFoodDetection } from '../../../network/apis/fastApis/foodDetection'
+import { postUploadImage } from '../../../network/apis/dailyRecord'
 
 interface MealTypesInterface {
-  id: number;
-  time: string;
+  id: number
+  time: string
 }
 const MealTypes: MealTypesInterface[] = [
-  { id: 1, time: "아침" },
-  { id: 2, time: "점심" },
-  { id: 3, time: "저녁" },
-  { id: 4, time: "기타" },
-];
+  { id: 1, time: '아침' },
+  { id: 2, time: '점심' },
+  { id: 3, time: '저녁' },
+  { id: 4, time: '기타' }
+]
 export interface FoodResultLabelsInterface {
-  labels: string[];
+  labels: string[]
 }
 export interface FoodLabelsAnalysisResultInterface {
-  image: string;
-  mealtime: string;
-  meal: string[];
+  image: string
+  mealtime: string
+  meal: string[]
   fodmapList: {
-    lowFodmap: string[];
-    highFodmap: string[];
-  };
+    lowFodmap: string[]
+    highFodmap: string[]
+  }
   nutrient: {
     fructose: {
-      value: number;
-      graph: number;
-    };
+      value: number
+      graph: number
+    }
     sucrose: {
-      value: number;
-      graph: number;
-    };
+      value: number
+      graph: number
+    }
     lactose: {
-      value: number;
-      graph: number;
-    };
+      value: number
+      graph: number
+    }
     maltose: {
-      value: number;
-      graph: number;
-    };
+      value: number
+      graph: number
+    }
     fiber: {
-      value: number;
-      graph: number;
-    };
-  };
+      value: number
+      graph: number
+    }
+  }
 }
 
 export const FoodRecord = () => {
-  const [mealTime, setMealTime] = useState<number>();
-  const [imageSrc, setImageSrc] = useState<string>();
-  const [s3ImageUrl, setS3ImageUrl] = useState<string>();
-  const hiddenFileInput = useRef<HTMLInputElement>(null);
-  const [showResult, setShowResult] = useState<boolean>(false);
-  const [uploadFile, setUploadFile] = useState<File>();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [foodResultLabels, setFoodResultLabels] = useRecoilState(
-    foodAIDetectionLabels
-  );
+  const [mealTime, setMealTime] = useState<number>()
+  const [imageSrc, setImageSrc] = useState<string>()
+  const [s3ImageUrl, setS3ImageUrl] = useState<string>()
+  const hiddenFileInput = useRef<HTMLInputElement>(null)
+  const [showResult, setShowResult] = useState<boolean>(false)
+  const [uploadFile, setUploadFile] = useState<File>()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [foodResultLabels, setFoodResultLabels] = useRecoilState(foodAIDetectionLabels)
 
-  const foodResult = useRecoilValue(foodLabelsAnalysisResult);
-  const accessToken = useRecoilValue(userAccessToken);
-  const navigate = useNavigate();
+  const foodResult = useRecoilValue(foodLabelsAnalysisResult)
+  const accessToken = useRecoilValue(userAccessToken)
+  const navigate = useNavigate()
 
   const handleClick = () => {
-    hiddenFileInput.current?.click();
-  };
+    hiddenFileInput.current?.click()
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileUploaded = event.target.files?.[0];
+    const fileUploaded = event.target.files?.[0]
 
     if (fileUploaded) {
-      setUploadFile(fileUploaded);
+      setUploadFile(fileUploaded)
 
-      const reader = new FileReader();
-      reader.readAsDataURL(fileUploaded);
+      const reader = new FileReader()
+      reader.readAsDataURL(fileUploaded)
 
-      return new Promise<void>((resolve) => {
+      return new Promise<void>(resolve => {
         reader.onload = () => {
-          setImageSrc(
-            reader.result instanceof ArrayBuffer ? "" : reader.result || ""
-          );
-          resolve();
-        };
-      });
+          setImageSrc(reader.result instanceof ArrayBuffer ? '' : reader.result || '')
+          resolve()
+        }
+      })
     }
-  };
+  }
 
   useEffect(() => {
-    if (foodResult.image) setShowResult(true);
-    else setShowResult(false);
-    const mealTime = MealTypes.find(
-      (type) => type.time === foodResult.mealtime
-    )?.id;
-    setMealTime(mealTime);
-  }, [foodResult.image]);
+    if (foodResult.image) setShowResult(true)
+    else setShowResult(false)
+    const mealTime = MealTypes.find(type => type.time === foodResult.mealtime)?.id
+    setMealTime(mealTime)
+  }, [foodResult.image])
 
   // 이미지 s3에 업로드
   const postImage = async () => {
     if (uploadFile !== undefined && mealTime !== undefined) {
-      setIsLoading(true);
-      setModalOpen(true);
+      setIsLoading(true)
+      setModalOpen(true)
 
-      const formData = new FormData();
-      formData.append("image", uploadFile!);
+      const formData = new FormData()
+      formData.append('image', uploadFile!)
 
-      const imgRes = await fetch(`${SERVER}/images`, {
-        method: "post",
-        headers: {
-          //  "content-type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: formData,
+      postUploadImage(accessToken, formData).then(imgUrl => {
+        setS3ImageUrl(imgUrl)
+        postFoodDetection(imgUrl).then(res => {
+          setIsLoading(false)
+          setFoodResultLabels(res?.labels)
+        })
       })
-        .then((res) => res.text())
-        .then((imgUrl) => {
-          setS3ImageUrl(imgUrl);
-          fetch(`${SERVER_AI}/detection`, {
-            method: "post",
-            headers: {
-              "content-type": "application/json",
-              // Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({
-              imageUrl: imgUrl,
-            }),
-          })
-            .then((res) => res.json())
-            .then((res) => {
-              setIsLoading(false);
-              setFoodResultLabels(res?.labels);
-            });
-        });
 
       // const presignedUrl = await res.text();
 
@@ -163,13 +134,11 @@ export const FoodRecord = () => {
     });
     console.log(uploadRes);*/
     } else {
-      if (imageSrc === undefined && mealTime !== undefined)
-        alert("사진을 첨부해주세요");
-      else if (imageSrc !== undefined && mealTime === undefined)
-        alert("식사 종류를 입력해주세요");
-      else alert("사진과 식사 종류를 입력해주세요");
+      if (imageSrc === undefined && mealTime !== undefined) alert('사진을 첨부해주세요')
+      else if (imageSrc !== undefined && mealTime === undefined) alert('식사 종류를 입력해주세요')
+      else alert('사진과 식사 종류를 입력해주세요')
     }
-  };
+  }
 
   return (
     <Container>
@@ -178,7 +147,7 @@ export const FoodRecord = () => {
           <div className="icon-container" onClick={() => navigate(-1)}>
             <ArrowIcon />
           </div>
-          <Row gap={10} alignItems="flex-end" style={{ height: "30px" }}>
+          <Row gap={10} alignItems="flex-end" style={{ height: '30px' }}>
             <IconContainer width={50} height={50}>
               <Welly />
             </IconContainer>
@@ -187,23 +156,9 @@ export const FoodRecord = () => {
             </Text>
           </Row>
 
-          <ImageContainer
-            onClick={handleClick}
-            image={foodResult.image ? foodResult.image : imageSrc}
-          >
-            <input
-              accept="image/*"
-              multiple
-              type="file"
-              style={{ display: "none" }}
-              onChange={(e) => !foodResult.image && handleChange(e)}
-              ref={hiddenFileInput}
-            />
-            {imageSrc === undefined && !foodResult.image ? (
-              <CameraIcon />
-            ) : (
-              <Img src={foodResult.image ? foodResult.image : imageSrc} />
-            )}
+          <ImageContainer onClick={handleClick} image={foodResult.image ? foodResult.image : imageSrc}>
+            <input accept="image/*" multiple type="file" style={{ display: 'none' }} onChange={e => !foodResult.image && handleChange(e)} ref={hiddenFileInput} />
+            {imageSrc === undefined && !foodResult.image ? <CameraIcon /> : <Img src={foodResult.image ? foodResult.image : imageSrc} />}
           </ImageContainer>
 
           <Text $Typo="Title2" $paletteColor="Gray6">
@@ -212,13 +167,7 @@ export const FoodRecord = () => {
 
           <ChipsContainer>
             {MealTypes.map((type: MealTypesInterface) => (
-              <HashtagChips
-                key={type.id}
-                color={
-                  type.id === mealTime ? ColorType.MainOrange : ColorType.Gray
-                }
-                onClick={() => !foodResult.image && setMealTime(type.id)}
-              >
+              <HashtagChips key={type.id} color={type.id === mealTime ? ColorType.MainOrange : ColorType.Gray} onClick={() => !foodResult.image && setMealTime(type.id)}>
                 {type.time}
               </HashtagChips>
             ))}
@@ -226,38 +175,23 @@ export const FoodRecord = () => {
         </div>
 
         {!showResult && (
-          <BigButtons
-            active={imageSrc !== undefined && mealTime !== undefined}
-            onClick={() => postImage()}
-          >
+          <BigButtons active={imageSrc !== undefined && mealTime !== undefined} onClick={() => postImage()}>
             분석하기
           </BigButtons>
         )}
       </FoodRecordSection>
-      {modalOpen && (
-        <Modal
-          imgUrl={s3ImageUrl!}
-          mealTime={
-            MealTypes.find((type) => type.id === mealTime)?.time || "기타"
-          }
-          foodResultLabels={isLoading ? [] : foodResultLabels}
-          isLoading={isLoading}
-          modalOpen={modalOpen}
-          setShowResult={setShowResult}
-          setModalOpen={setModalOpen}
-        />
-      )}
+      {modalOpen && <Modal imgUrl={s3ImageUrl!} mealTime={MealTypes.find(type => type.id === mealTime)?.time || '기타'} foodResultLabels={isLoading ? [] : foodResultLabels} isLoading={isLoading} modalOpen={modalOpen} setShowResult={setShowResult} setModalOpen={setModalOpen} />}
       {showResult && <FoodRecordResult imageSrc={imageSrc!} />}
     </Container>
-  );
-};
+  )
+}
 
 const Container = styled.div`
   height: 100%;
-`;
+`
 const FoodRecordSection = styled.div<{ result?: boolean }>`
   width: 100%;
-  height: ${({ result }) => (result ? "100%" : "calc(100vh - 30px)")};
+  height: ${({ result }) => (result ? '100%' : 'calc(100vh - 30px)')};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -277,12 +211,11 @@ const FoodRecordSection = styled.div<{ result?: boolean }>`
       width: fit-content;
     }
   }
-`;
+`
 const ImageContainer = styled.div<{ image?: string }>`
   width: 100%;
   height: 330px;
-  background: ${({ image }) =>
-    image !== undefined ? theme.palette.White : theme.palette.Gray2};
+  background: ${({ image }) => (image !== undefined ? theme.palette.White : theme.palette.Gray2)};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -291,15 +224,15 @@ const ImageContainer = styled.div<{ image?: string }>`
   @media screen and (max-height: 700px) {
     margin: 10px 0 20px 0;
   }
-`;
+`
 const ChipsContainer = styled.div`
   width: 100;
   display: flex;
   gap: 7px;
   padding: 15px 0;
-`;
+`
 const Img = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
-`;
+`

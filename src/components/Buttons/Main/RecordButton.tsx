@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { ImgContainer, theme, Img } from "../../../styles";
-import { Text } from "../../common";
-import { CheckButton } from "../CheckButton";
-import { Link } from "react-router-dom";
-import { SERVER } from "../../../network/config";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { userAccessToken, stressLevel } from "../../../store/recoil";
+import styled from 'styled-components'
+import { ImgContainer, theme, Img } from '../../../styles'
+import { Text } from '../../common'
+import { CheckButton } from '../CheckButton'
+import { Link } from 'react-router-dom'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { userAccessToken, stressLevel } from '../../../store/recoil'
+import { postDailyStress } from '../../../network/apis/dailyRecord'
 
 export const RecordButton = ({ link }: { link: string }) => {
   return (
@@ -15,35 +15,20 @@ export const RecordButton = ({ link }: { link: string }) => {
         기록하기
       </Text>
     </Container>
-  );
-};
+  )
+}
 
-export const RecordStress = ({
-  display,
-  setOpenStress,
-}: {
-  display: boolean;
-  setOpenStress: (value: boolean) => void;
-}) => {
-  const accessToken = useRecoilValue(userAccessToken);
-  const [stress, setStress] = useRecoilState(stressLevel);
+export const RecordStress = ({ display, setOpenStress }: { display: boolean; setOpenStress: (value: boolean) => void }) => {
+  const accessToken = useRecoilValue(userAccessToken)
+  const setStress = useSetRecoilState(stressLevel)
 
-  const stressLevelArray = [1, 2, 3, 4, 5];
+  const stressLevelArray = [1, 2, 3, 4, 5]
 
   const postStressLevel = (level: number) => {
-    fetch(`${SERVER}/records/stress`, {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        stress: level,
-      }),
-    })
+    postDailyStress(accessToken, level)
       .then(() => setStress(level))
-      .catch((error) => console.error("Error:", error));
-  };
+      .catch(error => console.error('Error:', error))
+  }
 
   return (
     <StressContainer display={display}>
@@ -51,30 +36,21 @@ export const RecordStress = ({
         오늘의 스트레스 정도는?
       </Text>
       <div className="icon-container">
-        {stressLevelArray.map((level) => (
-          // <Icon
-          //   key={level}
-          //   onClick={() => {
-          //     postStressLevel(level);
-          //     setOpenStress(false);
-          //   }}
-          // >
-          //   {React.createElement(BellyFaceComponents[level])}
-          // </Icon>
+        {stressLevelArray.map(level => (
           <ImgContainer width={44} height={44}>
             <Img
               src={`/bellyFaces/level${level}.png`}
               onClick={() => {
-                postStressLevel(level);
-                setOpenStress(false);
+                postStressLevel(level)
+                setOpenStress(false)
               }}
             />
           </ImgContainer>
         ))}
       </div>
     </StressContainer>
-  );
-};
+  )
+}
 
 const Container = styled(Link)`
   width: 100%;
@@ -88,7 +64,7 @@ const Container = styled(Link)`
   justify-content: center;
   gap: 5px;
   text-decoration: none;
-`;
+`
 
 const StressContainer = styled.div<{ display: boolean }>`
   box-sizing: border-box;
@@ -97,15 +73,11 @@ const StressContainer = styled.div<{ display: boolean }>`
   border: 1px solid ${theme.palette.Gray3};
   border-radius: 8px;
   padding: 10px 15px;
-  display: ${({ display }) => (display ? "block" : "none")};
+  display: ${({ display }) => (display ? 'block' : 'none')};
 
   .icon-container {
     display: flex;
     justify-content: space-between;
     padding: 5px 20px;
   }
-`;
-
-const Icon = styled.div`
-  height: 44px;
-`;
+`

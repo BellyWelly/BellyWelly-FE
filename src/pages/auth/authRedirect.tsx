@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
-import { SERVER } from '../../network/config'
 import { useSetRecoilState } from 'recoil'
 import { userNameState, userAccessToken } from '../../store/recoil'
 import { useNavigate } from 'react-router-dom'
-
-// 배포 테스트
+import { postLogin } from '../../network/apis/auth'
 
 export const AuthRedirect = () => {
   const navigate = useNavigate()
@@ -14,23 +12,11 @@ export const AuthRedirect = () => {
   const setAccessToken = useSetRecoilState(userAccessToken)
 
   useEffect(() => {
-    fetch(`${SERVER}/auth/login`, {
-      method: 'post',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        code: code,
-        redirectUri: process.env.REACT_APP_KAKAO_REDIRECT_URI
-      })
+    postLogin(code).then(res => {
+      setAccessToken(res.accessToken)
+      setUserName(res.name)
+      navigate('/')
     })
-      .then(response => response.json())
-      .then(data => {
-        setAccessToken(data.accessToken)
-        setUserName(data.name)
-        navigate('/')
-      })
-      .catch(error => console.error('Error:', error))
   }, [])
 
   return <div>로그인 중 입니다</div>
