@@ -14,6 +14,20 @@ export const getDailyRecord = async (selectedDate: string, accessToken: string) 
   return res
 }
 
+export const getDietDetails = async (selectedDate: string, accessToken: string, mealtimeId: number) => {
+  const res = await fetch(`${SERVER}/records/diet?date=${selectedDate}&mealtime=${mealtimeId}`, {
+    method: 'get',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+    .then(res => res.json())
+    .catch(error => console.error('Error:', error))
+
+  return res
+}
+
 export const postUploadImage = async (accessToken: string, formData: any): Promise<string> => {
   const res = await fetch(`${SERVER}/images`, {
     method: 'post',

@@ -10,7 +10,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { foodLabelsAnalysisResult, selectDate, userAccessToken, userNameState } from '../store/recoil'
 import { DietInterface } from '../pages/Main'
 import { useNavigate } from 'react-router-dom'
-import { SERVER } from '../network/config'
+import { getDietDetails } from '../network/apis/dailyRecord'
 
 interface GraphLabelInterface {
   children: React.ReactNode
@@ -107,17 +107,9 @@ export const MainDietRecordCheckBox = ({ dailyDietData }: { dailyDietData: DietI
   const getMealTimeDiet = (mealtimeId: number) => {
     navigate('/foodRecord')
 
-    fetch(`${SERVER}/records/diet?date=${selectedDate}&mealtime=${mealtimeId}`, {
-      method: 'get',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
+    getDietDetails(selectedDate, accessToken, mealtimeId).then(res => {
+      setFoodResult(res)
     })
-      .then(res => res.json())
-      .then(res => {
-        setFoodResult(res)
-      })
   }
 
   const day = [
