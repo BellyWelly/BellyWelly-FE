@@ -1,48 +1,43 @@
-import { DefaultLayout } from "../../layout/defaultLayout";
-import {
-  ArrowIcon,
-  SupportIcon1,
-  SupportIcon2,
-  SupportIcon3,
-} from "../../assets/Icons";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { Belly } from "../../assets/Icons/characters/Belly";
-import { Text } from "../../components/common";
-import { userNameState } from "../../store/recoil";
-import { useRecoilValue } from "recoil";
-import { Column, Img, ImgContainer, Row, palette } from "../../styles";
-import { getDateInfo } from "../../utils/DateUtils";
+import { DefaultLayout } from '../../layout/defaultLayout'
+import { ArrowIcon, SupportIcon1, SupportIcon2, SupportIcon3 } from '../../assets/Icons'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+import { Belly } from '../../assets/Icons/characters/Belly'
+import { Text } from '../../components/common'
+import { userNameState } from '../../store/recoil'
+import { useRecoilValue } from 'recoil'
+import { Column, Img, ImgContainer, Row, palette } from '../../styles'
+import { getDateInfo } from '../../utils/DateUtils'
 
 const GoodFoodList = [
   {
-    img: "/mypage/두부",
-    food: "두부",
+    img: '/mypage/두부',
+    food: '두부'
   },
   {
-    img: "/mypage/닭가슴살",
-    food: "닭가슴살",
+    img: '/mypage/닭가슴살',
+    food: '닭가슴살'
   },
   {
-    img: "/mypage/요거트",
-    food: "저지방 요거트",
-  },
-];
+    img: '/mypage/요거트',
+    food: '저지방 요거트'
+  }
+]
 
 const BadFoodList = [
   {
-    img: "/mypage/떡볶이",
-    food: "떡볶이",
+    img: '/mypage/떡볶이',
+    food: '떡볶이'
   },
   {
-    img: "/mypage/마라탕",
-    food: "마라탕",
+    img: '/mypage/마라탕',
+    food: '마라탕'
   },
   {
-    img: "/mypage/아이스크림",
-    food: "아이스크림",
-  },
-];
+    img: '/mypage/아이스크림',
+    food: '아이스크림'
+  }
+]
 
 const FoodBox = ({ img, food }: { img: string; food: string }) => {
   return (
@@ -54,14 +49,14 @@ const FoodBox = ({ img, food }: { img: string; food: string }) => {
         {food}
       </Text>
     </FoodBoxContainer>
-  );
-};
+  )
+}
 
 export const Mypage = () => {
-  const navigate = useNavigate();
-  const userName = useRecoilValue(userNameState);
+  const navigate = useNavigate()
+  const userName = useRecoilValue(userNameState)
 
-  const { year, month, week } = getDateInfo(null);
+  const { year, month, week } = getDateInfo(null)
 
   return (
     <DefaultLayout>
@@ -73,7 +68,7 @@ export const Mypage = () => {
           <div>
             <div className="user-name">
               <Text $Typo="Head2" $paletteColor="Main_orange">
-                {userName.slice(1)}
+                {userName}
               </Text>
               <Text $Typo="Title1" $paletteColor="Gray6">
                 님
@@ -89,7 +84,7 @@ export const Mypage = () => {
         </Title>
         <FeedBackSection gap={15}>
           <Text $Typo="Title2" $paletteColor="Gray6">
-            {userName.slice(1)}님의 장 데이터
+            {userName}님의 장 데이터
           </Text>
           <FeedBackBox gap={15}>
             <div>
@@ -112,7 +107,7 @@ export const Mypage = () => {
             이 음식들을 추천해요!
           </Text>
           <FoodBoxList>
-            {GoodFoodList.map((food) => (
+            {GoodFoodList.map(food => (
               <FoodBox img={food.img} food={food.food} />
             ))}
           </FoodBoxList>
@@ -122,7 +117,7 @@ export const Mypage = () => {
             이 음식들을 피해야 해요!
           </Text>
           <FoodBoxList>
-            {BadFoodList.map((food) => (
+            {BadFoodList.map(food => (
               <FoodBox img={food.img} food={food.food} />
             ))}
           </FoodBoxList>
@@ -154,8 +149,8 @@ export const Mypage = () => {
         </SupportSection>
       </Container>
     </DefaultLayout>
-  );
-};
+  )
+}
 
 const Container = styled.div`
   padding: 25px 0;
@@ -165,7 +160,7 @@ const Container = styled.div`
     padding: 0 17px;
     width: fit-content;
   }
-`;
+`
 
 const Title = styled.div`
   margin: 0 17px;
@@ -179,19 +174,19 @@ const Title = styled.div`
     display: flex;
     align-items: center;
   }
-`;
+`
 
 const FeedBackSection = styled(Column)`
   padding: 17px;
-`;
+`
 const FeedBackBox = styled(Column)`
   padding: 21px 26px;
   border-radius: 12px;
   border: 1px solid ${palette.Main_orange};
-`;
+`
 const FoodSection = styled(Column)`
   padding: 10px 17px;
-`;
+`
 
 const FoodBoxList = styled.div`
   display: flex;
@@ -204,7 +199,7 @@ const FoodBoxList = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`
 
 const FoodBoxContainer = styled.div`
   width: 120px;
@@ -217,10 +212,10 @@ const FoodBoxContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
-`;
+`
 
 const SupportSection = styled(Column)`
   margin: 10px 17px 0 17px;
   padding: 25px 0 10px 0;
   border-top: 1px solid ${palette.Sub2_orange};
-`;
+`
