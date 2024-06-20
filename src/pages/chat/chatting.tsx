@@ -1,78 +1,87 @@
-import styled from 'styled-components'
-import { ChatBubble } from '../../components/chat/ChatBubble'
-import { palette } from '../../styles'
-import { Text } from '../../components/common'
-import { chooseFood, fisrtMessage, recommendDiet } from '../../store/messages'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { chatList, isChatPageActive, isChooseFoodActive, userAccessToken } from '../../store/recoil'
-import { useEffect, useRef } from 'react'
-import React from 'react'
-import { postDietRecommendation } from '../../network/apis/chat'
+import styled from "styled-components";
+import { ChatBubble } from "../../components/chat/ChatBubble";
+import { palette } from "../../styles";
+import { Text } from "../../components/common";
+import { chooseFood, fisrtMessage, recommendDiet } from "../../store/messages";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  chatList,
+  isChatPageActive,
+  isChooseFoodActive,
+  userAccessToken,
+} from "../../store/recoil";
+import { useEffect, useRef } from "react";
+import React from "react";
+import { postDietRecommendation } from "../../network/apis/chat";
 
 export const Chatting = () => {
-  const [chatting, setChatting] = useRecoilState(chatList)
-  const accessToken = useRecoilValue(userAccessToken)
-  const isInChatPage = useRecoilValue(isChatPageActive)
-  const setChooseFoodActive = useSetRecoilState(isChooseFoodActive)
+  const [chatting, setChatting] = useRecoilState(chatList);
+  const accessToken = useRecoilValue(userAccessToken);
+  const isInChatPage = useRecoilValue(isChatPageActive);
+  const setChooseFoodActive = useSetRecoilState(isChooseFoodActive);
 
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollBottom = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }
+  };
 
   useEffect(() => {
-    if (isInChatPage && chatting.at(-1) !== fisrtMessage) setChatting(prevChatting => [...prevChatting, fisrtMessage])
-  }, [isInChatPage])
+    if (isInChatPage && chatting.at(-1) !== fisrtMessage)
+      setChatting((prevChatting) => [...prevChatting, fisrtMessage]);
+  }, [isInChatPage]);
 
   useEffect(() => {
-    scrollBottom()
-  }, [chatting])
+    scrollBottom();
+  }, [chatting]);
 
   const getRecommendationsResult = async () => {
-    postDietRecommendation(accessToken).then(res =>
-      setChatting(prevChatting => [
+    postDietRecommendation(accessToken).then((res) =>
+      setChatting((prevChatting) => [
         ...prevChatting,
         {
           chatId: 12654,
           senderId: 0,
           receiverId: 1,
-          text: res.data[0]?.split(/(?:\r\n|\r|\n)/g).map((line: any, index: number) => (
-            <React.Fragment key={index}>
-              {line}
-              <br />
-            </React.Fragment>
-          ))
-        }
+          text: res.data
+            ?.split(/(?:\r\n|\r|\n)/g)
+            .map((line: any, index: number) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            )),
+        },
       ])
-    )
-  }
+    );
+  };
 
   const addChooseFoodChat = () => {
-    setChooseFoodActive(true)
-    setChatting(prevChatting => [...prevChatting, chooseFood[0]])
+    setChooseFoodActive(true);
+    setChatting((prevChatting) => [...prevChatting, chooseFood[0]]);
 
     chooseFood.slice(1).forEach((message, index) => {
       setTimeout(() => {
-        setChatting(prevChatting => [...prevChatting, message])
-      }, (index + 1) * 500) // 0.5초 간격
-    })
-  }
+        setChatting((prevChatting) => [...prevChatting, message]);
+      }, (index + 1) * 500); // 0.5초 간격
+    });
+  };
 
   return (
     <Container ref={scrollRef}>
-      {chatting.map(message => (
+      {chatting.map((message) => (
         <ChatBubbleList chatId={message.chatId} senderId={message.senderId}>
           <ChatBubble>{message.text}</ChatBubble>
           {message.chatId === 1 && (
             <div className="chatChips_container">
               <ChatChip
                 onClick={() => {
-                  setChatting([...chatting, recommendDiet])
-                  getRecommendationsResult()
-                }}>
+                  setChatting([...chatting, recommendDiet]);
+                  getRecommendationsResult();
+                }}
+              >
                 <Text $Typo="Body3" $paletteColor="Main_orange">
                   식단 추천
                 </Text>
@@ -87,8 +96,8 @@ export const Chatting = () => {
         </ChatBubbleList>
       ))}
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   width: 100%;
@@ -103,15 +112,16 @@ const Container = styled.div`
     display: flex;
     gap: 8px;
   }
-`
+`;
 
 const ChatBubbleList = styled.div<{ chatId?: number; senderId: number }>`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: ${({ chatId }) => (chatId === 1 ? 10 : 30)}px;
-  align-items: ${({ senderId }) => (senderId === 1 ? 'flex-end' : 'flex-start')};
-`
+  align-items: ${({ senderId }) =>
+    senderId === 1 ? "flex-end" : "flex-start"};
+`;
 
 const ChatChip = styled.button`
   width: fit-content;
@@ -119,4 +129,4 @@ const ChatChip = styled.button`
   border-radius: 20px;
   border: 1px solid ${palette.Main_orange};
   padding: 8px 16px;
-`
+`;
