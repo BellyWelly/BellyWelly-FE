@@ -1,4 +1,4 @@
-# BellyWelly-AI
+# BellyWelly-FE
 ![image](https://github.com/BellyWelly/BellyWelly-AI/assets/96541582/c87f227e-930c-406d-ba55-b52a610354af)
 <br>
 
